@@ -1,0 +1,36 @@
+{
+  "name": "rocket-launcher",
+  "version": "0.0.1",
+  "description": "Binds the component to the target html node",
+  "main": "src/main.js",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/seedofjoy/rocket-launcher.git"
+  },
+  "author": "Igor Mozharovsky <igor.mozharovsky@gmail.com>",
+  "contributors": [
+    {
+      "name": "Igor Mozharovsky",
+      "email": "igor.mozharovsky@gmail.com"
+    },
+    {
+      "name": "Anton Verinov",
+      "url": "http://anton.codes",
+      "email": "anton@verinov.com"
+    }
+  ],
+  "license": "CC0",
+  "bugs": {
+    "url": "https://github.com/seedofjoy/rocket-launcher/issues"
+  },
+  "homepage": "https://github.com/seedofjoy/rocket-launcher",
+  "devDependencies": {
+    "browserify": "^9.0.3"
+  }
+}
