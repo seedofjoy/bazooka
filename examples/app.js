@@ -1,6 +1,6 @@
 'use strict';
 
-var launcher = require('rocketLauncher');
+var launcher = require('rocket-launcher');
 
 var component = function (element, opts) {
     console.log(element.dataset.launcher + ' initialized.');
