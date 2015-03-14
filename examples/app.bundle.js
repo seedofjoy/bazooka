@@ -20,7 +20,7 @@ RocketLauncher = function (apps) {
     document.addEventListener('DOMContentLoaded', function () {
 
         if (!apps) {
-            console.error('Binder: No applications found!');
+            console.error('RocketLauncher: No applications found!');
             return;
         }
 
@@ -31,7 +31,7 @@ RocketLauncher = function (apps) {
                     opts = {};
 
                 if (!(app_name in apps)) {
-                    console.error('Module ' + app_name + ' not found.');
+                    console.error('RocketLauncher: Application ' + app_name + ' not found.');
                     return;
                 }
 
