@@ -7,7 +7,7 @@
     "example": "examples"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "make test"
   },
   "repository": {
     "type": "git",
@@ -31,6 +31,12 @@
   },
   "homepage": "https://github.com/seedofjoy/rocket-launcher",
   "devDependencies": {
-    "browserify": "^9.0.3"
+    "browserify": "^9.0.3",
+    "karma": "^0.12.31",
+    "karma-browserify": "^4.0.0",
+    "karma-jasmine": "^0.3.5",
+    "karma-phantomjs-launcher": "^0.1.4",
+    "phantomjs": "^1.9.16",
+    "proxyquireify": "^1.2.2"
   }
 }
