@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/seedofjoy/rocket-launcher.svg)](https://travis-ci.org/seedofjoy/rocket-launcher)
+[![Build Status](https://travis-ci.org/seedofjoy/bazooka.svg)](https://travis-ci.org/seedofjoy/bazooka)
 
-# rocket-launcher
+# bazooka
 Binds the component to the target html node

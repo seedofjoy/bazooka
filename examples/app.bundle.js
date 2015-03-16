@@ -1,19 +1,19 @@
 require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
-var launcher = require('rocket-launcher');
+var Baz = require('bazooka');
 
 var component = function (element, opts) {
-    console.log(element.dataset.launcher + ' initialized.');
-    console.log(element.dataset.launcher + ' opts:');
+    console.log(element.dataset.bazooka + ' initialized.');
+    console.log(element.dataset.bazooka + ' opts:');
     console.log(opts);
 };
 
-launcher({
+Baz({
     'testComponent': component
 });
 
-},{"rocket-launcher":"rocket-launcher"}],2:[function(require,module,exports){
+},{"bazooka":"bazooka"}],2:[function(require,module,exports){
 /*!
   * domready (c) Dustin Diaz 2014 - License MIT
   */
@@ -45,7 +45,7 @@ launcher({
 
 });
 
-},{}],"rocket-launcher":[function(require,module,exports){
+},{}],"bazooka":[function(require,module,exports){
 var domready = require('domready');
 
 if (!Function.prototype.bind) {
@@ -77,8 +77,8 @@ if (!Function.prototype.bind) {
 function _camelize(match, p1) { return p1.toUpperCase(); }
 
 function _moveAttrToOpts(opts, attr) {
-    if (/^data-launcher-attr-/.test(attr.name)) {
-        var camelCaseName = attr.name.substr(19).replace(/-(.)/g, _camelize);
+    if (/^data-bazooka-attr-/.test(attr.name)) {
+        var camelCaseName = attr.name.substr(18).replace(/-(.)/g, _camelize);
         opts[camelCaseName] = attr.value;
     }
 }
@@ -96,28 +96,28 @@ function _bindApps(apps) {
         // Avoid a Chakra JIT bug in compatibility modes of IE 11.
         // See https://github.com/jashkenas/underscore/issues/1621 for more details.
         if (!(typeof apps[app_name] == 'function' || false)) {
-            throw new Error('RocketLauncher: ' + app_name + ' is not callable!');
+            throw new Error('Bazooka: ' + app_name + ' is not callable!');
         }
 
         Array.prototype.forEach.call(
-            document.querySelectorAll("[data-launcher*='" + app_name + "']"),
+            document.querySelectorAll("[data-bazooka*='" + app_name + "']"),
             _bindAppToNode.bind(_this, apps[app_name])
         );
     }
 
 }
 
-RocketLauncher = function (apps) {
+Bazooka = function (apps) {
     'use strict';
 
     if (!(apps && Object.keys(apps).length)) {
-        throw new Error('RocketLauncher: No applications found!');
+        throw new Error('Bazooka: No applications found!');
         return;
     }
 
     domready(_bindApps.bind(this, apps));
 };
 
-module.exports = RocketLauncher
+module.exports = Bazooka
 
 },{"domready":2}]},{},[1]);

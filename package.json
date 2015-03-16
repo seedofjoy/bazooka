@@ -1,5 +1,5 @@
 {
-  "name": "rocket-launcher",
+  "name": "bazooka",
   "version": "0.0.1",
   "description": "Binds the component to the target html node",
   "main": "src/main.js",
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/seedofjoy/rocket-launcher.git"
+    "url": "https://github.com/seedofjoy/bazooka.git"
   },
   "author": "Igor Mozharovsky <igor.mozharovsky@gmail.com>",
   "contributors": [
@@ -27,9 +27,9 @@
   ],
   "license": "CC0",
   "bugs": {
-    "url": "https://github.com/seedofjoy/rocket-launcher/issues"
+    "url": "https://github.com/seedofjoy/bazooka/issues"
   },
-  "homepage": "https://github.com/seedofjoy/rocket-launcher",
+  "homepage": "https://github.com/seedofjoy/bazooka",
   "devDependencies": {
     "browserify": "^9.0.3",
     "karma": "^0.12.31",

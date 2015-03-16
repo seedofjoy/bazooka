@@ -8,7 +8,7 @@ karma_conf = $(shell pwd)/spec/karma.conf.js
 .PHONY: example test
 
 example:
-	$(browserify) examples/app.js -r ./src/main.js:'rocket-launcher' > examples/app.bundle.js
+	$(browserify) examples/app.js -r ./src/main.js:'bazooka' > examples/app.bundle.js
 
 test:
 	$(karma) start $(karma_conf) --single-run

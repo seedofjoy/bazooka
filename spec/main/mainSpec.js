@@ -6,7 +6,7 @@ function appendDiv() {
 }
 
 describe("main", function() {
-    var launcher = require('../../src/main.js');
+    var Baz = require('../../src/main.js');
 
     beforeEach(function() {
     });
@@ -22,30 +22,30 @@ describe("main", function() {
 
     it("should run component function", function(done) {
         var node = appendDiv();
-        node.setAttribute('data-launcher', 'testComponent');
+        node.setAttribute('data-bazooka', 'testComponent');
 
         var component = function (element, opts) {
             done();
         };
 
-        launcher({
+        Baz({
             'testComponent': component
         });
     });
 
     it("should fail on empty apps", function() {
-        var noAppsError = new Error('RocketLauncher: No applications found!');
-        expect(function () { launcher() }).toThrow(noAppsError);
-        expect(function () { launcher(null) }).toThrow(noAppsError);
-        expect(function () { launcher({}) }).toThrow(noAppsError);
+        var noAppsError = new Error('Bazooka: No applications found!');
+        expect(function () { Baz() }).toThrow(noAppsError);
+        expect(function () { Baz(null) }).toThrow(noAppsError);
+        expect(function () { Baz({}) }).toThrow(noAppsError);
     });
 
     it("should parse attributes to opts", function(done) {
         var node = appendDiv();
-        node.setAttribute('data-launcher', 'testComponent');
-        node.setAttribute('data-launcher-attr-one', 1);
-        node.setAttribute('data-launcher-attr-two', 'two');
-        node.setAttribute('data-launcher-attr-three-zero', null);
+        node.setAttribute('data-bazooka', 'testComponent');
+        node.setAttribute('data-bazooka-attr-one', 1);
+        node.setAttribute('data-bazooka-attr-two', 'two');
+        node.setAttribute('data-bazooka-attr-three-zero', null);
 
         var component = function (element, opts) {
             expect(Object.keys(opts).length).toBe(3);
@@ -55,7 +55,7 @@ describe("main", function() {
             done();
         };
 
-        launcher({
+        Baz({
             'testComponent': component
         });
     });

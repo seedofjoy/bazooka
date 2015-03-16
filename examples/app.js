@@ -1,13 +1,13 @@
 'use strict';
 
-var launcher = require('rocket-launcher');
+var Baz = require('bazooka');
 
 var component = function (element, opts) {
-    console.log(element.dataset.launcher + ' initialized.');
-    console.log(element.dataset.launcher + ' opts:');
+    console.log(element.dataset.bazooka + ' initialized.');
+    console.log(element.dataset.bazooka + ' opts:');
     console.log(opts);
 };
 
-launcher({
+Baz({
     'testComponent': component
 });
