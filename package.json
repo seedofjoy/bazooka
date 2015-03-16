@@ -38,5 +38,8 @@
     "karma-phantomjs-launcher": "^0.1.4",
     "phantomjs": "^1.9.16",
     "proxyquireify": "^1.2.2"
+  },
+  "dependencies": {
+    "domready": "^1.0.7"
   }
 }
