@@ -64,10 +64,9 @@ Bazooka = function (apps) {
 
     if (!(apps && Object.keys(apps).length)) {
         throw new Error('Bazooka: No applications found!');
-        return;
     }
 
     domready(_bindApps.bind(this, apps));
 };
 
-module.exports = Bazooka
+module.exports = Bazooka;
