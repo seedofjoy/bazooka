@@ -65,12 +65,8 @@ describe("main", function() {
         var node = appendDiv();
         node.setAttribute('data-bazookamisspelled', 'testComponent');
 
-        var component = function (element, opts) {
-            done();
-        };
-
         Baz({
-            'testComponent': component
+            'testComponent': function () {}
         });
 
         expect(console.warn).toHaveBeenCalledWith('Bazooka: testComponent not found in HTML nodes');

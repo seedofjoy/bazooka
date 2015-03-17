@@ -58,7 +58,7 @@ function _bindApps(apps) {
         }
 
         Array.prototype.forEach.call(
-            document.querySelectorAll("[data-bazooka*='" + app_name + "']"),
+            app_nodes,
             _bindAppToNode.bind(_this, apps[app_name])
         );
     }
