@@ -2,7 +2,7 @@
   "name": "bazooka",
   "version": "0.0.2",
   "description": "Binds the component to the target html node",
-  "main": "src/main.js",
+  "main": "dist/bazooka.js",
   "directories": {
     "example": "examples"
   },
@@ -32,6 +32,7 @@
   "homepage": "https://github.com/seedofjoy/bazooka",
   "devDependencies": {
     "browserify": "^9.0.3",
+    "derequire": "^2.0.0",
     "karma": "^0.12.31",
     "karma-browserify": "^4.0.0",
     "karma-jasmine": "^0.3.5",
