@@ -9,6 +9,7 @@ describe("main", function() {
     var Baz = require('../../src/main.js');
 
     beforeEach(function() {
+        spyOn(console, 'warn');
     });
 
     afterEach(function() {
@@ -58,5 +59,20 @@ describe("main", function() {
         Baz({
             'testComponent': component
         });
+    });
+
+    it("should print warnings if app does not found in HTML nodes", function() {
+        var node = appendDiv();
+        node.setAttribute('data-bazookamisspelled', 'testComponent');
+
+        var component = function (element, opts) {
+            done();
+        };
+
+        Baz({
+            'testComponent': component
+        });
+
+        expect(console.warn).toHaveBeenCalledWith('Bazooka: testComponent not found in HTML nodes');
     });
 });

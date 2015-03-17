@@ -51,6 +51,12 @@ function _bindApps(apps) {
             throw new Error('Bazooka: ' + app_name + ' is not callable!');
         }
 
+        var app_nodes = document.querySelectorAll("[data-bazooka*='" + app_name + "']");
+        if (!(app_nodes.length)) {
+            console.warn('Bazooka: ' + app_name + ' not found in HTML nodes');
+            continue;
+        }
+
         Array.prototype.forEach.call(
             document.querySelectorAll("[data-bazooka*='" + app_name + "']"),
             _bindAppToNode.bind(_this, apps[app_name])
