@@ -13,6 +13,7 @@ dist:
 
 example:
 	$(browserify) examples/app.js -r ./dist/bazooka.js:'bazooka' > examples/app.bundle.js
+	$(browserify) examples/react-basic/app.js -r ./dist/bazooka.js:'bazooka' -r ./examples/react-basic/lib/react.min.js:'react'  > examples/react-basic/dist/app.bundle.js
 
 test:
 	$(karma) start $(karma_conf) --single-run
