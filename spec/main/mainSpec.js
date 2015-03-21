@@ -5,7 +5,7 @@ function appendDiv() {
     return node;
 }
 
-describe("main", function() {
+describe("Baz", function() {
     var Baz = require('../../src/main.js');
 
     beforeEach(function() {
@@ -21,54 +21,27 @@ describe("main", function() {
         );
     });
 
-    it("should run component function", function(done) {
+    it("should return wrapper node", function () {
         var node = appendDiv();
-        node.setAttribute('data-bazooka', 'testComponent');
-
-        var component = function (element, opts) {
-            done();
-        };
-
-        Baz({
-            'testComponent': component
-        });
+        var $baz = Baz(node);
+        expect($baz instanceof Baz.wrapper).toBe(true);
     });
 
-    it("should fail on empty apps", function() {
-        var noAppsError = new Error('Bazooka: No applications found!');
-        expect(function () { Baz() }).toThrow(noAppsError);
-        expect(function () { Baz(null) }).toThrow(noAppsError);
-        expect(function () { Baz({}) }).toThrow(noAppsError);
+    it("should increment bazId for new node", function () {
+        var node = appendDiv();
+        var $baz = Baz(node);
+
+        var node2 = appendDiv();
+        var $baz2 = Baz(node2);
+
+        expect($baz2.id).toBe($baz.id + 1);
     });
 
-    it("should parse attributes to opts", function(done) {
+    it("should do nothing to bazId of already wrapped nodes", function () {
         var node = appendDiv();
-        node.setAttribute('data-bazooka', 'testComponent');
-        node.setAttribute('data-bazooka-attr-one', 1);
-        node.setAttribute('data-bazooka-attr-two', 'two');
-        node.setAttribute('data-bazooka-attr-three-zero', null);
+        var $baz = Baz(node);
+        var $baz2 = Baz(node);
 
-        var component = function (element, opts) {
-            expect(Object.keys(opts).length).toBe(3);
-            expect(opts.one).toBe('1');
-            expect(opts.two).toBe('two');
-            expect(opts.threeZero).toBe('null');
-            done();
-        };
-
-        Baz({
-            'testComponent': component
-        });
-    });
-
-    it("should print warnings if app does not found in HTML nodes", function() {
-        var node = appendDiv();
-        node.setAttribute('data-bazookamisspelled', 'testComponent');
-
-        Baz({
-            'testComponent': function () {}
-        });
-
-        expect(console.warn).toHaveBeenCalledWith('Bazooka: testComponent not found in HTML nodes');
+        expect($baz2.id).toBe($baz.id);
     });
 });
