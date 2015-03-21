@@ -1,8 +1,11 @@
+'use strict';
+
 var domready = require('domready');
 
 if (!Function.prototype.bind) {
     // Credits to https://github.com/kdimatteo/bind-polyfill
     // Solves https://github.com/ariya/phantomjs/issues/10522
+    /* eslint-disable no-extend-native */
     Function.prototype.bind = function (oThis) {
         if (typeof this !== "function") {
             // closest thing possible to the ECMAScript 5 internal IsCallable function
@@ -24,6 +27,7 @@ if (!Function.prototype.bind) {
 
         return fBound;
     };
+    /* eslint-enable no-extend-native */
 }
 
 function _camelize(match, p1) { return p1.toUpperCase(); }
@@ -44,30 +48,28 @@ function _bindAppToNode(app, node) {
 function _bindApps(apps) {
     var _this = this;
 
-    for (var app_name in apps) {
+    for (var appName in apps) {
         // Avoid a Chakra JIT bug in compatibility modes of IE 11.
         // See https://github.com/jashkenas/underscore/issues/1621 for more details.
-        if (!(typeof apps[app_name] == 'function' || false)) {
-            throw new Error('Bazooka: ' + app_name + ' is not callable!');
+        if (!(typeof apps[appName] === 'function' || false)) {
+            throw new Error('Bazooka: ' + appName + ' is not callable!');
         }
 
-        var app_nodes = document.querySelectorAll("[data-bazooka*='" + app_name + "']");
-        if (!(app_nodes.length)) {
-            console.warn('Bazooka: ' + app_name + ' not found in HTML nodes');
+        var appNodes = document.querySelectorAll("[data-bazooka*='" + appName + "']");
+        if (!(appNodes.length)) {
+            console.warn('Bazooka: ' + appName + ' not found in HTML nodes');
             continue;
         }
 
         Array.prototype.forEach.call(
-            app_nodes,
-            _bindAppToNode.bind(_this, apps[app_name])
+            appNodes,
+            _bindAppToNode.bind(_this, apps[appName])
         );
     }
 
 }
 
-Bazooka = function (apps) {
-    'use strict';
-
+var Bazooka = function (apps) {
     if (!(apps && Object.keys(apps).length)) {
         throw new Error('Bazooka: No applications found!');
     }
