@@ -1,8 +1,14 @@
-var domready = require('domready');
+'use strict';
+
+var _bazId = 0;
+var nodesRegistry = {};
+var methodsRegistry = {};
+var componentsRegistry = {};
 
 if (!Function.prototype.bind) {
     // Credits to https://github.com/kdimatteo/bind-polyfill
     // Solves https://github.com/ariya/phantomjs/issues/10522
+    /* eslint-disable no-extend-native */
     Function.prototype.bind = function (oThis) {
         if (typeof this !== "function") {
             // closest thing possible to the ECMAScript 5 internal IsCallable function
@@ -24,55 +30,100 @@ if (!Function.prototype.bind) {
 
         return fBound;
     };
+    /* eslint-enable no-extend-native */
 }
 
-function _camelize(match, p1) { return p1.toUpperCase(); }
-
-function _moveAttrToOpts(opts, attr) {
-    if (/^data-bazooka-attr-/.test(attr.name)) {
-        var camelCaseName = attr.name.substr(18).replace(/-(.)/g, _camelize);
-        opts[camelCaseName] = attr.value;
+function _getOrRequireComponent(name) {
+    if (componentsRegistry[name] === void 0) {
+        componentsRegistry[name] = require(name);
     }
+
+    return componentsRegistry[name];
 }
 
-function _bindAppToNode(app, node) {
-    var opts = {};
-    Array.prototype.forEach.call(node.attributes, _moveAttrToOpts.bind(null, opts));
-    setTimeout(app.bind(this, node, opts), 0);
-}
+function _bindComponentToNode(wrappedNode, componentName) {
+    var bazId = wrappedNode.id;
 
-function _bindApps(apps) {
-    var _this = this;
+    if (nodesRegistry[bazId] === void 0) {
+        nodesRegistry[bazId] = [];
+    }
 
-    for (var app_name in apps) {
-        // Avoid a Chakra JIT bug in compatibility modes of IE 11.
-        // See https://github.com/jashkenas/underscore/issues/1621 for more details.
-        if (!(typeof apps[app_name] == 'function' || false)) {
-            throw new Error('Bazooka: ' + app_name + ' is not callable!');
-        }
+    if (nodesRegistry[bazId].indexOf(componentName) > -1) {
+        nodesRegistry[bazId].push(componentName);
+    }
 
-        var app_nodes = document.querySelectorAll("[data-bazooka*='" + app_name + "']");
-        if (!(app_nodes.length)) {
-            console.warn('Bazooka: ' + app_name + ' not found in HTML nodes');
-            continue;
-        }
+    var component = _getOrRequireComponent(componentName);
+    var bazFunc;
 
+    if (component.f) {
+        bazFunc = component.f;
+    } else {
+        bazFunc = component;
+    }
+
+    if (component.deps && component.deps.length) {
         Array.prototype.forEach.call(
-            app_nodes,
-            _bindAppToNode.bind(_this, apps[app_name])
+            component.deps,
+            _bindComponentToNode.bind(null, wrappedNode)
         );
     }
 
+    bazFunc(wrappedNode.__wrapped__);
 }
 
-Bazooka = function (apps) {
-    'use strict';
-
-    if (!(apps && Object.keys(apps).length)) {
-        throw new Error('Bazooka: No applications found!');
+function registerMethod(bazId, methodName, method) {
+    if (methodsRegistry[bazId] === void 0) {
+        methodsRegistry[bazId] = {};
     }
 
-    domready(_bindApps.bind(this, apps));
+    methodsRegistry[bazId][methodName] = method;
+}
+
+function getMethod(bazId, methodName) {
+    return methodsRegistry[bazId][methodName];
+}
+
+function BazookaWrapper(node) {
+    var bazId = node.getAttribute('data-bazid');
+
+    if (bazId === void 0 || bazId === null) {
+        bazId = _bazId++;
+        node.setAttribute('data-bazid', bazId);
+    }
+
+    this.__wrapped__ = node;
+    this.id = parseInt(bazId, 10);
+}
+
+BazookaWrapper.prototype.constructor = BazookaWrapper;
+BazookaWrapper.prototype.g = function (methodName) {
+    return getMethod(this.bazId, methodName);
+};
+BazookaWrapper.prototype.r = function (methodName, method) {
+    registerMethod(this.bazId, methodName, method);
+};
+
+var Bazooka = function (value) {
+    if (value instanceof BazookaWrapper) {
+      return value;
+    }
+
+    return new BazookaWrapper(value);
+};
+
+Bazooka.wrapper = BazookaWrapper;
+Bazooka.parseNodes = function() {
+    var appNodes = document.querySelectorAll("[data-bazooka]");
+
+    Array.prototype.forEach.call(
+        appNodes,
+        function (node) {
+            var componentName = node.getAttribute('data-bazooka');
+            var wrappedNode = new BazookaWrapper(node);
+
+            _bindComponentToNode(wrappedNode, componentName);
+        }
+    );
 };
 
 module.exports = Bazooka;

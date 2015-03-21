@@ -41,7 +41,5 @@
     "phantomjs": "^1.9.16",
     "proxyquireify": "^1.2.2"
   },
-  "dependencies": {
-    "domready": "^1.0.7"
-  }
+  "dependencies": {}
 }
