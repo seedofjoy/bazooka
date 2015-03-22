@@ -13,10 +13,19 @@ dist:
 	$(browserify) ./src/main.js --standalone Baz | $(derequire) > ./dist/bazooka.js
 
 example:
-	mkdir -p examples/basic/dist/ examples/react-basic/dist/ examples/complex/dist/
-	$(browserify) examples/basic/app.js -r ./dist/bazooka.js:'bazooka' > examples/basic/dist/app.bundle.js
-	$(browserify) examples/react-basic/app.js -r ./dist/bazooka.js:'bazooka' -r ./examples/react-basic/vendor/react.min.js:'react'  > examples/react-basic/dist/app.bundle.js
-	$(browserify) examples/complex/app.js -r ./dist/bazooka.js:'bazooka' -r ./examples/complex/baz-complex.js:'baz-complex' -r ./examples/complex/baz-logger.js:'baz-logger'  > examples/complex/dist/app.bundle.js
+	mkdir -p examples/react-basic/dist/ examples/complex/dist/
+
+	$(browserify) examples/react-basic/app.js \
+		-r ./dist/bazooka.js:'bazooka' \
+		-r ./examples/react-basic/greeting.js:'greeting' \
+		-r ./examples/react-basic/vendor/react.min.js:'react' \
+		> examples/react-basic/dist/app.bundle.js
+
+	$(browserify) examples/complex/app.js \
+		-r ./dist/bazooka.js:'bazooka' \
+		-r ./examples/complex/baz-complex.js:'baz-complex' \
+		-r ./examples/complex/baz-logger.js:'baz-logger' \
+		> examples/complex/dist/app.bundle.js
 
 test:
 	$(karma) start $(karma_conf) --single-run
