@@ -2,12 +2,12 @@
 
 var Baz = require('bazooka');
 
-function bazFunc(node) {
-  var $baz = Baz(node);
+var infoClicked = function (ev) {
+  Baz(ev.target).g('info')('clicked', ev.target.getAttribute('data-bazid'));
+};
 
-  node.onclick = function () {
-    $baz.g('info')('clicked', $baz.id);
-  };
+function bazFunc(node) {
+  node.onclick = infoClicked;
 }
 
 module.exports = {
