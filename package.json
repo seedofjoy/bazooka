@@ -34,6 +34,7 @@
   "devDependencies": {
     "browserify": "^9.0.3",
     "derequire": "^2.0.0",
+    "jsdoc-to-markdown": "^0.5.11",
     "karma": "^0.12.31",
     "karma-browserify": "^4.0.0",
     "karma-jasmine": "^0.3.5",
