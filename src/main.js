@@ -72,7 +72,7 @@ function _bindComponentToNode(wrappedNode, componentName) {
 }
 
 /**
- * @class
+ * @class BazookaWrapper
  * @param {node} node
  */
 function BazookaWrapper(node) {
@@ -87,6 +87,8 @@ function BazookaWrapper(node) {
   this.__wrapped__ = node;
   /**
    * Internal id
+   * @name id
+   * @memberof BazookaWrapper
    * @type {number}
    */
   this.id = parseInt(bazId, 10);
@@ -126,7 +128,7 @@ BazookaWrapper.prototype.r = function (methodName, method) {
 };
 
 /**
- * Get previously {@link BazookaWrapper#r|registered} method of wrapped node
+ * Get previously [registered]{@link BazookaWrapper#r} method of wrapped node
  * @function g
  * @memberof BazookaWrapper
  * @param {string} methodName
@@ -136,6 +138,39 @@ BazookaWrapper.prototype.r = function (methodName, method) {
 BazookaWrapper.prototype.g = function (methodName) {
   return getMethod(this.bazId, methodName);
 };
+
+/**
+ * @namespace BazComponent
+ * @description Interface of component, required by [Bazooka.refresh]{@link module:Bazooka.refresh}
+ */
+
+/**
+ * @name simple
+ * @func
+ * @memberof BazComponent
+ * @param {node} - bound DOM node
+ * @description Component's binding function
+ */
+
+/**
+ * @name complex
+ * @namespace BazComponent.complex
+ */
+
+/**
+ * @name f
+ * @memberof BazComponent.complex
+ * @func
+ * @param {node} - bound DOM node
+ * Component's binding function
+ */
+
+/**
+ * @name deps
+ * @memberof BazComponent.complex
+ * @type {string[]}
+ * @description Names of components on which this component depends
+ */
 
 /**
  * @module {function} Bazooka

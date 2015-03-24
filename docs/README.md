@@ -12,9 +12,17 @@
 
 * [class: BazookaWrapper](#BazookaWrapper)
   * [new BazookaWrapper(node)](#new_BazookaWrapper)
-  * [bazookaWrapper.id](#BazookaWrapper#id)
+  * [BazookaWrapper.id](#BazookaWrapper.id)
   * [bazookaWrapper.r(methodName, method)](#BazookaWrapper#r)
   * [bazookaWrapper.g(methodName)](#BazookaWrapper#g)
+
+**Namespaces**
+
+* [BazComponent](#BazComponent)
+  * [BazComponent.simple()](#BazComponent.simple)
+  * [BazComponent.complex](#BazComponent.complex)
+    * [complex.deps](#BazComponent.complex.deps)
+    * [complex.f()](#BazComponent.complex.f)
  
 <a name="module_Bazooka"></a>
 #Bazooka
@@ -59,7 +67,7 @@ Watch for new node with `data-bazooka` each 200ms
 
 * [class: BazookaWrapper](#BazookaWrapper)
   * [new BazookaWrapper(node)](#new_BazookaWrapper)
-  * [bazookaWrapper.id](#BazookaWrapper#id)
+  * [BazookaWrapper.id](#BazookaWrapper.id)
   * [bazookaWrapper.r(methodName, method)](#BazookaWrapper#r)
   * [bazookaWrapper.g(methodName)](#BazookaWrapper#g)
 
@@ -69,8 +77,8 @@ Watch for new node with `data-bazooka` each 200ms
 
 - node `node`  
 
-<a name="BazookaWrapper#id"></a>
-##bazookaWrapper.id
+<a name="BazookaWrapper.id"></a>
+##BazookaWrapper.id
 Internal id
 
 **Type**: `number`  
@@ -92,3 +100,43 @@ Get previously [r](#BazookaWrapper#r) method of wrapped node
 - methodName `string`  
 
 **Returns**: `function`  
+<a name="BazComponent"></a>
+#BazComponent
+Interface of component, required by [refresh](#module_Bazooka.refresh)
+
+**Members**
+
+* [BazComponent](#BazComponent)
+  * [BazComponent.simple()](#BazComponent.simple)
+  * [BazComponent.complex](#BazComponent.complex)
+    * [complex.deps](#BazComponent.complex.deps)
+    * [complex.f()](#BazComponent.complex.f)
+
+<a name="BazComponent.simple"></a>
+##BazComponent.simple()
+Component's binding function
+
+**Params**
+
+-  `node` - bound DOM node  
+
+<a name="BazComponent.complex"></a>
+##BazComponent.complex
+**Members**
+
+* [BazComponent.complex](#BazComponent.complex)
+  * [complex.deps](#BazComponent.complex.deps)
+  * [complex.f()](#BazComponent.complex.f)
+
+<a name="BazComponent.complex.deps"></a>
+###complex.deps
+Names of components on which this component depends
+
+**Type**: `Array.<string>`  
+<a name="BazComponent.complex.f"></a>
+###complex.f()
+**Params**
+
+-  `node` - bound DOM node
+Component's binding function  
+
