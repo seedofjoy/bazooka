@@ -1,6 +1,7 @@
 bin = $(shell npm bin)
 browserify = $(bin)/browserify
 derequire = $(bin)/derequire
+jsdoc2md = $(bin)/jsdoc2md
 
 node_modules = $(shell pwd)/node_modules
 karma = $(node_modules)/karma/bin/karma
@@ -29,3 +30,7 @@ example:
 
 test:
 	$(karma) start $(karma_conf) --single-run
+
+docs: src/main.js
+	mkdir -p ./docs
+	$(jsdoc2md) src/main.js > ./docs/README.md

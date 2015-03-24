@@ -71,6 +71,10 @@ function _bindComponentToNode(wrappedNode, componentName) {
   }
 }
 
+/**
+ * @class
+ * @param {node} node
+ */
 function BazookaWrapper(node) {
   var bazId = node.getAttribute('data-bazid');
 
@@ -81,6 +85,10 @@ function BazookaWrapper(node) {
   }
 
   this.__wrapped__ = node;
+  /**
+   * Internal id
+   * @type {number}
+   */
   this.id = parseInt(bazId, 10);
 }
 
@@ -105,13 +113,36 @@ function getMethod(bazId, methodName) {
   return methodsRegistry[bazId][methodName];
 }
 
-BazookaWrapper.prototype.g = function (methodName) {
-  return getMethod(this.bazId, methodName);
-};
+/**
+ * Register method of wrapped node
+ * @function r
+ * @memberof BazookaWrapper
+ * @param {string} methodName
+ * @param {function} method
+ * @instance
+ */
 BazookaWrapper.prototype.r = function (methodName, method) {
   registerMethod(this.bazId, methodName, method);
 };
 
+/**
+ * Get previously {@link BazookaWrapper#r|registered} method of wrapped node
+ * @function g
+ * @memberof BazookaWrapper
+ * @param {string} methodName
+ * @instance
+ * @returns {function}
+ */
+BazookaWrapper.prototype.g = function (methodName) {
+  return getMethod(this.bazId, methodName);
+};
+
+/**
+ * @module {function} Bazooka
+ * @name Bazooka
+ * @param {node|BazookaWrapper} value - DOM node or wrapped node
+ * @returns {BazookaWrapper}
+ */
 var Bazooka = function (value) {
   if (value instanceof BazookaWrapper) {
     return value;
@@ -120,13 +151,30 @@ var Bazooka = function (value) {
   return new BazookaWrapper(value);
 };
 
+/**
+ * Reference to {@link BazookaWrapper} class
+ * @var wrapper
+ */
 Bazooka.wrapper = BazookaWrapper;
+
+/**
+ * Parse and bind bazooka components on page
+ * @func parseNodes
+ * @static
+ * @deprecated Use {@link module:Bazooka.refresh|Bazooka.refresh} instead
+ */
 Bazooka.parseNodes = function () {
   Array.prototype.forEach.call(
     document.querySelectorAll("[data-bazooka]"),
     _wrapAndBindNode
   );
 };
+
+/**
+ * Parse and bind bazooka components to nodes without bound components
+ * @func refresh
+ * @static
+ */
 Bazooka.refresh = function () {
   for (var bazId in wrappersRegistry) {
     if (wrappersRegistry[bazId] && !wrappersRegistry[bazId].__wrapped__.parentNode) {
@@ -140,6 +188,13 @@ Bazooka.refresh = function () {
     _wrapAndBindNode
   );
 };
+
+/**
+ * Watch for new node with `data-bazooka` each 200ms
+ * @func watch
+ * @static
+ * @returns {function} Unwatch function
+ */
 Bazooka.watch = function () {
   var i = setInterval(
     Bazooka.refresh,

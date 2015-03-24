@@ -1,6 +1,4 @@
-[![Build Status](https://travis-ci.org/seedofjoy/bazooka.svg)](https://travis-ci.org/seedofjoy/bazooka)
-
-# bazooka
+# bazooka [![Build Status](https://travis-ci.org/seedofjoy/bazooka.svg)](https://travis-ci.org/seedofjoy/bazooka)
 Simple tool for declarative binding applications to HTML nodes.
 
 
