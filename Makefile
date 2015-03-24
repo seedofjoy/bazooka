@@ -2,6 +2,7 @@ bin = $(shell npm bin)
 browserify = $(bin)/browserify
 derequire = $(bin)/derequire
 jsdoc2md = $(bin)/jsdoc2md
+uglifyjs = $(bin)/uglifyjs
 
 node_modules = $(shell pwd)/node_modules
 karma = $(node_modules)/karma/bin/karma
@@ -11,7 +12,10 @@ karma_conf = $(shell pwd)/spec/karma.conf.js
 
 dist:
 	mkdir -p ./dist
-	$(browserify) ./src/main.js --standalone Baz | $(derequire) > ./dist/bazooka.js
+	$(browserify) ./src/main.js --standalone Baz | $(derequire) \
+		| tee ./dist/bazooka.js \
+		| $(uglifyjs) --mangle \
+		> ./dist/bazooka.min.js
 
 example:
 	mkdir -p examples/react-basic/dist/ examples/complex/dist/
