@@ -71,10 +71,6 @@ function _bindComponentToNode(wrappedNode, componentName) {
   }
 }
 
-/**
- * @class BazookaWrapper
- * @param {node} node
- */
 function BazookaWrapper(node) {
   var bazId = node.getAttribute('data-bazid');
 
@@ -87,9 +83,10 @@ function BazookaWrapper(node) {
   this.__wrapped__ = node;
   /**
    * Internal id
-   * @name id
-   * @memberof BazookaWrapper
+   * @name Bazooka.id
    * @type {number}
+   * @memberof Bazooka
+   * @instance
    */
   this.id = parseInt(bazId, 10);
 }
@@ -115,25 +112,39 @@ function getMethod(bazId, methodName) {
   return methodsRegistry[bazId][methodName];
 }
 
+/** @class Bazooka */
+
 /**
  * Register method of wrapped node
- * @function r
- * @memberof BazookaWrapper
+ * @function Bazooka.r
  * @param {string} methodName
  * @param {function} method
+ * @memberof Bazooka
  * @instance
+ * @example
+ * ```javascript
+ *   var Baz = require('bazooka');
+ *   var $baz = Baz(node);
+ *   $baz.r('logger', console.log.bind(console, '[logger]'));
+ * ```
  */
 BazookaWrapper.prototype.r = function (methodName, method) {
   registerMethod(this.bazId, methodName, method);
 };
 
 /**
- * Get previously [registered]{@link BazookaWrapper#r} method of wrapped node
- * @function g
- * @memberof BazookaWrapper
+ * Get previously registered via {@link Bazooka.r} method of wrapped node
+ * @function Bazooka.g
  * @param {string} methodName
- * @instance
  * @returns {function}
+ * @memberof Bazooka
+ * @instance
+ * @example
+ * ```javascript
+ *   var Baz = require('bazooka');
+ *   var $baz = Baz(node);
+ *   $baz.g('logger')($baz.id);
+ * ```
  */
 BazookaWrapper.prototype.g = function (methodName) {
   return getMethod(this.bazId, methodName);
@@ -150,11 +161,22 @@ BazookaWrapper.prototype.g = function (methodName) {
  * @memberof BazComponent
  * @param {node} - bound DOM node
  * @description Component's binding function
+ * @example
+ * ```javascript
+ *   module.exports = function bazFunc(node) {}
+ * ```
  */
 
 /**
  * @name complex
  * @namespace BazComponent.complex
+ * @example
+ * ```javascript
+ *   module.exports = {
+ *     f: function bazFunc(node) {},
+ *     deps: ['baz-logger'],
+ *   }
+ * ```
  */
 
 /**
@@ -173,10 +195,14 @@ BazookaWrapper.prototype.g = function (methodName) {
  */
 
 /**
- * @module {function} Bazooka
- * @name Bazooka
+ * @func
  * @param {node|BazookaWrapper} value - DOM node or wrapped node
  * @returns {BazookaWrapper}
+ * @example
+ * ```javascript
+ *   var Baz = require('bazooka');
+ *   var $baz = Baz(node);
+ * ```
  */
 var Bazooka = function (value) {
   if (value instanceof BazookaWrapper) {
@@ -186,9 +212,10 @@ var Bazooka = function (value) {
   return new BazookaWrapper(value);
 };
 
+/** @module {function} Bazooka */
 /**
  * Reference to {@link BazookaWrapper} class
- * @var wrapper
+ * @name wrapper
  */
 Bazooka.wrapper = BazookaWrapper;
 

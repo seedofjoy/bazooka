@@ -4,17 +4,17 @@
 
 * [Bazooka](#module_Bazooka)
   * [Bazooka~wrapper](#module_Bazooka..wrapper)
+  * [Bazooka~Bazooka(value)](#module_Bazooka..Bazooka)
   * [~~Bazooka.parseNodes()~~](#module_Bazooka.parseNodes)
   * [Bazooka.refresh()](#module_Bazooka.refresh)
   * [Bazooka.watch()](#module_Bazooka.watch)
 
 **Classes**
 
-* [class: BazookaWrapper](#BazookaWrapper)
-  * [new BazookaWrapper(node)](#new_BazookaWrapper)
-  * [BazookaWrapper.id](#BazookaWrapper.id)
-  * [bazookaWrapper.r(methodName, method)](#BazookaWrapper#r)
-  * [bazookaWrapper.g(methodName)](#BazookaWrapper#g)
+* [class: Bazooka](#Bazooka)
+  * [Bazooka.id](#Bazooka.id)
+  * [Bazooka.r(methodName, method)](#Bazooka.r)
+  * [Bazooka.g(methodName)](#Bazooka.g)
 
 **Namespaces**
 
@@ -28,25 +28,35 @@
 #Bazooka
 Bazooka
 
-**Params**
-
-- value `node` | <code>[BazookaWrapper](#BazookaWrapper)</code> - DOM node or wrapped node  
-
 **Type**: `function`  
-**Returns**: [BazookaWrapper](#BazookaWrapper)  
 **Members**
 
 * [Bazooka](#module_Bazooka)
   * [Bazooka~wrapper](#module_Bazooka..wrapper)
+  * [Bazooka~Bazooka(value)](#module_Bazooka..Bazooka)
   * [~~Bazooka.parseNodes()~~](#module_Bazooka.parseNodes)
   * [Bazooka.refresh()](#module_Bazooka.refresh)
   * [Bazooka.watch()](#module_Bazooka.watch)
 
 <a name="module_Bazooka..wrapper"></a>
 ##Bazooka~wrapper
-Reference to [BazookaWrapper](#BazookaWrapper) class
+Reference to `BazookaWrapper` class
 
 **Scope**: inner member of [Bazooka](#module_Bazooka)  
+<a name="module_Bazooka..Bazooka"></a>
+##Bazooka~Bazooka(value)
+**Params**
+
+- value `node` | `BazookaWrapper` - DOM node or wrapped node  
+
+**Scope**: inner function of [Bazooka](#module_Bazooka)  
+**Returns**: `BazookaWrapper`  
+**Example**  
+```javascript
+  var Baz = require('bazooka');
+  var $baz = Baz(node);
+```
+
 <a name="module_Bazooka.parseNodes"></a>
 ##~~Bazooka.parseNodes()~~
 Parse and bind bazooka components on page
@@ -61,29 +71,22 @@ Parse and bind bazooka components to nodes without bound components
 Watch for new node with `data-bazooka` each 200ms
 
 **Returns**: `function` - Unwatch function  
-<a name="BazookaWrapper"></a>
-#class: BazookaWrapper
+<a name="Bazooka"></a>
+#class: Bazooka
 **Members**
 
-* [class: BazookaWrapper](#BazookaWrapper)
-  * [new BazookaWrapper(node)](#new_BazookaWrapper)
-  * [BazookaWrapper.id](#BazookaWrapper.id)
-  * [bazookaWrapper.r(methodName, method)](#BazookaWrapper#r)
-  * [bazookaWrapper.g(methodName)](#BazookaWrapper#g)
+* [class: Bazooka](#Bazooka)
+  * [Bazooka.id](#Bazooka.id)
+  * [Bazooka.r(methodName, method)](#Bazooka.r)
+  * [Bazooka.g(methodName)](#Bazooka.g)
 
-<a name="new_BazookaWrapper"></a>
-##new BazookaWrapper(node)
-**Params**
-
-- node `node`  
-
-<a name="BazookaWrapper.id"></a>
-##BazookaWrapper.id
+<a name="Bazooka.id"></a>
+##Bazooka.id
 Internal id
 
 **Type**: `number`  
-<a name="BazookaWrapper#r"></a>
-##bazookaWrapper.r(methodName, method)
+<a name="Bazooka.r"></a>
+##Bazooka.r(methodName, method)
 Register method of wrapped node
 
 **Params**
@@ -91,15 +94,29 @@ Register method of wrapped node
 - methodName `string`  
 - method `function`  
 
-<a name="BazookaWrapper#g"></a>
-##bazookaWrapper.g(methodName)
-Get previously [r](#BazookaWrapper#r) method of wrapped node
+**Example**  
+```javascript
+  var Baz = require('bazooka');
+  var $baz = Baz(node);
+  $baz.r('logger', console.log.bind(console, '[logger]'));
+```
+
+<a name="Bazooka.g"></a>
+##Bazooka.g(methodName)
+Get previously registered via [r](#Bazooka.r) method of wrapped node
 
 **Params**
 
 - methodName `string`  
 
 **Returns**: `function`  
+**Example**  
+```javascript
+  var Baz = require('bazooka');
+  var $baz = Baz(node);
+  $baz.g('logger')($baz.id);
+```
+
 <a name="BazComponent"></a>
 #BazComponent
 Interface of component, required by [refresh](#module_Bazooka.refresh)
@@ -120,8 +137,21 @@ Component's binding function
 
 -  `node` - bound DOM node  
 
+**Example**  
+```javascript
+  module.exports = function bazFunc(node) {}
+```
+
 <a name="BazComponent.complex"></a>
 ##BazComponent.complex
+**Example**  
+```javascript
+  module.exports = {
+    f: function bazFunc(node) {},
+    deps: ['baz-logger'],
+  }
+```
+
 **Members**
 
 * [BazComponent.complex](#BazComponent.complex)
