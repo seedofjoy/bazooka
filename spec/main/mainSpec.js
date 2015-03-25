@@ -24,7 +24,7 @@ describe("Baz", function() {
     it("should return wrapper node", function () {
         var node = appendDiv();
         var $baz = Baz(node);
-        expect($baz instanceof Baz.wrapper).toBe(true);
+        expect($baz instanceof Baz.BazookaWrapper).toBe(true);
     });
 
     it("should increment bazId for new node", function () {
@@ -34,7 +34,7 @@ describe("Baz", function() {
         var node2 = appendDiv();
         var $baz2 = Baz(node2);
 
-        expect($baz2.id).toBe($baz.id + 1);
+        expect(parseInt($baz2.id, 10)).toBe(parseInt($baz.id, 10) + 1);
     });
 
     it("should do nothing to bazId of already wrapped nodes", function () {

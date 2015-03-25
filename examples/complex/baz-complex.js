@@ -1,9 +1,10 @@
 'use strict';
 
 var Baz = require('bazooka');
+var logger = require('baz-logger');
 
 var infoClicked = function (ev) {
-  Baz(ev.target).g('info')('clicked', ev.target.getAttribute('data-bazid'));
+  logger.info('click on bazId =', Baz(ev.target).id);
 };
 
 function bazFunc(node) {
@@ -11,9 +12,5 @@ function bazFunc(node) {
 }
 
 module.exports = {
-  f: bazFunc,
-
-  deps: [
-    'baz-logger'
-  ]
+  bazFunc: bazFunc,
 };

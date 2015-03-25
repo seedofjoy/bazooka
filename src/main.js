@@ -2,7 +2,6 @@
 
 var _bazId = 0;
 var nodesComponentsRegistry = {};
-var methodsRegistry = {};
 var componentsRegistry = {};
 var wrappersRegistry = {};
 
@@ -54,17 +53,10 @@ function _bindComponentToNode(wrappedNode, componentName) {
     var component = _getOrRequireComponent(componentName);
     var bazFunc;
 
-    if (component.f) {
-      bazFunc = component.f;
+    if (component.bazFunc) {
+      bazFunc = component.bazFunc;
     } else {
       bazFunc = component;
-    }
-
-    if (component.deps && component.deps.length) {
-      Array.prototype.forEach.call(
-        component.deps,
-        _bindComponentToNode.bind(null, wrappedNode)
-      );
     }
 
     bazFunc(wrappedNode.__wrapped__);
@@ -75,7 +67,7 @@ function BazookaWrapper(node) {
   var bazId = node.getAttribute('data-bazid');
 
   if (bazId === void 0 || bazId === null) {
-    bazId = _bazId++;
+    bazId = (_bazId++).toString();
     node.setAttribute('data-bazid', bazId);
     wrappersRegistry[bazId] = this;
   }
@@ -84,11 +76,11 @@ function BazookaWrapper(node) {
   /**
    * Internal id
    * @name Bazooka.id
-   * @type {number}
+   * @type {string}
    * @memberof Bazooka
    * @instance
    */
-  this.id = parseInt(bazId, 10);
+  this.id = bazId;
 }
 
 BazookaWrapper.prototype.constructor = BazookaWrapper;
@@ -100,55 +92,7 @@ function _wrapAndBindNode(node) {
   _bindComponentToNode(wrappedNode, componentName);
 }
 
-function registerMethod(bazId, methodName, method) {
-  if (methodsRegistry[bazId] === void 0) {
-    methodsRegistry[bazId] = {};
-  }
-
-  methodsRegistry[bazId][methodName] = method;
-}
-
-function getMethod(bazId, methodName) {
-  return methodsRegistry[bazId][methodName];
-}
-
 /** @class Bazooka */
-
-/**
- * Register method of wrapped node
- * @function Bazooka.r
- * @param {string} methodName
- * @param {function} method
- * @memberof Bazooka
- * @instance
- * @example
- * ```javascript
- *   var Baz = require('bazooka');
- *   var $baz = Baz(node);
- *   $baz.r('logger', console.log.bind(console, '[logger]'));
- * ```
- */
-BazookaWrapper.prototype.r = function (methodName, method) {
-  registerMethod(this.bazId, methodName, method);
-};
-
-/**
- * Get previously registered via {@link Bazooka.r} method of wrapped node
- * @function Bazooka.g
- * @param {string} methodName
- * @returns {function}
- * @memberof Bazooka
- * @instance
- * @example
- * ```javascript
- *   var Baz = require('bazooka');
- *   var $baz = Baz(node);
- *   $baz.g('logger')($baz.id);
- * ```
- */
-BazookaWrapper.prototype.g = function (methodName) {
-  return getMethod(this.bazId, methodName);
-};
 
 /**
  * @namespace BazComponent
@@ -160,7 +104,7 @@ BazookaWrapper.prototype.g = function (methodName) {
  * @func
  * @memberof BazComponent
  * @param {node} - bound DOM node
- * @description Component's binding function
+ * @description CommonJS module written only with Bazooka interface to be used with `data-bazooka`
  * @example
  * ```javascript
  *   module.exports = function bazFunc(node) {}
@@ -168,30 +112,26 @@ BazookaWrapper.prototype.g = function (methodName) {
  */
 
 /**
- * @name complex
- * @namespace BazComponent.complex
+ * @name universal
+ * @namespace BazComponent.universal
+ * @description CommonJS module with Bazooka interface, so it can be used both in `data-bazooka`
+ * and in another CommonJS modules via `require()`
  * @example
  * ```javascript
+ *   function trackEvent(category, action, label) {}
  *   module.exports = {
- *     f: function bazFunc(node) {},
- *     deps: ['baz-logger'],
+ *     bazFunc: function bazFunc(node) { node.onclick = trackEvent.bind(…) },
+ *     trackEvent: trackEvent,
  *   }
  * ```
  */
 
 /**
- * @name f
- * @memberof BazComponent.complex
+ * @name bazFunc
+ * @memberof BazComponent.universal
  * @func
  * @param {node} - bound DOM node
- * Component's binding function
- */
-
-/**
- * @name deps
- * @memberof BazComponent.complex
- * @type {string[]}
- * @description Names of components on which this component depends
+ * @description Component's binding function
  */
 
 /**
@@ -215,22 +155,9 @@ var Bazooka = function (value) {
 /** @module {function} Bazooka */
 /**
  * Reference to {@link BazookaWrapper} class
- * @name wrapper
+ * @name BazookaWrapper
  */
-Bazooka.wrapper = BazookaWrapper;
-
-/**
- * Parse and bind bazooka components on page
- * @func parseNodes
- * @static
- * @deprecated Use {@link module:Bazooka.refresh|Bazooka.refresh} instead
- */
-Bazooka.parseNodes = function () {
-  Array.prototype.forEach.call(
-    document.querySelectorAll("[data-bazooka]"),
-    _wrapAndBindNode
-  );
-};
+Bazooka.BazookaWrapper = BazookaWrapper;
 
 /**
  * Parse and bind bazooka components to nodes without bound components
@@ -242,7 +169,6 @@ Bazooka.refresh = function () {
     if (wrappersRegistry[bazId] && !wrappersRegistry[bazId].__wrapped__.parentNode) {
       wrappersRegistry[bazId] = null;
       nodesComponentsRegistry[bazId] = [];
-      methodsRegistry[bazId] = {};
     }
   }
   Array.prototype.forEach.call(

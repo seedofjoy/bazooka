@@ -1,11 +1,12 @@
 'use strict';
 
-var Baz = require('bazooka');
+var info = console.info.bind(console, '[baz-logger]');
 
 function bazFunc(node) {
-  var $baz = Baz(node);
-
-  $baz.r('info', console.info.bind(console, '[baz-logger]'));
+  node.onclick = info.bind(null, 'click')
 }
 
-module.exports = bazFunc;
+module.exports = {
+  bazFunc: bazFunc,
+  info: info
+};
