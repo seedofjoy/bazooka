@@ -1,3 +1,3 @@
 'use strict';
 
-require('bazooka').parseNodes();
+require('bazooka').refresh();

@@ -1,4 +1,4 @@
 'use strict';
 
-require('bazooka').parseNodes();
+require('bazooka').refresh();
 var unwatch = require('bazooka').watch();
