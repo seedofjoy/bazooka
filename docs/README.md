@@ -3,9 +3,8 @@
 **Modules**
 
 * [Bazooka](#module_Bazooka)
-  * [Bazooka~wrapper](#module_Bazooka..wrapper)
+  * [Bazooka~BazookaWrapper](#module_Bazooka..BazookaWrapper)
   * [Bazooka~Bazooka(value)](#module_Bazooka..Bazooka)
-  * [~~Bazooka.parseNodes()~~](#module_Bazooka.parseNodes)
   * [Bazooka.refresh()](#module_Bazooka.refresh)
   * [Bazooka.watch()](#module_Bazooka.watch)
 
@@ -13,16 +12,13 @@
 
 * [class: Bazooka](#Bazooka)
   * [Bazooka.id](#Bazooka.id)
-  * [Bazooka.r(methodName, method)](#Bazooka.r)
-  * [Bazooka.g(methodName)](#Bazooka.g)
 
 **Namespaces**
 
 * [BazComponent](#BazComponent)
   * [BazComponent.simple()](#BazComponent.simple)
-  * [BazComponent.complex](#BazComponent.complex)
-    * [complex.deps](#BazComponent.complex.deps)
-    * [complex.f()](#BazComponent.complex.f)
+  * [BazComponent.universal](#BazComponent.universal)
+    * [universal.bazFunc()](#BazComponent.universal.bazFunc)
  
 <a name="module_Bazooka"></a>
 #Bazooka
@@ -32,14 +28,13 @@ Bazooka
 **Members**
 
 * [Bazooka](#module_Bazooka)
-  * [Bazooka~wrapper](#module_Bazooka..wrapper)
+  * [Bazooka~BazookaWrapper](#module_Bazooka..BazookaWrapper)
   * [Bazooka~Bazooka(value)](#module_Bazooka..Bazooka)
-  * [~~Bazooka.parseNodes()~~](#module_Bazooka.parseNodes)
   * [Bazooka.refresh()](#module_Bazooka.refresh)
   * [Bazooka.watch()](#module_Bazooka.watch)
 
-<a name="module_Bazooka..wrapper"></a>
-##Bazooka~wrapper
+<a name="module_Bazooka..BazookaWrapper"></a>
+##Bazooka~BazookaWrapper
 Reference to `BazookaWrapper` class
 
 **Scope**: inner member of [Bazooka](#module_Bazooka)  
@@ -57,11 +52,6 @@ Reference to `BazookaWrapper` class
   var $baz = Baz(node);
 ```
 
-<a name="module_Bazooka.parseNodes"></a>
-##~~Bazooka.parseNodes()~~
-Parse and bind bazooka components on page
-
-***Deprecated***  
 <a name="module_Bazooka.refresh"></a>
 ##Bazooka.refresh()
 Parse and bind bazooka components to nodes without bound components
@@ -77,46 +67,12 @@ Watch for new node with `data-bazooka` each 200ms
 
 * [class: Bazooka](#Bazooka)
   * [Bazooka.id](#Bazooka.id)
-  * [Bazooka.r(methodName, method)](#Bazooka.r)
-  * [Bazooka.g(methodName)](#Bazooka.g)
 
 <a name="Bazooka.id"></a>
 ##Bazooka.id
 Internal id
 
-**Type**: `number`  
-<a name="Bazooka.r"></a>
-##Bazooka.r(methodName, method)
-Register method of wrapped node
-
-**Params**
-
-- methodName `string`  
-- method `function`  
-
-**Example**  
-```javascript
-  var Baz = require('bazooka');
-  var $baz = Baz(node);
-  $baz.r('logger', console.log.bind(console, '[logger]'));
-```
-
-<a name="Bazooka.g"></a>
-##Bazooka.g(methodName)
-Get previously registered via [r](#Bazooka.r) method of wrapped node
-
-**Params**
-
-- methodName `string`  
-
-**Returns**: `function`  
-**Example**  
-```javascript
-  var Baz = require('bazooka');
-  var $baz = Baz(node);
-  $baz.g('logger')($baz.id);
-```
-
+**Type**: `string`  
 <a name="BazComponent"></a>
 #BazComponent
 Interface of component, required by [refresh](#module_Bazooka.refresh)
@@ -125,13 +81,12 @@ Interface of component, required by [refresh](#module_Bazooka.refresh)
 
 * [BazComponent](#BazComponent)
   * [BazComponent.simple()](#BazComponent.simple)
-  * [BazComponent.complex](#BazComponent.complex)
-    * [complex.deps](#BazComponent.complex.deps)
-    * [complex.f()](#BazComponent.complex.f)
+  * [BazComponent.universal](#BazComponent.universal)
+    * [universal.bazFunc()](#BazComponent.universal.bazFunc)
 
 <a name="BazComponent.simple"></a>
 ##BazComponent.simple()
-Component's binding function
+CommonJS module written only with Bazooka interface to be used with `data-bazooka`
 
 **Params**
 
@@ -142,31 +97,30 @@ Component's binding function
   module.exports = function bazFunc(node) {}
 ```
 
-<a name="BazComponent.complex"></a>
-##BazComponent.complex
+<a name="BazComponent.universal"></a>
+##BazComponent.universal
+CommonJS module with Bazooka interface, so it can be used both in `data-bazooka`
+and in another CommonJS modules via `require()`
+
 **Example**  
 ```javascript
+  function trackEvent(category, action, label) {}
   module.exports = {
-    f: function bazFunc(node) {},
-    deps: ['baz-logger'],
+    bazFunc: function bazFunc(node) { node.onclick = trackEvent.bind(…) },
+    trackEvent: trackEvent,
   }
 ```
 
 **Members**
 
-* [BazComponent.complex](#BazComponent.complex)
-  * [complex.deps](#BazComponent.complex.deps)
-  * [complex.f()](#BazComponent.complex.f)
+* [BazComponent.universal](#BazComponent.universal)
+  * [universal.bazFunc()](#BazComponent.universal.bazFunc)
 
-<a name="BazComponent.complex.deps"></a>
-###complex.deps
-Names of components on which this component depends
+<a name="BazComponent.universal.bazFunc"></a>
+###universal.bazFunc()
+Component's binding function
 
-**Type**: `Array.<string>`  
-<a name="BazComponent.complex.f"></a>
-###complex.f()
 **Params**
 
--  `node` - bound DOM node
-Component's binding function  
+-  `node` - bound DOM node  
 
