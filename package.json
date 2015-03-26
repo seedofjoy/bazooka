@@ -43,5 +43,7 @@
     "proxyquireify": "^1.2.2",
     "uglify-js": "^2.4.17"
   },
-  "dependencies": {}
+  "dependencies": {
+    "mutation-observer": "^1.0.1"
+  }
 }

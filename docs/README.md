@@ -5,8 +5,8 @@
 * [Bazooka](#module_Bazooka)
   * [Bazooka~BazookaWrapper](#module_Bazooka..BazookaWrapper)
   * [Bazooka~Bazooka(value)](#module_Bazooka..Bazooka)
-  * [Bazooka.refresh()](#module_Bazooka.refresh)
-  * [Bazooka.watch()](#module_Bazooka.watch)
+  * [Bazooka.refresh([rootNode])](#module_Bazooka.refresh)
+  * [Bazooka.watch([rootNode])](#module_Bazooka.watch)
 
 **Classes**
 
@@ -30,8 +30,8 @@ Bazooka
 * [Bazooka](#module_Bazooka)
   * [Bazooka~BazookaWrapper](#module_Bazooka..BazookaWrapper)
   * [Bazooka~Bazooka(value)](#module_Bazooka..Bazooka)
-  * [Bazooka.refresh()](#module_Bazooka.refresh)
-  * [Bazooka.watch()](#module_Bazooka.watch)
+  * [Bazooka.refresh([rootNode])](#module_Bazooka.refresh)
+  * [Bazooka.watch([rootNode])](#module_Bazooka.watch)
 
 <a name="module_Bazooka..BazookaWrapper"></a>
 ##Bazooka~BazookaWrapper
@@ -53,12 +53,20 @@ Reference to `BazookaWrapper` class
 ```
 
 <a name="module_Bazooka.refresh"></a>
-##Bazooka.refresh()
+##Bazooka.refresh([rootNode])
 Parse and bind bazooka components to nodes without bound components
 
+**Params**
+
+- \[rootNode=document.body\] `node` - DOM node, children of which will be checked for `data-bazooka`  
+
 <a name="module_Bazooka.watch"></a>
-##Bazooka.watch()
-Watch for new node with `data-bazooka` each 200ms
+##Bazooka.watch([rootNode])
+Watch for new nodes with `data-bazooka`
+
+**Params**
+
+- \[rootNode=document.body\] `node` - DOM node, children of which will be watched for `data-bazooka`  
 
 **Returns**: `function` - Unwatch function  
 <a name="Bazooka"></a>

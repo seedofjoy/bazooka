@@ -1,5 +1,7 @@
 'use strict';
 
+var MutationObserver = require('mutation-observer');
+
 var _bazId = 0;
 var nodesComponentsRegistry = {};
 var componentsRegistry = {};
@@ -164,34 +166,48 @@ Bazooka.h = require('./helpers.js');
 /**
  * Parse and bind bazooka components to nodes without bound components
  * @func refresh
+ * @param {node} [rootNode=document.body] - DOM node, children of which will be checked for `data-bazooka`
  * @static
  */
-Bazooka.refresh = function () {
+Bazooka.refresh = function (rootNode) {
+  rootNode = rootNode || document.body;
+
   for (var bazId in wrappersRegistry) {
     if (wrappersRegistry[bazId] && !wrappersRegistry[bazId].__wrapped__.parentNode) {
       wrappersRegistry[bazId] = null;
       nodesComponentsRegistry[bazId] = [];
     }
   }
+
   Array.prototype.forEach.call(
-    document.querySelectorAll("[data-bazooka]:not([data-bazid])"),
+    rootNode.querySelectorAll("[data-bazooka]:not([data-bazid])"),
     _wrapAndBindNode
   );
 };
 
+function _observedMutationCallback(mutation) {
+  Bazooka.refresh(mutation.target);
+}
+
+function _MutationObserverCallback(mutations) {
+  mutations.forEach(_observedMutationCallback)
+}
+
 /**
- * Watch for new node with `data-bazooka` each 200ms
+ * Watch for new nodes with `data-bazooka`
  * @func watch
+ * @param {node} [rootNode=document.body] - DOM node, children of which will be watched for `data-bazooka`
  * @static
  * @returns {function} Unwatch function
  */
-Bazooka.watch = function () {
-  var i = setInterval(
-    Bazooka.refresh,
-    200
-  );
+Bazooka.watch = function (rootNode) {
+  rootNode = rootNode || document.body;
 
-  return clearInterval.bind(null, i);
+  var observer = new MutationObserver(_MutationObserverCallback);
+
+  observer.observe(rootNode, {childList: true, subtree: true});
+
+  return observer.disconnect.bind(observer);
 };
 
 module.exports = Bazooka;
