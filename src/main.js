@@ -190,11 +190,11 @@ function _observedMutationCallback(mutation) {
 }
 
 function _MutationObserverCallback(mutations) {
-  mutations.forEach(_observedMutationCallback)
+  mutations.forEach(_observedMutationCallback);
 }
 
 /**
- * Watch for new nodes with `data-bazooka`. Not need to run {@link Bazooka.refresh} before this. It will be called automatically.
+ * Watch for new nodes with `data-bazooka`. No need to run {@link Bazooka.refresh} before this. It will be called automatically.
  * @func watch
  * @param {node} [rootNode=document.body] - DOM node, children of which will be watched for `data-bazooka`
  * @static
