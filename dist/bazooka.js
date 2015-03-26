@@ -804,7 +804,7 @@ Bazooka.h = _dereq_('./helpers.js');
 /**
  * Parse and bind bazooka components to nodes without bound components
  * @func refresh
- * @params {node} [rootNode=document.body] - DOM node, children of which will be checked for `data-bazooka`
+ * @param {node} [rootNode=document.body] - DOM node, children of which will be checked for `data-bazooka`
  * @static
  */
 Bazooka.refresh = function (rootNode) {
@@ -834,7 +834,7 @@ function _MutationObserverCallback(mutations) {
 /**
  * Watch for new nodes with `data-bazooka`
  * @func watch
- * @params {node} [rootNode=document.body] - DOM node, children of which will be watched for `data-bazooka`
+ * @param {node} [rootNode=document.body] - DOM node, children of which will be watched for `data-bazooka`
  * @static
  * @returns {function} Unwatch function
  */
