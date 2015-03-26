@@ -25,6 +25,9 @@ $ cd examples
 ```
 
 
+## [Docs](docs/README.md)
+
+
 ## Tests
 
 To run the test suite, first install the dependencies, then run `npm test`:
