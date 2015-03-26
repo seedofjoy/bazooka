@@ -117,7 +117,7 @@ function _bindComponentToNode(wrappedNode, componentName) {
 function BazookaWrapper(node) {
   var bazId = node.getAttribute('data-bazid');
 
-  if (bazId === void 0 || bazId === null) {
+  if (bazId == null) {
     bazId = (_bazId++).toString();
     node.setAttribute('data-bazid', bazId);
     wrappersRegistry[bazId] = this;
