@@ -159,6 +159,8 @@ var Bazooka = function (value) {
  */
 Bazooka.BazookaWrapper = BazookaWrapper;
 
+Bazooka.h = require('./helpers.js');
+
 /**
  * Parse and bind bazooka components to nodes without bound components
  * @func refresh
