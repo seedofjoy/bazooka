@@ -62,7 +62,7 @@ Parse and bind bazooka components to nodes without bound components
 
 <a name="module_Bazooka.watch"></a>
 ##Bazooka.watch([rootNode])
-Watch for new nodes with `data-bazooka`
+Watch for new nodes with `data-bazooka`. Not need to run `Bazooka.refresh` before this. It will be called automatically.
 
 **Params**
 

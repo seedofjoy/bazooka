@@ -841,6 +841,8 @@ function _MutationObserverCallback(mutations) {
 Bazooka.watch = function (rootNode) {
   rootNode = rootNode || document.body;
 
+  Bazooka.refresh(rootNode);
+
   var observer = new MutationObserver(_MutationObserverCallback);
 
   observer.observe(rootNode, {childList: true, subtree: true});

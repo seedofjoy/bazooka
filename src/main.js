@@ -194,7 +194,7 @@ function _MutationObserverCallback(mutations) {
 }
 
 /**
- * Watch for new nodes with `data-bazooka`
+ * Watch for new nodes with `data-bazooka`. Not need to run {@link Bazooka.refresh} before this. It will be called automatically.
  * @func watch
  * @param {node} [rootNode=document.body] - DOM node, children of which will be watched for `data-bazooka`
  * @static
@@ -202,6 +202,8 @@ function _MutationObserverCallback(mutations) {
  */
 Bazooka.watch = function (rootNode) {
   rootNode = rootNode || document.body;
+
+  Bazooka.refresh(rootNode);
 
   var observer = new MutationObserver(_MutationObserverCallback);
 
