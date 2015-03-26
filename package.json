@@ -1,6 +1,6 @@
 {
   "name": "bazooka",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Simple tool for declarative binding applications to HTML nodes.",
   "main": "dist/bazooka.js",
   "directories": {
