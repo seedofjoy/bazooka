@@ -7,7 +7,7 @@
     "example": "examples"
   },
   "scripts": {
-    "prepublish": "make dist && make example",
+    "prepublish": "make dist example",
     "test": "make test"
   },
   "repository": {
