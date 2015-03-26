@@ -1,39 +1,26 @@
 'use strict';
 
-var MutationObserver = require('mutation-observer');
+// polyfills
+/* eslint-disable no-extend-native, no-undef */
+var MutationObserver = window.MutationObserver
+  || window.WebKitMutationObserver
+  || window.MozMutationObserver;
+
+if (!MutationObserver) {
+  MutationObserver = require('mutation-observer');
+}
+
+if (!Function.prototype.bind) {
+  Function.prototype.bind = require("function-bind");
+}
+/* eslint-enable no-extend-native, no-undef */
+// /polyfills
+
 
 var _bazId = 0;
 var nodesComponentsRegistry = {};
 var componentsRegistry = {};
 var wrappersRegistry = {};
-
-if (!Function.prototype.bind) {
-  // Credits to https://github.com/kdimatteo/bind-polyfill
-  // Solves https://github.com/ariya/phantomjs/issues/10522
-  /* eslint-disable no-extend-native */
-  Function.prototype.bind = function (oThis) {
-    if (typeof this !== "function") {
-      // closest thing possible to the ECMAScript 5 internal IsCallable function
-      throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
-    }
-
-    var aArgs = Array.prototype.slice.call(arguments, 1),
-      fToBind = this,
-      fNOP = function () {},
-      fBound = function () {
-        return fToBind.apply(
-          this instanceof fNOP && oThis ? this : oThis,
-          aArgs.concat(Array.prototype.slice.call(arguments))
-        );
-      };
-
-    fNOP.prototype = this.prototype;
-    fBound.prototype = new fNOP();
-
-    return fBound;
-  };
-  /* eslint-enable no-extend-native */
-}
 
 function _getOrRequireComponent(name) {
   if (componentsRegistry[name] === void 0) {

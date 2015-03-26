@@ -1,4 +1,54 @@
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.Baz = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
+var ERROR_MESSAGE = 'Function.prototype.bind called on incompatible ';
+var slice = Array.prototype.slice;
+var toStr = Object.prototype.toString;
+var funcType = '[object Function]';
+
+module.exports = function bind(that) {
+    var target = this;
+    if (typeof target !== 'function' || toStr.call(target) !== funcType) {
+        throw new TypeError(ERROR_MESSAGE + target);
+    }
+    var args = slice.call(arguments, 1);
+
+    var binder = function () {
+        if (this instanceof bound) {
+            var result = target.apply(
+                this,
+                args.concat(slice.call(arguments))
+            );
+            if (Object(result) === result) {
+                return result;
+            }
+            return this;
+        } else {
+            return target.apply(
+                that,
+                args.concat(slice.call(arguments))
+            );
+        }
+    };
+
+    var boundLength = Math.max(0, target.length - args.length);
+    var boundArgs = [];
+    for (var i = 0; i < boundLength; i++) {
+        boundArgs.push('$' + i);
+    }
+
+    var bound = Function('binder', 'return function (' + boundArgs.join(',') + '){ return binder.apply(this,arguments); }')(binder);
+
+    if (target.prototype) {
+        var Empty = function Empty() {};
+        Empty.prototype = target.prototype;
+        bound.prototype = new Empty();
+        Empty.prototype = null;
+    }
+
+    return bound;
+};
+
+
+},{}],2:[function(_dereq_,module,exports){
 var MutationObserver = window.MutationObserver
   || window.WebKitMutationObserver
   || window.MozMutationObserver;
@@ -585,7 +635,7 @@ if (!MutationObserver) {
 
 module.exports = MutationObserver;
 
-},{}],2:[function(_dereq_,module,exports){
+},{}],3:[function(_dereq_,module,exports){
 'use strict';
 
 var rbrace = /^(?:\{[\w\W]*\}|\[[\w\W]*\])$/;
@@ -635,43 +685,30 @@ module.exports = {
   getAttrs: getAttrs
 };
 
-},{}],3:[function(_dereq_,module,exports){
+},{}],4:[function(_dereq_,module,exports){
 'use strict';
 
-var MutationObserver = _dereq_('mutation-observer');
+// polyfills
+/* eslint-disable no-extend-native, no-undef */
+var MutationObserver = window.MutationObserver
+  || window.WebKitMutationObserver
+  || window.MozMutationObserver;
+
+if (!MutationObserver) {
+  MutationObserver = _dereq_('mutation-observer');
+}
+
+if (!Function.prototype.bind) {
+  Function.prototype.bind = _dereq_("function-bind");
+}
+/* eslint-enable no-extend-native, no-undef */
+// /polyfills
+
 
 var _bazId = 0;
 var nodesComponentsRegistry = {};
 var componentsRegistry = {};
 var wrappersRegistry = {};
-
-if (!Function.prototype.bind) {
-  // Credits to https://github.com/kdimatteo/bind-polyfill
-  // Solves https://github.com/ariya/phantomjs/issues/10522
-  /* eslint-disable no-extend-native */
-  Function.prototype.bind = function (oThis) {
-    if (typeof this !== "function") {
-      // closest thing possible to the ECMAScript 5 internal IsCallable function
-      throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
-    }
-
-    var aArgs = Array.prototype.slice.call(arguments, 1),
-      fToBind = this,
-      fNOP = function () {},
-      fBound = function () {
-        return fToBind.apply(
-          this instanceof fNOP && oThis ? this : oThis,
-          aArgs.concat(Array.prototype.slice.call(arguments))
-        );
-      };
-
-    fNOP.prototype = this.prototype;
-    fBound.prototype = new fNOP();
-
-    return fBound;
-  };
-  /* eslint-enable no-extend-native */
-}
 
 function _getOrRequireComponent(name) {
   if (componentsRegistry[name] === void 0) {
@@ -852,5 +889,5 @@ Bazooka.watch = function (rootNode) {
 
 module.exports = Bazooka;
 
-},{"./helpers.js":2,"mutation-observer":1}]},{},[3])(3)
+},{"./helpers.js":3,"function-bind":1,"mutation-observer":2}]},{},[4])(4)
 });
