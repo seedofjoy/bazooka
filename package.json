@@ -44,6 +44,7 @@
     "uglify-js": "^2.4.17"
   },
   "dependencies": {
+    "function-bind": "^1.0.2",
     "mutation-observer": "^1.0.1"
   }
 }
