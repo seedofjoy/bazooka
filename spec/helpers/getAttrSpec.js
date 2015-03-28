@@ -94,4 +94,34 @@ describe("Baz.h.getAttrs", function() {
       });
     }
   });
+
+  it("should curry over prefix", function () {
+    var getAttrsCurried = getAttrs('tt');
+    expect(typeof getAttrsCurried).toBe('function');
+    expect(getAttrsCurried.length).toBe(1);
+  });
+
+  it("should apply curried prefix", function () {
+    var getAttrsCurried = getAttrs('tt');
+
+    node.setAttribute('data-tt-a', 0);
+    node.setAttribute('data-tt-abc', 0);
+    node.setAttribute('data-tt-ab-c-de', 0);
+
+    var attrs = getAttrsCurried(node);
+    expect(attrs.a).toBeDefined();
+    expect(attrs.abc).toBeDefined();
+    expect(attrs.abCDe).toBeDefined();
+  });
+
+  it("should apply prefix", function () {
+    node.setAttribute('data-tt-a', 0);
+    node.setAttribute('data-tt-abc', 0);
+    node.setAttribute('data-tt-ab-c-de', 0);
+
+    var attrs = getAttrs('tt', node);
+    expect(attrs.a).toBeDefined();
+    expect(attrs.abc).toBeDefined();
+    expect(attrs.abCDe).toBeDefined();
+  });
 });
