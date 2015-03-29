@@ -4,9 +4,7 @@
   },
   "globals": {
     "require": true,
-    "module": true,
-    "$": false,
-    "process": true
+    "module": true
   },
   "rules": {
     "quotes": "single",
@@ -18,7 +16,7 @@
     "max-depth": [2, 4],
     "max-params": [2, 4],
     "complexity": [2, 15],
-    "max-nested-callbacks": [2, 3],
+    "max-nested-callbacks": [2, 1],
     "no-debugger": 1,
     "curly": 2,
     "radix": 2,
