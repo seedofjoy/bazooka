@@ -1,3 +1,6 @@
+'use strict';
+/* global describe, beforeEach, afterEach, it, expect, spyOn */
+
 function appendDiv() {
     var node = document.createElement('div');
     node.setAttribute('test-node', '');
