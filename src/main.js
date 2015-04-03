@@ -151,6 +151,18 @@ Bazooka.BazookaWrapper = BazookaWrapper;
 Bazooka.h = require('./helpers.js');
 
 /**
+ * Register components names
+ * @func register
+ * @param {Object} componentsObj - object with names as keys and components as values
+ * @static
+ */
+Bazooka.register = function (componentsObj) {
+  for (name in componentsObj) {
+    componentsRegistry[name] = componentsObj[name];
+  }
+};
+
+/**
  * Parse and bind bazooka components to nodes without bound components
  * @func refresh
  * @param {node} [rootNode=document.body] - DOM node, children of which will be checked for `data-bazooka`
