@@ -5,6 +5,7 @@
 * [Bazooka](#module_Bazooka)
   * [Bazooka~BazookaWrapper](#module_Bazooka..BazookaWrapper)
   * [Bazooka~Bazooka(value)](#module_Bazooka..Bazooka)
+  * [Bazooka.register(componentsObj)](#module_Bazooka.register)
   * [Bazooka.refresh([rootNode])](#module_Bazooka.refresh)
   * [Bazooka.watch([rootNode])](#module_Bazooka.watch)
 
@@ -30,6 +31,7 @@ Bazooka
 * [Bazooka](#module_Bazooka)
   * [Bazooka~BazookaWrapper](#module_Bazooka..BazookaWrapper)
   * [Bazooka~Bazooka(value)](#module_Bazooka..Bazooka)
+  * [Bazooka.register(componentsObj)](#module_Bazooka.register)
   * [Bazooka.refresh([rootNode])](#module_Bazooka.refresh)
   * [Bazooka.watch([rootNode])](#module_Bazooka.watch)
 
@@ -51,6 +53,14 @@ Reference to `BazookaWrapper` class
   var Baz = require('bazooka');
   var $baz = Baz(node);
 ```
+
+<a name="module_Bazooka.register"></a>
+##Bazooka.register(componentsObj)
+Register components names
+
+**Params**
+
+- componentsObj `Object` - object with names as keys and components as values  
 
 <a name="module_Bazooka.refresh"></a>
 ##Bazooka.refresh([rootNode])
