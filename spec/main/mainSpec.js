@@ -9,11 +9,23 @@ function appendDiv() {
     return node;
 }
 
+var componentsRegistry = {
+    exampleBazFunc: function () {},
+    exampleBazFunc2: function () {},
+    exampleComplexBazComponent: {
+        bazFunc: function () {},
+    },
+};
+
 describe('Baz', function() {
     var Baz = require('../../src/main.js');
 
     beforeEach(function() {
         spyOn(console, 'warn');
+        spyOn(componentsRegistry, 'exampleBazFunc');
+        spyOn(componentsRegistry, 'exampleBazFunc2');
+        spyOn(componentsRegistry.exampleComplexBazComponent, 'bazFunc');
+        Baz.register(componentsRegistry);
     });
 
     afterEach(function() {
@@ -47,5 +59,29 @@ describe('Baz', function() {
         var $baz2 = Baz(node);
 
         expect($baz2.id).toBe($baz.id);
+    });
+
+    it('should bind simple component to node', function () {
+        var node = appendDiv();
+        node.setAttribute('data-bazooka', 'exampleBazFunc');
+        Baz.refresh();
+
+        expect(componentsRegistry.exampleBazFunc).toHaveBeenCalled();
+    });
+
+    it('should not bind incorrect component to node', function () {
+        var node = appendDiv();
+        node.setAttribute('data-bazooka', 'exampleBazFunc');
+        Baz.refresh();
+
+        expect(componentsRegistry.exampleBazFunc2).not.toHaveBeenCalled();
+    });
+
+    it('should bind complex component to node', function () {
+        var node = appendDiv();
+        node.setAttribute('data-bazooka', 'exampleComplexBazComponent');
+        Baz.refresh();
+
+        expect(componentsRegistry.exampleComplexBazComponent.bazFunc).toHaveBeenCalled();
     });
 });
