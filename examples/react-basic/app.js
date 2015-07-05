@@ -1,3 +1,8 @@
 'use strict';
+var Baz = require('bazooka');
 
-require('bazooka').refresh();
+Baz.register({
+  'greeting': require('greeting'),
+});
+
+Baz.refresh();

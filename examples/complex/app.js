@@ -1,3 +1,9 @@
 'use strict';
+var Baz = require('bazooka');
 
-var unwatch = require('bazooka').watch();
+Baz.register({
+  'baz-complex': require('baz-complex'),
+  'baz-logger': require('baz-logger'),
+});
+
+var unwatch = Baz.watch();
