@@ -7,7 +7,7 @@
     "module": true
   },
   "rules": {
-    "quotes": "single",
+    "quotes": [2, "single"],
     "new-cap": 0,
     "comma-dangle": 0,
     "global-strict": 0,

@@ -735,7 +735,7 @@ if (!MutationObserver) {
 }
 
 if (!Function.prototype.bind) {
-  Function.prototype.bind = _dereq_("function-bind");
+  Function.prototype.bind = _dereq_('function-bind');
 }
 /* eslint-enable no-extend-native, no-undef */
 // /polyfills
@@ -881,7 +881,7 @@ Bazooka.h = _dereq_('./helpers.js');
  * @static
  */
 Bazooka.register = function (componentsObj) {
-  for (name in componentsObj) {
+  for (var name in componentsObj) {
     componentsRegistry[name] = componentsObj[name];
   }
 };
@@ -903,7 +903,7 @@ Bazooka.refresh = function (rootNode) {
   }
 
   Array.prototype.forEach.call(
-    rootNode.querySelectorAll("[data-bazooka]:not([data-bazid])"),
+    rootNode.querySelectorAll('[data-bazooka]:not([data-bazid])'),
     _wrapAndBindNode
   );
 };
@@ -924,12 +924,10 @@ function _MutationObserverCallback(mutations) {
  * @returns {function} Unwatch function
  */
 Bazooka.watch = function (rootNode) {
+  var observer = new MutationObserver(_MutationObserverCallback);
   rootNode = rootNode || document.body;
 
   Bazooka.refresh(rootNode);
-
-  var observer = new MutationObserver(_MutationObserverCallback);
-
   observer.observe(rootNode, {childList: true, subtree: true});
 
   return observer.disconnect.bind(observer);

@@ -1,5 +1,6 @@
 'use strict';
 /* global describe, beforeEach, afterEach, it, expect, spyOn */
+/* eslint max-nested-callbacks:0 */
 
 function appendDiv() {
     var node = document.createElement('div');
@@ -8,7 +9,7 @@ function appendDiv() {
     return node;
 }
 
-describe("Baz", function() {
+describe('Baz', function() {
     var Baz = require('../../src/main.js');
 
     beforeEach(function() {
@@ -24,13 +25,13 @@ describe("Baz", function() {
         );
     });
 
-    it("should return wrapper node", function () {
+    it('should return wrapper node', function () {
         var node = appendDiv();
         var $baz = Baz(node);
         expect($baz instanceof Baz.BazookaWrapper).toBe(true);
     });
 
-    it("should increment bazId for new node", function () {
+    it('should increment bazId for new node', function () {
         var node = appendDiv();
         var $baz = Baz(node);
 
@@ -40,7 +41,7 @@ describe("Baz", function() {
         expect(parseInt($baz2.id, 10)).toBe(parseInt($baz.id, 10) + 1);
     });
 
-    it("should do nothing to bazId of already wrapped nodes", function () {
+    it('should do nothing to bazId of already wrapped nodes', function () {
         var node = appendDiv();
         var $baz = Baz(node);
         var $baz2 = Baz(node);
