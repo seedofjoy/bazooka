@@ -66,7 +66,7 @@ describe('Baz', function() {
         node.setAttribute('data-bazooka', 'exampleBazFunc');
         Baz.refresh();
 
-        expect(componentsRegistry.exampleBazFunc).toHaveBeenCalled();
+        expect(componentsRegistry.exampleBazFunc).toHaveBeenCalledWith(node);
     });
 
     it('should not bind incorrect component to node', function () {
@@ -82,6 +82,6 @@ describe('Baz', function() {
         node.setAttribute('data-bazooka', 'exampleComplexBazComponent');
         Baz.refresh();
 
-        expect(componentsRegistry.exampleComplexBazComponent.bazFunc).toHaveBeenCalled();
+        expect(componentsRegistry.exampleComplexBazComponent.bazFunc).toHaveBeenCalledWith(node);
     });
 });
