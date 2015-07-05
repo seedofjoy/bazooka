@@ -22,9 +22,9 @@ var nodesComponentsRegistry = {};
 var componentsRegistry = {};
 var wrappersRegistry = {};
 
-function _getOrRequireComponent(name) {
-  if (componentsRegistry[name] === void 0) {
-    componentsRegistry[name] = require(name);
+function _getComponent(name) {
+  if (!componentsRegistry[name]) {
+    throw new Error(name + ' component is not registered. Use `Baz.register()` to do it');
   }
 
   return componentsRegistry[name];
@@ -39,7 +39,7 @@ function _bindComponentToNode(wrappedNode, componentName) {
 
   if (nodesComponentsRegistry[bazId].indexOf(componentName) === -1) {
     nodesComponentsRegistry[bazId].push(componentName);
-    var component = _getOrRequireComponent(componentName);
+    var component = _getComponent(componentName);
     var bazFunc;
 
     if (component.bazFunc) {
