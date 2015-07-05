@@ -75,10 +75,18 @@ function BazookaWrapper(node) {
 BazookaWrapper.prototype.constructor = BazookaWrapper;
 
 function _wrapAndBindNode(node) {
-  var componentName = node.getAttribute('data-bazooka');
-  var wrappedNode = new BazookaWrapper(node);
+  var dataBazooka = (node.getAttribute('data-bazooka') || '').trim();
+  var wrappedNode;
+  var componentNames;
 
-  _bindComponentToNode(wrappedNode, componentName);
+  if (dataBazooka) {
+    componentNames = dataBazooka.split(' ');
+    wrappedNode = new BazookaWrapper(node);
+
+    for (var i = 0; i < componentNames.length; i++) {
+      _bindComponentToNode(wrappedNode, componentNames[i]);
+    }
+  }
 }
 
 /** @class Bazooka */

@@ -84,4 +84,14 @@ describe('Baz', function() {
 
         expect(componentsRegistry.exampleComplexBazComponent.bazFunc).toHaveBeenCalledWith(node);
     });
+
+    it('should bind multiple components to node', function () {
+        var node = appendDiv();
+        node.setAttribute('data-bazooka', 'exampleBazFunc exampleComplexBazComponent');
+        Baz.refresh();
+
+        expect(componentsRegistry.exampleBazFunc).toHaveBeenCalledWith(node);
+        expect(componentsRegistry.exampleComplexBazComponent.bazFunc).toHaveBeenCalledWith(node);
+        expect(componentsRegistry.exampleBazFunc2).not.toHaveBeenCalled();
+    });
 });
