@@ -41,7 +41,7 @@
     "karma-phantomjs-launcher": "^0.1.4",
     "phantomjs": "^1.9.16",
     "proxyquireify": "^1.2.2",
-    "uglify-js": "^2.4.17"
+    "uglify-js": "^2.4.21"
   },
   "dependencies": {
     "function-bind": "^1.0.2",
