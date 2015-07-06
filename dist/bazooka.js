@@ -746,9 +746,9 @@ var nodesComponentsRegistry = {};
 var componentsRegistry = {};
 var wrappersRegistry = {};
 
-function _getOrRequireComponent(name) {
-  if (componentsRegistry[name] === void 0) {
-    componentsRegistry[name] = _dereq_(name);
+function _getComponent(name) {
+  if (!componentsRegistry[name]) {
+    throw new Error(name + ' component is not registered. Use `Baz.register()` to do it');
   }
 
   return componentsRegistry[name];
@@ -763,7 +763,7 @@ function _bindComponentToNode(wrappedNode, componentName) {
 
   if (nodesComponentsRegistry[bazId].indexOf(componentName) === -1) {
     nodesComponentsRegistry[bazId].push(componentName);
-    var component = _getOrRequireComponent(componentName);
+    var component = _getComponent(componentName);
     var bazFunc;
 
     if (component.bazFunc) {
@@ -799,10 +799,18 @@ function BazookaWrapper(node) {
 BazookaWrapper.prototype.constructor = BazookaWrapper;
 
 function _wrapAndBindNode(node) {
-  var componentName = node.getAttribute('data-bazooka');
-  var wrappedNode = new BazookaWrapper(node);
+  var dataBazooka = (node.getAttribute('data-bazooka') || '').trim();
+  var wrappedNode;
+  var componentNames;
 
-  _bindComponentToNode(wrappedNode, componentName);
+  if (dataBazooka) {
+    componentNames = dataBazooka.split(' ');
+    wrappedNode = new BazookaWrapper(node);
+
+    for (var i = 0; i < componentNames.length; i++) {
+      _bindComponentToNode(wrappedNode, componentNames[i]);
+    }
+  }
 }
 
 /** @class Bazooka */
