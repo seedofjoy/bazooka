@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+        <title>gifflix</title>
+        <style type="text/css">
+            body { font: 30px monospace; }
+            .star { cursor: pointer; }
+            .star::before { content: "☆"; }
+            .star[data-star-active="1"]::before { content: "★"; }
+        </style>
+    </head>
+    <body>
+        <table>
+            <tr>
+                <td colspan="4" align="right">
+                    &nbsp;
+                    <b>[<span class="star_count" data-bazooka="counter">0</span>]</b>
+                </td>
+            </tr>
+            <tr>
+                <td class="gif_cell">
+                    id:0 <span class="star" data-bazooka="star" data-star-id="0"></span><br/>
+                    <div class="gif-wrap">
+                        <img src="https://media4.giphy.com/media/bpqrUUiM7Xlzq/200w.gif">
+                    </div>
+                </td>
+                <td class="gif_cell">
+                    id:1 <span class="star" data-bazooka="star" data-star-id="1"></span><br/>
+                    <div class="gif-wrap">
+                        <img src="https://media4.giphy.com/media/BemKqR9RDK4V2/200w.gif">
+                    </div>
+                </td>
+                <td class="gif_cell">
+                    id:2 <span class="star" data-bazooka="star" data-star-id="2"></span><br/>
+                    <div class="gif-wrap">
+                        <img src="https://media4.giphy.com/media/aHGM4HL8ga4Ny/200w.gif">
+                    </div>
+                </td>
+            </tr>
+            <tr><td>&nbsp;</td></tr>
+            <tr>
+                <td class="gif_cell">
+                    id:2 <span class="star" data-bazooka="star" data-star-id="2"></span><br/>
+                    <div class="gif-wrap">
+                        <img src="https://media4.giphy.com/media/aHGM4HL8ga4Ny/200w.gif">
+                    </div>
+                </td>
+                <td class="gif_cell">
+                    id:3 <span class="star" data-bazooka="star" data-star-id="3"></span><br/>
+                    <div class="gif-wrap">
+                        <img src="https://media4.giphy.com/media/xTiTnnHUJasG3SzxS0/200w.gif">
+                    </div>
+                </td>
+                <td class="gif_cell">
+                    id:4 <span class="star" data-bazooka="star" data-star-id="4"></span><br/>
+                    <div class="gif-wrap">
+                        <img src="https://media0.giphy.com/media/Mzv4evcCh2hkA/200w.gif">
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <script src="dist/app.bundle.js"></script>
+    </body>
+</html>

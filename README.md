@@ -24,6 +24,10 @@ Then run whichever example you want by opening index.html in examples subdirecto
 $ cd examples
 ```
 
+* **complex** — universal component to work with and without bazooka
+* **react-basic** — bazooka + [react](https://facebook.github.io/react/)
+* **gifflix** — bazooka + frp (via [kefir.js](https://rpominov.github.io/kefir/))
+
 
 ## [Docs](docs/README.md)
 

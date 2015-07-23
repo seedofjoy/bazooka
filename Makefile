@@ -18,7 +18,7 @@ dist:
 		> ./dist/bazooka.min.js
 
 example:
-	mkdir -p examples/react-basic/dist/ examples/complex/dist/
+	mkdir -p examples/react-basic/dist/ examples/complex/dist/ examples/gifflix/dist/
 
 	$(browserify) examples/react-basic/app.js \
 		-r ./dist/bazooka.js:'bazooka' \
@@ -31,6 +31,13 @@ example:
 		-r ./examples/complex/baz-complex.js:'baz-complex' \
 		-r ./examples/complex/baz-logger.js:'baz-logger' \
 		> examples/complex/dist/app.bundle.js
+
+	$(browserify) examples/gifflix/app.js \
+		-r ./dist/bazooka.js:'bazooka' \
+		-r ./examples/gifflix/star.js:'star' \
+		-r ./examples/gifflix/counter.js:'counter' \
+		-r ./examples/gifflix/vendor/kefir.min.js:'kefir' \
+		> examples/gifflix/dist/app.bundle.js
 
 test:
 	$(karma) start $(karma_conf) --single-run
