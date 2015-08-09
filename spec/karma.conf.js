@@ -1,42 +1,42 @@
 module.exports = function(config) {
-    config.set({
-        basePath: '',
+  config.set({
+    basePath: '',
 
-        frameworks: ['browserify', 'jasmine'],
+    frameworks: ['browserify', 'jasmine'],
 
-        files: [
-            '**/*Spec.js'
-        ],
+    files: [
+      '**/*Spec.js'
+    ],
 
-        exclude: [],
+    exclude: [],
 
-        preprocessors: {
-            '**/*Spec.js': ['browserify']
-        },
+    preprocessors: {
+      '**/*Spec.js': ['browserify']
+    },
 
-        reporters: ['progress'],
+    reporters: ['progress'],
 
-        port: 9876,
+    port: 9876,
 
-        colors: true,
+    colors: true,
 
-        // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
-        logLevel: config.LOG_INFO,
+    // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
+    logLevel: config.LOG_INFO,
 
-        autoWatch: false,
+    autoWatch: false,
 
-        browsers: ['PhantomJS'],
+    browsers: ['PhantomJS'],
 
-        plugins: [
-            'karma-browserify',
-            'karma-jasmine',
-            'karma-phantomjs-launcher'
-        ],
+    plugins: [
+      'karma-browserify',
+      'karma-jasmine',
+      'karma-phantomjs-launcher'
+    ],
 
-        browserify: {
-            plugin: ['proxyquireify/plugin']
-        },
+    browserify: {
+      plugin: ['proxyquireify/plugin']
+    },
 
-        singleRun: false
-    });
+    singleRun: false
+  });
 };
