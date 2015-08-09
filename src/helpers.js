@@ -79,6 +79,40 @@ var getAttrs = function (prefix, node) {
   return _getPrefixedAttrs(prefix, node);
 };
 
+function _prefixDataKey(dataKey) {
+  if (!dataKey) {
+    throw new Error('dataKey must be non empty');
+  }
+
+  if (dataKey.indexOf('data-') === 0) {
+    return dataKey
+  } else if (dataKey.indexOf('-') >= 0) {
+    return 'data-' + dataKey
+  } else {
+    return 'data-' + dataKey.replace(/([A-Z])/g, "-$1").toLowerCase()
+  }
+};
+
+/**
+ * @param {HTMLNode} parentNode
+ * @param {string} dataKey – data-key. data-baz-key, baz-key and bazKey are equivalent
+ * @param {string} [dataValue]
+ * @returns {NodeList}
+ */
+var getChildrenWithData = function (parentNode, dataKey, dataValue) {
+  var prefixedDataKey = _prefixDataKey(dataKey);
+  var query;
+
+  if (dataValue === void 0) {
+    query = '[' + prefixedDataKey + ']'
+  } else {
+    query = '[' + prefixedDataKey + '="' + dataValue + '"]'
+  }
+
+  return parentNode.querySelectorAll(query)
+};
+
 module.exports = {
-  getAttrs: getAttrs
+  getAttrs: getAttrs,
+  getChildrenWithData: getChildrenWithData
 };
