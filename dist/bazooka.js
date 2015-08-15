@@ -791,22 +791,28 @@ function _getComponent(name) {
 function _bindComponentToNode(wrappedNode, componentName) {
   var bazId = wrappedNode.id;
 
+  if (!componentName) {
+    return
+  }
+
   if (nodesComponentsRegistry[bazId] === void 0) {
     nodesComponentsRegistry[bazId] = [];
   }
 
   if (nodesComponentsRegistry[bazId].indexOf(componentName) === -1) {
     nodesComponentsRegistry[bazId].push(componentName);
-    var component = _getComponent(componentName);
-    var bazFunc;
+  }
+}
+
+function _applyComponentsToNode(wrappedNode) {
+  var bazId = wrappedNode.id;
+
+  for (var i = 0; i < nodesComponentsRegistry[bazId].length; i++) {
+    var component = _getComponent(nodesComponentsRegistry[bazId][i]);
 
     if (component.bazFunc) {
-      bazFunc = component.bazFunc;
-    } else {
-      bazFunc = component;
+      component.bazFunc(wrappedNode.__wrapped__);
     }
-
-    bazFunc(wrappedNode.__wrapped__);
   }
 }
 
@@ -831,6 +837,15 @@ function BazookaWrapper(node) {
 }
 
 BazookaWrapper.prototype.constructor = BazookaWrapper;
+BazookaWrapper.prototype.getComponents = function () {
+  var components = {}
+
+  for (var i = 0; i < nodesComponentsRegistry[this.id].length; i++) {
+    components[nodesComponentsRegistry[this.id][i]] = _getComponent(nodesComponentsRegistry[this.id][i])
+  }
+
+  return components
+};
 
 function _wrapAndBindNode(node) {
   var dataBazooka = (node.getAttribute('data-bazooka') || '').trim();
@@ -842,8 +857,10 @@ function _wrapAndBindNode(node) {
     wrappedNode = new BazookaWrapper(node);
 
     for (var i = 0; i < componentNames.length; i++) {
-      _bindComponentToNode(wrappedNode, componentNames[i]);
+      _bindComponentToNode(wrappedNode, componentNames[i].trim());
     }
+
+    _applyComponentsToNode(wrappedNode);
   }
 }
 
@@ -924,7 +941,13 @@ Bazooka.h = _dereq_('./helpers.js');
  */
 Bazooka.register = function (componentsObj) {
   for (var name in componentsObj) {
-    componentsRegistry[name] = componentsObj[name];
+    if (typeof componentsObj[name] === 'function') {
+      componentsRegistry[name] = {
+        bazFunc: componentsObj[name],
+      };
+    } else {
+      componentsRegistry[name] = componentsObj[name];
+    }
   }
 };
 
