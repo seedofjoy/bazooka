@@ -79,6 +79,15 @@ function BazookaWrapper(node) {
 }
 
 BazookaWrapper.prototype.constructor = BazookaWrapper;
+BazookaWrapper.prototype.getComponents = function () {
+  var components = {}
+
+  for (var i = 0; i < nodesComponentsRegistry[this.id].length; i++) {
+    components[nodesComponentsRegistry[this.id][i]] = _getComponent(nodesComponentsRegistry[this.id][i])
+  }
+
+  return components
+};
 
 function _wrapAndBindNode(node) {
   var dataBazooka = (node.getAttribute('data-bazooka') || '').trim();

@@ -59,4 +59,21 @@ describe('BazookaWrapper', function() {
 
     expect($baz2.id).toBe($baz.id);
   });
+
+  it('should return bound components', function () {
+    var node = appendDiv();
+    node.setAttribute('data-bazooka', 'exampleBazFunc exampleComplexBazComponent exampleComplexBazFunclessComponent');
+    Baz.refresh();
+
+    var nodeComponents = Baz(node).getComponents()
+
+    expect(nodeComponents.exampleBazFunc.bazFunc)
+      .toBe(componentsRegistry.exampleBazFunc)
+
+    expect(nodeComponents.exampleComplexBazComponent)
+      .toBe(componentsRegistry.exampleComplexBazComponent)
+
+    expect(nodeComponents.exampleComplexBazFunclessComponent)
+      .toBe(componentsRegistry.exampleComplexBazFunclessComponent)
+  });
 });
