@@ -15,6 +15,9 @@ var componentsRegistry = {
   exampleComplexBazComponent: {
     bazFunc: function () {},
   },
+  exampleComplexBazFunclessComponent: {
+    triggers: ['click'],
+  },
 };
 
 describe('Baz', function() {
@@ -107,5 +110,11 @@ describe('Baz', function() {
 
     expect(componentsRegistry.exampleBazFunc).toHaveBeenCalledWith(node2);
     expect(componentsRegistry.exampleBazFunc2).toHaveBeenCalledWith(node2);
+  });
+
+  it('should bind bazFuncless component to node', function () {
+    var node = appendDiv();
+    node.setAttribute('data-bazooka', 'exampleComplexBazFunclessComponent');
+    Baz.refresh();
   });
 });

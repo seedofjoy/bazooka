@@ -43,16 +43,18 @@ function _bindComponentToNode(wrappedNode, componentName) {
 
   if (nodesComponentsRegistry[bazId].indexOf(componentName) === -1) {
     nodesComponentsRegistry[bazId].push(componentName);
-    var component = _getComponent(componentName);
-    var bazFunc;
+  }
+}
+
+function _applyComponentsToNode(wrappedNode) {
+  var bazId = wrappedNode.id;
+
+  for (var i = 0; i < nodesComponentsRegistry[bazId].length; i++) {
+    var component = _getComponent(nodesComponentsRegistry[bazId][i]);
 
     if (component.bazFunc) {
-      bazFunc = component.bazFunc;
-    } else {
-      bazFunc = component;
+      component.bazFunc(wrappedNode.__wrapped__);
     }
-
-    bazFunc(wrappedNode.__wrapped__);
   }
 }
 
@@ -90,6 +92,8 @@ function _wrapAndBindNode(node) {
     for (var i = 0; i < componentNames.length; i++) {
       _bindComponentToNode(wrappedNode, componentNames[i].trim());
     }
+
+    _applyComponentsToNode(wrappedNode);
   }
 }
 
@@ -170,7 +174,13 @@ Bazooka.h = require('./helpers.js');
  */
 Bazooka.register = function (componentsObj) {
   for (var name in componentsObj) {
-    componentsRegistry[name] = componentsObj[name];
+    if (typeof componentsObj[name] === 'function') {
+      componentsRegistry[name] = {
+        bazFunc: componentsObj[name],
+      };
+    } else {
+      componentsRegistry[name] = componentsObj[name];
+    }
   }
 };
 
