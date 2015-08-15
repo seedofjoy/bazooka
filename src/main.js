@@ -33,6 +33,10 @@ function _getComponent(name) {
 function _bindComponentToNode(wrappedNode, componentName) {
   var bazId = wrappedNode.id;
 
+  if (!componentName) {
+    return
+  }
+
   if (nodesComponentsRegistry[bazId] === void 0) {
     nodesComponentsRegistry[bazId] = [];
   }
@@ -84,7 +88,7 @@ function _wrapAndBindNode(node) {
     wrappedNode = new BazookaWrapper(node);
 
     for (var i = 0; i < componentNames.length; i++) {
-      _bindComponentToNode(wrappedNode, componentNames[i]);
+      _bindComponentToNode(wrappedNode, componentNames[i].trim());
     }
   }
 }

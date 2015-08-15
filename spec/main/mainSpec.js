@@ -21,7 +21,6 @@ describe('Baz', function() {
   var Baz = require('../../src/main.js');
 
   beforeEach(function() {
-    spyOn(console, 'warn');
     spyOn(componentsRegistry, 'exampleBazFunc');
     spyOn(componentsRegistry, 'exampleBazFunc2');
     spyOn(componentsRegistry.exampleComplexBazComponent, 'bazFunc');
@@ -93,5 +92,20 @@ describe('Baz', function() {
     expect(componentsRegistry.exampleBazFunc).toHaveBeenCalledWith(node);
     expect(componentsRegistry.exampleComplexBazComponent.bazFunc).toHaveBeenCalledWith(node);
     expect(componentsRegistry.exampleBazFunc2).not.toHaveBeenCalled();
+  });
+
+  it('should strip extra whitespaces', function () {
+    var node = appendDiv();
+    var node2 = appendDiv();
+    node.setAttribute('data-bazooka', 'exampleBazFunc  exampleBazFunc2   ');
+    node2.setAttribute('data-bazooka', 'exampleBazFunc  \
+                      exampleBazFunc2');
+    Baz.refresh();
+
+    expect(componentsRegistry.exampleBazFunc).toHaveBeenCalledWith(node);
+    expect(componentsRegistry.exampleBazFunc2).toHaveBeenCalledWith(node);
+
+    expect(componentsRegistry.exampleBazFunc).toHaveBeenCalledWith(node2);
+    expect(componentsRegistry.exampleBazFunc2).toHaveBeenCalledWith(node2);
   });
 });
