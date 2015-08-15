@@ -39,30 +39,6 @@ describe('Baz', function() {
     );
   });
 
-  it('should return wrapper node', function () {
-    var node = appendDiv();
-    var $baz = Baz(node);
-    expect($baz instanceof Baz.BazookaWrapper).toBe(true);
-  });
-
-  it('should increment bazId for new node', function () {
-    var node = appendDiv();
-    var $baz = Baz(node);
-
-    var node2 = appendDiv();
-    var $baz2 = Baz(node2);
-
-    expect(parseInt($baz2.id, 10)).toBe(parseInt($baz.id, 10) + 1);
-  });
-
-  it('should do nothing to bazId of already wrapped nodes', function () {
-    var node = appendDiv();
-    var $baz = Baz(node);
-    var $baz2 = Baz(node);
-
-    expect($baz2.id).toBe($baz.id);
-  });
-
   it('should bind simple component to node', function () {
     var node = appendDiv();
     node.setAttribute('data-bazooka', 'exampleBazFunc');
