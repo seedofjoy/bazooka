@@ -15,13 +15,15 @@ var componentsRegistry = {
   exampleComplexBazComponent: {
     bazFunc: function () {},
   },
+  exampleComplexBazFunclessComponent: {
+    triggers: ['click'],
+  },
 };
 
 describe('Baz', function() {
   var Baz = require('../../src/main.js');
 
   beforeEach(function() {
-    spyOn(console, 'warn');
     spyOn(componentsRegistry, 'exampleBazFunc');
     spyOn(componentsRegistry, 'exampleBazFunc2');
     spyOn(componentsRegistry.exampleComplexBazComponent, 'bazFunc');
@@ -35,30 +37,6 @@ describe('Baz', function() {
         document.body.removeChild(el);
       }
     );
-  });
-
-  it('should return wrapper node', function () {
-    var node = appendDiv();
-    var $baz = Baz(node);
-    expect($baz instanceof Baz.BazookaWrapper).toBe(true);
-  });
-
-  it('should increment bazId for new node', function () {
-    var node = appendDiv();
-    var $baz = Baz(node);
-
-    var node2 = appendDiv();
-    var $baz2 = Baz(node2);
-
-    expect(parseInt($baz2.id, 10)).toBe(parseInt($baz.id, 10) + 1);
-  });
-
-  it('should do nothing to bazId of already wrapped nodes', function () {
-    var node = appendDiv();
-    var $baz = Baz(node);
-    var $baz2 = Baz(node);
-
-    expect($baz2.id).toBe($baz.id);
   });
 
   it('should bind simple component to node', function () {
@@ -93,5 +71,26 @@ describe('Baz', function() {
     expect(componentsRegistry.exampleBazFunc).toHaveBeenCalledWith(node);
     expect(componentsRegistry.exampleComplexBazComponent.bazFunc).toHaveBeenCalledWith(node);
     expect(componentsRegistry.exampleBazFunc2).not.toHaveBeenCalled();
+  });
+
+  it('should strip extra whitespaces', function () {
+    var node = appendDiv();
+    var node2 = appendDiv();
+    node.setAttribute('data-bazooka', 'exampleBazFunc  exampleBazFunc2   ');
+    node2.setAttribute('data-bazooka', 'exampleBazFunc  \
+                      exampleBazFunc2');
+    Baz.refresh();
+
+    expect(componentsRegistry.exampleBazFunc).toHaveBeenCalledWith(node);
+    expect(componentsRegistry.exampleBazFunc2).toHaveBeenCalledWith(node);
+
+    expect(componentsRegistry.exampleBazFunc).toHaveBeenCalledWith(node2);
+    expect(componentsRegistry.exampleBazFunc2).toHaveBeenCalledWith(node2);
+  });
+
+  it('should bind bazFuncless component to node', function () {
+    var node = appendDiv();
+    node.setAttribute('data-bazooka', 'exampleComplexBazFunclessComponent');
+    Baz.refresh();
   });
 });
