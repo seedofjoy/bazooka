@@ -21,7 +21,7 @@ var componentsRegistry = {
 };
 
 describe('BazookaWrapper', function() {
-  var Baz = require('../../src/main.js');
+  var Baz = require('bazooka');
 
   beforeEach(function() {
     Baz.register(componentsRegistry);

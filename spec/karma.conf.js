@@ -1,8 +1,11 @@
+var path = require("path");
+
+
 module.exports = function(config) {
   config.set({
     basePath: '',
 
-    frameworks: ['browserify', 'jasmine'],
+    frameworks: ['jasmine'],
 
     files: [
       '**/*Spec.js'
@@ -11,7 +14,7 @@ module.exports = function(config) {
     exclude: [],
 
     preprocessors: {
-      '**/*Spec.js': ['browserify']
+      '**/*Spec.js': ['webpack']
     },
 
     reporters: ['progress'],
@@ -28,13 +31,22 @@ module.exports = function(config) {
     browsers: ['PhantomJS'],
 
     plugins: [
-      'karma-browserify',
+      'karma-webpack',
       'karma-jasmine',
       'karma-phantomjs-launcher'
     ],
 
-    browserify: {
-      plugin: ['proxyquireify/plugin']
+    webpack: {
+      resolve: {
+        alias: {
+          bazooka: path.join(__dirname, '..', 'src', 'main.js'),
+        },
+        modulesDirectories: ["node_modules", "src"],
+      },
+    },
+
+    webpackMiddleware: {
+      noInfo: true
     },
 
     singleRun: false

@@ -1,6 +1,7 @@
 'use strict';
 
 var React = require('react');
+var ReactDOM = require('react-dom');
 
 var GreetingComponent = React.createClass({
   render: function() {
@@ -9,7 +10,7 @@ var GreetingComponent = React.createClass({
 });
 
 var greeting = function (element) {
-  React.render(
+  ReactDOM.render(
     React.createElement(
       GreetingComponent,
       {'message': element.getAttribute('data-message')}

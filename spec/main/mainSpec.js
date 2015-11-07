@@ -21,7 +21,7 @@ var componentsRegistry = {
 };
 
 describe('Baz', function() {
-  var Baz = require('../../src/main.js');
+  var Baz = require('bazooka');
 
   beforeEach(function() {
     spyOn(componentsRegistry, 'exampleBazFunc');

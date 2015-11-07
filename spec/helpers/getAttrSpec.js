@@ -2,7 +2,7 @@
 /* global describe, beforeEach, afterEach, it, expect */
 /* eslint max-nested-callbacks:0 */
 
-var Baz = require('../../src/main.js');
+var Baz = require('bazooka');
 var getAttrs = Baz.h.getAttrs;
 
 describe('Baz.h.getAttrs', function() {
