@@ -173,7 +173,7 @@ var Bazooka = function (value) {
  */
 Bazooka.BazookaWrapper = BazookaWrapper;
 
-Bazooka.h = require('./helpers.js');
+Bazooka.h = require('./helpers');
 
 /**
  * Register components names
