@@ -7,7 +7,6 @@
     "example": "examples"
   },
   "scripts": {
-    "prepublish": "make example",
     "test": "make test"
   },
   "repository": {
