@@ -1,6 +1,6 @@
 {
   "name": "bazooka",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Simple tool for declarative binding applications to HTML nodes.",
   "main": "src/main.js",
   "directories": {

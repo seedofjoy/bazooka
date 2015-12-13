@@ -72,6 +72,9 @@ var getAttrs = function (prefix, node) {
   }
 
   if (node === void 0) {
+    if (process.env.NODE_ENV != 'production') {
+      console.warn('`Baz.h.getAttrs(node)` is deprecated. Use `Baz.h.getAttrs(prefix, node)` or `Baz.h.getAttrs(prefix)(node)` instead')
+    }
     node = prefix;
     return _getPrefixedAttrs('', node);
   }

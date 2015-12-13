@@ -125,4 +125,22 @@ describe('Baz.h.getAttrs', function() {
     expect(attrs.abc).toBeDefined();
     expect(attrs.abCDe).toBeDefined();
   });
+
+  it('deprecation warnings', function () {
+    spyOn(console, 'warn');
+
+    getAttrs(node)
+    if (process.env.NODE_ENV == 'production') {
+      expect(console.warn).not.toHaveBeenCalled()
+    } else {
+      expect(console.warn).toHaveBeenCalled()
+      console.warn.calls.reset()
+    }
+
+    getAttrs('tt', node)
+    expect(console.warn).not.toHaveBeenCalled()
+
+    getAttrs('tt')(node)
+    expect(console.warn).not.toHaveBeenCalled()
+  });
 });
