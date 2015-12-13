@@ -6,10 +6,10 @@ karma = $(node_modules)/karma/bin/karma
 karma_conf = $(shell pwd)/spec/karma.conf.js
 webpack = $(node_modules)/webpack/bin/webpack.js
 
-.PHONY: example test
+.PHONY: examples test
 
-example:
-	$(webpack) --config=webpack.config.example.js
+examples:
+	$(webpack) --config=webpack.config.examples.js
 
 test:
 	$(karma) start $(karma_conf) --single-run

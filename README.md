@@ -11,15 +11,16 @@ $ npm install bazooka
 
 ## Examples
 
-To view the examples, clone the bazooka repo and install the dependencies:
+To view the examples, clone the bazooka repo, install the dependencies and compile examples:
 
 ```bash
 $ git clone git://github.com/seedofjoy/bazooka.git
 $ cd bazooka
 $ npm install
+$ make examples
 ```
 
-Then run whichever example you want by opening index.html in examples subdirectories:
+Then run whichever example you want by opening index.html in `/examples/` subdirectories:
 ```bash
 $ cd examples
 ```
