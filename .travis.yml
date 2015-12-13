@@ -5,6 +5,8 @@ node_js:
   - "4.0"
 before_install:
   - npm install -g npm@3
+install:
+  - NODE_ENV=test npm install
 env:
   -
   - NODE_ENV=production
