@@ -1,22 +1,5 @@
 'use strict';
 
-// polyfills
-/* eslint-disable no-extend-native, no-undef */
-var MutationObserver = window.MutationObserver
-  || window.WebKitMutationObserver
-  || window.MozMutationObserver;
-
-if (!MutationObserver) {
-  MutationObserver = require('mutation-observer');
-}
-
-if (!Function.prototype.bind) {
-  Function.prototype.bind = require('function-bind');
-}
-/* eslint-enable no-extend-native, no-undef */
-// /polyfills
-
-
 var _bazId = 0;
 var nodesComponentsRegistry = {};
 var componentsRegistry = {};
