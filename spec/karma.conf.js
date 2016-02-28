@@ -5,7 +5,7 @@ module.exports = function(config) {
   config.set({
     basePath: '',
 
-    frameworks: ['jasmine'],
+    frameworks: ['jasmine', 'phantomjs-shim'],
 
     files: [
       '**/*Spec.js'
@@ -33,7 +33,8 @@ module.exports = function(config) {
     plugins: [
       'karma-webpack',
       'karma-jasmine',
-      'karma-phantomjs-launcher'
+      'karma-phantomjs-launcher',
+      'karma-phantomjs-shim'
     ],
 
     webpack: {
