@@ -8,6 +8,10 @@ Simple tool for declarative binding applications to HTML nodes.
 $ npm install bazooka
 ```
 
+### Browser Support
+
+Bazooka uses [MutationObserver](https://developer.mozilla.org/en/docs/Web/API/MutationObserver) to watch for DOM updates. If you want to use `Baz.watch()` and need to support [browsers without MutationObserver](http://caniuse.com/#feat=mutationobserver), you'll need any MutationObserver polyfill (we recommend [this one](https://www.npmjs.com/package/mutation-observer))
+
 
 ## Examples
 
