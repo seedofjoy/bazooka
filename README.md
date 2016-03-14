@@ -36,6 +36,8 @@ $ cd examples
 
 ## [Docs](docs/README.md)
 
+## [Changelog](CHANGELOG.md)
+
 
 ## Tests
 
