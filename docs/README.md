@@ -63,7 +63,7 @@ Parse and bind bazooka components to nodes without bound components
 
 <a name="module_Bazooka.watch"></a>
 ### Bazooka.watch([rootNode]) ⇒ <code>function</code>
-Watch for new nodes with `data-bazooka`. No need to run [Bazooka.refresh](Bazooka.refresh) before this. It will be called automatically.
+Watch for new nodes with `data-bazooka`. No need to run [Bazooka.refresh](#module_Bazooka.refresh) before this. It will be called automatically.
 
 **Kind**: static method of <code>[Bazooka](#module_Bazooka)</code>  
 **Returns**: <code>function</code> - Unwatch function  
@@ -158,4 +158,4 @@ Internal id
 <a name="BazookaWrapper+getComponents"></a>
 ### bazookaWrapper.getComponents() ⇒ <code>Object.&lt;string, BazComponent&gt;</code>
 **Kind**: instance method of <code>[BazookaWrapper](#BazookaWrapper)</code>  
-**Returns**: <code>Object.&lt;string, BazComponent&gt;</code> - — object of the bound to the wrapped node components  
+**Returns**: <code>Object.&lt;string, BazComponent&gt;</code> - object of the bound to the wrapped node [BazComponents](#BazComponent)  

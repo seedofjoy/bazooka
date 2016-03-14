@@ -73,7 +73,7 @@ function BazookaWrapper(node) {
 BazookaWrapper.prototype.constructor = BazookaWrapper;
 
 /**
- * @returns {Object.<string, BazComponent>} — object of the bound to the wrapped node components
+ * @returns {Object.<string, BazComponent>} object of the bound to the wrapped node [BazComponents]{@link BazComponent}
  */
 BazookaWrapper.prototype.getComponents = function () {
   var components = {}
@@ -220,7 +220,7 @@ function _MutationObserverCallback(mutations) {
 }
 
 /**
- * Watch for new nodes with `data-bazooka`. No need to run {@link Bazooka.refresh} before this. It will be called automatically.
+ * Watch for new nodes with `data-bazooka`. No need to run [Bazooka.refresh]{@link module:Bazooka.refresh} before this. It will be called automatically.
  * @func watch
  * @param {node} [rootNode=document.body] - DOM node, children of which will be watched for `data-bazooka`
  * @static
