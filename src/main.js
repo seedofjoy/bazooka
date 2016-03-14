@@ -73,7 +73,7 @@ function BazookaWrapper(node) {
 BazookaWrapper.prototype.constructor = BazookaWrapper;
 
 /**
- * @returns {Object.<string, BazComponent>} object of the bound to the wrapped node [BazComponents]{@link BazComponent}
+ * @returns {Object.<string, BazComponent>} object of the bound to the wrapped node [BazComponents]{@link module:BazComponent}
  */
 BazookaWrapper.prototype.getComponents = function () {
   var components = {}
@@ -102,17 +102,16 @@ function _wrapAndBindNode(node) {
   }
 }
 
-/** @class Bazooka */
-
 /**
- * @namespace BazComponent
+ * @interface BazComponent
+ * @exports BazComponent
  * @description Interface of component, required by [Bazooka.refresh]{@link module:Bazooka.refresh}
  */
 
 /**
  * @name simple
  * @func
- * @memberof BazComponent
+ * @interface
  * @param {node} - bound DOM node
  * @description CommonJS module written only with Bazooka interface to be used with `data-bazooka`
  * @example
@@ -123,7 +122,7 @@ function _wrapAndBindNode(node) {
 
 /**
  * @name universal
- * @namespace BazComponent.universal
+ * @interface
  * @description CommonJS module with Bazooka interface, so it can be used both in `data-bazooka`
  * and in another CommonJS modules via `require()`
  * @example
@@ -138,6 +137,7 @@ function _wrapAndBindNode(node) {
 
 /**
  * @name bazFunc
+ * @abstract
  * @memberof BazComponent.universal
  * @func
  * @param {node} - bound DOM node
@@ -145,7 +145,7 @@ function _wrapAndBindNode(node) {
  */
 
 /**
- * @func
+ * @module {function} Bazooka
  * @param {node|BazookaWrapper} value - DOM node or wrapped node
  * @returns {BazookaWrapper}
  * @example
@@ -162,7 +162,6 @@ var Bazooka = function (value) {
   return new BazookaWrapper(value);
 };
 
-/** @module {function} Bazooka */
 /**
  * Reference to {@link BazookaWrapper} class
  * @name BazookaWrapper
