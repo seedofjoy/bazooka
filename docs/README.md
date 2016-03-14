@@ -1,37 +1,45 @@
 ## Modules
+
 <dl>
 <dt><a href="#module_Bazooka">Bazooka</a> : <code>function</code></dt>
 <dd><p>Bazooka</p>
 </dd>
 </dl>
+
 ## Classes
+
 <dl>
 <dt><a href="#Bazooka">Bazooka</a></dt>
 <dd></dd>
 </dl>
+
 ## Objects
+
 <dl>
 <dt><a href="#BazComponent">BazComponent</a> : <code>object</code></dt>
 <dd><p>Interface of component, required by <a href="#module_Bazooka.refresh">Bazooka.refresh</a></p>
 </dd>
 </dl>
+
 ## Functions
+
 <dl>
-<dt><a href="#Bazooka">Bazooka(value)</a> ⇒ <code>BazookaWrapper</code></dt>
+<dt><a href="#Bazooka">Bazooka(value)</a> ⇒ <code><a href="#BazookaWrapper">BazookaWrapper</a></code></dt>
 <dd></dd>
 </dl>
+
 <a name="module_Bazooka"></a>
 ## Bazooka : <code>function</code>
 Bazooka
 
 
 * [Bazooka](#module_Bazooka) : <code>function</code>
-  * _static_
-    * [.register(componentsObj)](#module_Bazooka.register)
-    * [.refresh([rootNode])](#module_Bazooka.refresh)
-    * [.watch([rootNode])](#module_Bazooka.watch) ⇒ <code>function</code>
-  * _inner_
-    * [~BazookaWrapper](#module_Bazooka..BazookaWrapper)
+    * _static_
+        * [.register(componentsObj)](#module_Bazooka.register)
+        * [.refresh([rootNode])](#module_Bazooka.refresh)
+        * [.watch([rootNode])](#module_Bazooka.watch) ⇒ <code>function</code>
+    * _inner_
+        * [~BazookaWrapper](#module_Bazooka..BazookaWrapper)
 
 <a name="module_Bazooka.register"></a>
 ### Bazooka.register(componentsObj)
@@ -66,7 +74,7 @@ Watch for new nodes with `data-bazooka`. No need to run [Bazooka.refresh](Bazook
 
 <a name="module_Bazooka..BazookaWrapper"></a>
 ### Bazooka~BazookaWrapper
-Reference to [BazookaWrapper](BazookaWrapper) class
+Reference to [BazookaWrapper](#BazookaWrapper) class
 
 **Kind**: inner property of <code>[Bazooka](#module_Bazooka)</code>  
 <a name="Bazooka"></a>
@@ -84,9 +92,9 @@ Interface of component, required by [Bazooka.refresh](#module_Bazooka.refresh)
 **Kind**: global namespace  
 
 * [BazComponent](#BazComponent) : <code>object</code>
-  * [.universal](#BazComponent.universal) : <code>object</code>
-    * [.bazFunc()](#BazComponent.universal.bazFunc)
-  * [.simple()](#BazComponent.simple)
+    * [.universal](#BazComponent.universal) : <code>object</code>
+        * [.bazFunc()](#BazComponent.universal.bazFunc)
+    * [.simple()](#BazComponent.simple)
 
 <a name="BazComponent.universal"></a>
 ### BazComponent.universal : <code>object</code>
@@ -127,12 +135,12 @@ CommonJS module written only with Bazooka interface to be used with `data-bazook
   module.exports = function bazFunc(node) {}
 ```
 <a name="Bazooka"></a>
-## Bazooka(value) ⇒ <code>BazookaWrapper</code>
+## Bazooka(value) ⇒ <code>[BazookaWrapper](#BazookaWrapper)</code>
 **Kind**: global function  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| value | <code>node</code> &#124; <code>BazookaWrapper</code> | DOM node or wrapped node |
+| value | <code>node</code> &#124; <code>[BazookaWrapper](#BazookaWrapper)</code> | DOM node or wrapped node |
 
 **Example**  
 ```javascript
@@ -144,3 +152,10 @@ CommonJS module written only with Bazooka interface to be used with `data-bazook
 Internal id
 
 **Kind**: static property of <code>[Bazooka](#Bazooka)</code>  
+<a name="BazookaWrapper"></a>
+## ~BazookaWrapper
+**Kind**: inner class  
+<a name="BazookaWrapper+getComponents"></a>
+### bazookaWrapper.getComponents() ⇒ <code>Object.&lt;string, BazComponent&gt;</code>
+**Kind**: instance method of <code>[BazookaWrapper](#BazookaWrapper)</code>  
+**Returns**: <code>Object.&lt;string, BazComponent&gt;</code> - — object of the bound to the wrapped node components  

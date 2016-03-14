@@ -41,6 +41,10 @@ function _applyComponentsToNode(wrappedNode) {
   }
 }
 
+/**
+ * @class BazookaWrapper
+ * @inner
+ */
 function BazookaWrapper(node) {
   var bazId = node.getAttribute('data-bazid');
 
@@ -61,7 +65,16 @@ function BazookaWrapper(node) {
   this.id = bazId;
 }
 
+/**
+ * @ignore
+ * @constructor
+ * @param {node} — DOM node with a bound components
+ */
 BazookaWrapper.prototype.constructor = BazookaWrapper;
+
+/**
+ * @returns {Object.<string, BazComponent>} — object of the bound to the wrapped node components
+ */
 BazookaWrapper.prototype.getComponents = function () {
   var components = {}
 
