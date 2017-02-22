@@ -36,7 +36,11 @@ function _applyComponentsToNode(wrappedNode) {
     var component = _getComponent(nodesComponentsRegistry[bazId][i]);
 
     if (component.bazFunc) {
-      component.bazFunc(wrappedNode.__wrapped__);
+      try {
+        component.bazFunc(wrappedNode.__wrapped__);
+      } catch (e) {
+        console.error(component.bazFunc.name + ' component throws during initialization.');
+      }
     }
   }
 }
