@@ -40,7 +40,7 @@ function _applyComponentsToNode(wrappedNode) {
       try {
         component.bazFunc(wrappedNode.__wrapped__);
       } catch (e) {
-        console.error(componentName + ' component throws during initialization. ' + e);
+        console.error(componentName + ' component throws during initialization.', e);
       }
     }
   }
