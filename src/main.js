@@ -33,10 +33,15 @@ function _applyComponentsToNode(wrappedNode) {
   var bazId = wrappedNode.id;
 
   for (var i = 0; i < nodesComponentsRegistry[bazId].length; i++) {
-    var component = _getComponent(nodesComponentsRegistry[bazId][i]);
+    var componentName = nodesComponentsRegistry[bazId][i];
+    var component = _getComponent(componentName);
 
     if (component.bazFunc) {
-      component.bazFunc(wrappedNode.__wrapped__);
+      try {
+        component.bazFunc(wrappedNode.__wrapped__);
+      } catch (e) {
+        console.error(componentName + ' component throws during initialization.', e);
+      }
     }
   }
 }
