@@ -1,3 +1,7 @@
+## 0.6.0
+
+* :heavy_plus_sign: [added] wrapped `bazFunc` calls into `try/catch`
+
 ## 0.5.0
 
 * :x: [removed] `MutationObserver` and `Function.prototype.bind` polyfills
