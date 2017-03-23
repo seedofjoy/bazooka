@@ -1,3 +1,7 @@
+## 0.6.1
+
+* :wrench: [changed] rethrow first exception from `Bazooka.refresh`
+
 ## 0.6.0
 
 * :heavy_plus_sign: [added] wrapped `bazFunc` calls into `try/catch`

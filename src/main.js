@@ -5,6 +5,10 @@ var nodesComponentsRegistry = {};
 var componentsRegistry = {};
 var wrappersRegistry = {};
 
+function _id(value) {
+  return value;
+}
+
 function _getComponent(name) {
   if (!componentsRegistry[name]) {
     throw new Error(name + ' component is not registered. Use `Baz.register()` to do it');
@@ -31,6 +35,7 @@ function _bindComponentToNode(wrappedNode, componentName) {
 
 function _applyComponentsToNode(wrappedNode) {
   var bazId = wrappedNode.id;
+  var caughtException;
 
   for (var i = 0; i < nodesComponentsRegistry[bazId].length; i++) {
     var componentName = nodesComponentsRegistry[bazId][i];
@@ -41,8 +46,15 @@ function _applyComponentsToNode(wrappedNode) {
         component.bazFunc(wrappedNode.__wrapped__);
       } catch (e) {
         console.error(componentName + ' component throws during initialization.', e);
+        if (!caughtException) {
+          caughtException = e;
+        }
       }
     }
+  }
+
+  if (caughtException) {
+    throw caughtException;
   }
 }
 
@@ -201,6 +213,8 @@ Bazooka.register = function (componentsObj) {
  */
 Bazooka.refresh = function (rootNode) {
   rootNode = rootNode || document.body;
+  var nodes;
+  var caughtException;
 
   for (var bazId in wrappersRegistry) {
     if (wrappersRegistry[bazId] && !wrappersRegistry[bazId].__wrapped__.parentNode) {
@@ -209,10 +223,24 @@ Bazooka.refresh = function (rootNode) {
     }
   }
 
-  Array.prototype.forEach.call(
+  nodes = Array.prototype.map.call(
     rootNode.querySelectorAll('[data-bazooka]:not([data-bazid])'),
-    _wrapAndBindNode
+    _id
   );
+
+  for (var i = 0; i < nodes.length; i++) {
+    try {
+      _wrapAndBindNode(nodes[i]);
+    } catch (e) {
+      if (!caughtException) {
+        caughtException = e;
+      }
+    }
+  }
+
+  if (caughtException) {
+    throw caughtException;
+  }
 };
 
 function _observedMutationCallback(mutation) {
