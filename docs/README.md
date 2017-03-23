@@ -10,6 +10,7 @@
 </dl>
 
 <a name="module_BazComponent"></a>
+
 ## BazComponent
 Interface of component, required by [Bazooka.refresh](#module_Bazooka.refresh)
 
@@ -19,6 +20,7 @@ Interface of component, required by [Bazooka.refresh](#module_Bazooka.refresh)
     * [~universal](#module_BazComponent..universal)
 
 <a name="module_BazComponent..simple"></a>
+
 ### BazComponent~simple
 CommonJS module written only with Bazooka interface to be used with `data-bazooka`
 
@@ -33,6 +35,7 @@ CommonJS module written only with Bazooka interface to be used with `data-bazook
   module.exports = function bazFunc(node) {}
 ```
 <a name="module_BazComponent..universal"></a>
+
 ### BazComponent~universal
 CommonJS module with Bazooka interface, so it can be used both in `data-bazooka`
 and in another CommonJS modules via `require()`
@@ -47,6 +50,7 @@ and in another CommonJS modules via `require()`
   }
 ```
 <a name="module_Bazooka"></a>
+
 ## Bazooka ⇒ <code>[BazookaWrapper](#BazookaWrapper)</code>
 Bazooka
 
@@ -70,6 +74,7 @@ Bazooka
         * [~BazookaWrapper](#module_Bazooka..BazookaWrapper)
 
 <a name="module_Bazooka.register"></a>
+
 ### Bazooka.register(componentsObj)
 Register components names
 
@@ -80,6 +85,7 @@ Register components names
 | componentsObj | <code>Object</code> | object with names as keys and components as values |
 
 <a name="module_Bazooka.refresh"></a>
+
 ### Bazooka.refresh([rootNode])
 Parse and bind bazooka components to nodes without bound components
 
@@ -90,6 +96,7 @@ Parse and bind bazooka components to nodes without bound components
 | [rootNode] | <code>node</code> | <code>document.body</code> | DOM node, children of which will be checked for `data-bazooka` |
 
 <a name="module_Bazooka.watch"></a>
+
 ### Bazooka.watch([rootNode]) ⇒ <code>function</code>
 Watch for new nodes with `data-bazooka`. No need to run [Bazooka.refresh](#module_Bazooka.refresh) before this. It will be called automatically.
 
@@ -101,14 +108,17 @@ Watch for new nodes with `data-bazooka`. No need to run [Bazooka.refresh](#modul
 | [rootNode] | <code>node</code> | <code>document.body</code> | DOM node, children of which will be watched for `data-bazooka` |
 
 <a name="module_Bazooka..BazookaWrapper"></a>
+
 ### Bazooka~BazookaWrapper
 Reference to [BazookaWrapper](#BazookaWrapper) class
 
 **Kind**: inner property of <code>[Bazooka](#module_Bazooka)</code>  
 <a name="BazookaWrapper"></a>
+
 ## ~BazookaWrapper
 **Kind**: inner class  
 <a name="BazookaWrapper+getComponents"></a>
+
 ### bazookaWrapper.getComponents() ⇒ <code>Object.&lt;string, BazComponent&gt;</code>
 **Kind**: instance method of <code>[BazookaWrapper](#BazookaWrapper)</code>  
 **Returns**: <code>Object.&lt;string, BazComponent&gt;</code> - object of the bound to the wrapped node [BazComponents](#module_BazComponent)  

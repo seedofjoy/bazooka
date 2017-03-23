@@ -7,9 +7,11 @@
     "example": "examples"
   },
   "scripts": {
-    "test": "make test",
-    "preversion": "npm test",
-    "postversion": "git push && git push --tags"
+    "test": "karma start spec/karma.conf.js --single-run",
+    "preversion": "npm test && npm run docs",
+    "postversion": "git push && git push --tags",
+    "docs": "mkdir -p ./docs && jsdoc2md src/main.js > ./docs/README.md",
+    "examples": "webpack --config=webpack.config.examples.js"
   },
   "repository": {
     "type": "git",

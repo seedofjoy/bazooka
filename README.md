@@ -21,7 +21,7 @@ To view the examples, clone the bazooka repo, install the dependencies and compi
 $ git clone git://github.com/seedofjoy/bazooka.git
 $ cd bazooka
 $ npm install
-$ make examples
+$ npm run examples
 ```
 
 Then run whichever example you want by opening index.html in `/examples/` subdirectories:
