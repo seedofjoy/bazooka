@@ -2,7 +2,7 @@
 var Baz = require('bazooka');
 
 Baz.register({
-  'greeting': require('greeting'),
+  greeting: require('greeting'),
 });
 
 Baz.refresh();

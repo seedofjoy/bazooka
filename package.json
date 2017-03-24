@@ -7,7 +7,10 @@
     "example": "examples"
   },
   "scripts": {
-    "test": "karma start spec/karma.conf.js --single-run",
+    "test": "npm run lint && karma start spec/karma.conf.js --single-run",
+    "lint": "npm run prettier -- -l",
+    "fmt": "npm run prettier -- --write",
+    "prettier": "prettier \"{src,spec,examples}/**/*.js\" \"webpack.config.examples.js\" --single-quote --trailing-comma=es5",
     "preversion": "npm test && npm run docs",
     "postversion": "git push && git push --tags",
     "docs": "mkdir -p ./docs && jsdoc2md src/main.js > ./docs/README.md",
@@ -45,6 +48,7 @@
     "kefir": "^3.1.0",
     "lodash": "^3.10.1",
     "phantomjs": "^1.9.18",
+    "prettier": "^0.22.0",
     "react": "^0.14.2",
     "react-dom": "^0.14.2",
     "webpack": "^1.12.3"

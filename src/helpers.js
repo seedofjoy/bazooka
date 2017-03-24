@@ -5,14 +5,16 @@ var IGNORED_ATTRS = ['data-bazid', 'data-bazooka'];
 var rbrace = /^(?:\{.*\}|\[.*\])$/;
 var rdataAttr = /^data-([a-z\d\-]+)$/;
 var rdashAlpha = /-([a-z])/gi;
-var fcamelCase = function (all, letter) {
+var fcamelCase = function(all, letter) {
   return letter.toUpperCase();
 };
 
 function _parseAttr(prefix, parsedAttrs, attr) {
-  if (typeof attr.value !== 'string') { return parsedAttrs; }
+  if (typeof attr.value !== 'string') {
+    return parsedAttrs;
+  }
 
-  if ( !rdataAttr.test(attr.name) || IGNORED_ATTRS.indexOf(attr.name) !== -1) {
+  if (!rdataAttr.test(attr.name) || IGNORED_ATTRS.indexOf(attr.name) !== -1) {
     return parsedAttrs;
   }
 
@@ -50,7 +52,9 @@ function _parseAttr(prefix, parsedAttrs, attr) {
         } else {
           data = attr.value;
         }
-      } catch (e) { return parsedAttrs; }
+      } catch (e) {
+        return parsedAttrs;
+      }
   }
 
   parsedAttrs[camelCaseName] = data;
@@ -58,7 +62,11 @@ function _parseAttr(prefix, parsedAttrs, attr) {
 }
 
 function _getPrefixedAttrs(prefix, node) {
-  return Array.prototype.reduce.call(node.attributes, _parseAttr.bind(null, prefix), {});
+  return Array.prototype.reduce.call(
+    node.attributes,
+    _parseAttr.bind(null, prefix),
+    {}
+  );
 }
 
 /**
@@ -66,14 +74,16 @@ function _getPrefixedAttrs(prefix, node) {
  * @param {HTMLNode} node - target node
  * @returns {function|object} - curried function for parsing node with passed prefix or parsed attrs
  */
-var getAttrs = function (prefix, node) {
+var getAttrs = function(prefix, node) {
   if (typeof prefix === 'string' && node === void 0) {
     return _getPrefixedAttrs.bind(null, prefix);
   }
 
   if (node === void 0) {
     if (process.env.NODE_ENV != 'production') {
-      console.warn('`Baz.h.getAttrs(node)` is deprecated. Use `Baz.h.getAttrs(prefix, node)` or `Baz.h.getAttrs(prefix)(node)` instead')
+      console.warn(
+        '`Baz.h.getAttrs(node)` is deprecated. Use `Baz.h.getAttrs(prefix, node)` or `Baz.h.getAttrs(prefix)(node)` instead'
+      );
     }
     node = prefix;
     return _getPrefixedAttrs('', node);
@@ -88,13 +98,13 @@ function _prefixDataKey(dataKey) {
   }
 
   if (dataKey.indexOf('data-') === 0) {
-    return dataKey
+    return dataKey;
   } else if (dataKey.indexOf('-') >= 0) {
-    return 'data-' + dataKey
+    return 'data-' + dataKey;
   } else {
-    return 'data-' + dataKey.replace(/([A-Z])/g, "-$1").toLowerCase()
+    return 'data-' + dataKey.replace(/([A-Z])/g, '-$1').toLowerCase();
   }
-};
+}
 
 /**
  * @param {HTMLNode} parentNode
@@ -102,20 +112,20 @@ function _prefixDataKey(dataKey) {
  * @param {string} [dataValue]
  * @returns {NodeList}
  */
-var getChildrenWithData = function (parentNode, dataKey, dataValue) {
+var getChildrenWithData = function(parentNode, dataKey, dataValue) {
   var prefixedDataKey = _prefixDataKey(dataKey);
   var query;
 
   if (dataValue === void 0) {
-    query = '[' + prefixedDataKey + ']'
+    query = '[' + prefixedDataKey + ']';
   } else {
-    query = '[' + prefixedDataKey + '="' + dataValue + '"]'
+    query = '[' + prefixedDataKey + '="' + dataValue + '"]';
   }
 
-  return parentNode.querySelectorAll(query)
+  return parentNode.querySelectorAll(query);
 };
 
 module.exports = {
   getAttrs: getAttrs,
-  getChildrenWithData: getChildrenWithData
+  getChildrenWithData: getChildrenWithData,
 };

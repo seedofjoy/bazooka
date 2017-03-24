@@ -11,7 +11,9 @@ function _id(value) {
 
 function _getComponent(name) {
   if (!componentsRegistry[name]) {
-    throw new Error(name + ' component is not registered. Use `Baz.register()` to do it');
+    throw new Error(
+      name + ' component is not registered. Use `Baz.register()` to do it'
+    );
   }
 
   return componentsRegistry[name];
@@ -21,7 +23,7 @@ function _bindComponentToNode(wrappedNode, componentName) {
   var bazId = wrappedNode.id;
 
   if (!componentName) {
-    return
+    return;
   }
 
   if (nodesComponentsRegistry[bazId] === void 0) {
@@ -45,7 +47,10 @@ function _applyComponentsToNode(wrappedNode) {
       try {
         component.bazFunc(wrappedNode.__wrapped__);
       } catch (e) {
-        console.error(componentName + ' component throws during initialization.', e);
+        console.error(
+          componentName + ' component throws during initialization.',
+          e
+        );
         if (!caughtException) {
           caughtException = e;
         }
@@ -92,14 +97,16 @@ BazookaWrapper.prototype.constructor = BazookaWrapper;
 /**
  * @returns {Object.<string, BazComponent>} object of the bound to the wrapped node [BazComponents]{@link module:BazComponent}
  */
-BazookaWrapper.prototype.getComponents = function () {
-  var components = {}
+BazookaWrapper.prototype.getComponents = function() {
+  var components = {};
 
   for (var i = 0; i < nodesComponentsRegistry[this.id].length; i++) {
-    components[nodesComponentsRegistry[this.id][i]] = _getComponent(nodesComponentsRegistry[this.id][i])
+    components[nodesComponentsRegistry[this.id][i]] = _getComponent(
+      nodesComponentsRegistry[this.id][i]
+    );
   }
 
-  return components
+  return components;
 };
 
 function _wrapAndBindNode(node) {
@@ -171,7 +178,7 @@ function _wrapAndBindNode(node) {
  *   var $baz = Baz(node);
  * ```
  */
-var Bazooka = function (value) {
+var Bazooka = function(value) {
   if (value instanceof BazookaWrapper) {
     return value;
   }
@@ -193,7 +200,7 @@ Bazooka.h = require('./helpers');
  * @param {Object} componentsObj - object with names as keys and components as values
  * @static
  */
-Bazooka.register = function (componentsObj) {
+Bazooka.register = function(componentsObj) {
   for (var name in componentsObj) {
     if (typeof componentsObj[name] === 'function') {
       componentsRegistry[name] = {
@@ -211,13 +218,15 @@ Bazooka.register = function (componentsObj) {
  * @param {node} [rootNode=document.body] - DOM node, children of which will be checked for `data-bazooka`
  * @static
  */
-Bazooka.refresh = function (rootNode) {
+Bazooka.refresh = function(rootNode) {
   rootNode = rootNode || document.body;
   var nodes;
   var caughtException;
 
   for (var bazId in wrappersRegistry) {
-    if (wrappersRegistry[bazId] && !wrappersRegistry[bazId].__wrapped__.parentNode) {
+    if (
+      wrappersRegistry[bazId] && !wrappersRegistry[bazId].__wrapped__.parentNode
+    ) {
       wrappersRegistry[bazId] = null;
       nodesComponentsRegistry[bazId] = [];
     }
@@ -258,12 +267,12 @@ function _MutationObserverCallback(mutations) {
  * @static
  * @returns {function} Unwatch function
  */
-Bazooka.watch = function (rootNode) {
+Bazooka.watch = function(rootNode) {
   var observer = new MutationObserver(_MutationObserverCallback);
   rootNode = rootNode || document.body;
 
   Bazooka.refresh(rootNode);
-  observer.observe(rootNode, {childList: true, subtree: true});
+  observer.observe(rootNode, { childList: true, subtree: true });
 
   return observer.disconnect.bind(observer);
 };

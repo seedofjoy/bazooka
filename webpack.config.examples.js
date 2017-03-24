@@ -13,11 +13,11 @@ var getDirectories = function(srcPath) {
 };
 
 var makeFullPath = function(p) {
-  return path.join(EXAMPLES_BASE_DIR, p)
+  return path.join(EXAMPLES_BASE_DIR, p);
 };
 
 var makeAppPath = function(dir) {
-  return path.join(dir, 'app.js')
+  return path.join(dir, 'app.js');
 };
 
 var examplesNames = getDirectories(EXAMPLES_BASE_DIR);
@@ -28,7 +28,6 @@ var entry = _.zipObject(examplesNames, examplesAppPaths);
 
 var modulesDirectories = ['node_modules', 'src'];
 modulesDirectories = modulesDirectories.concat(examplesPaths);
-
 
 module.exports = {
   entry: entry,
