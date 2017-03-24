@@ -9,6 +9,7 @@ describe('Baz.h.getAttrs', function() {
   var node;
 
   beforeEach(function() {
+    spyOn(console, 'warn');
     node = document.createElement('div');
   });
 
@@ -127,8 +128,6 @@ describe('Baz.h.getAttrs', function() {
   });
 
   it('deprecation warnings', function() {
-    spyOn(console, 'warn');
-
     getAttrs(node);
     if (process.env.NODE_ENV == 'production') {
       expect(console.warn).not.toHaveBeenCalled();

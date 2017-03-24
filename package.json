@@ -7,7 +7,8 @@
     "example": "examples"
   },
   "scripts": {
-    "test": "npm run lint && karma start spec/karma.conf.js --single-run",
+    "test": "npm run lint && npm run test-karma",
+    "test-karma": "karma start spec/karma.conf.js --single-run",
     "lint": "npm run prettier -- -l",
     "fmt": "npm run prettier -- --write",
     "prettier": "prettier \"{src,spec,examples}/**/*.js\" \"webpack.config.examples.js\" --single-quote --trailing-comma=es5",
