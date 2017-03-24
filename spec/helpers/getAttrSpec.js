@@ -128,13 +128,16 @@ describe('Baz.h.getAttrs', function() {
   });
 
   it('deprecation warnings', function() {
+    window.NODE_ENV = 'production';
     getAttrs(node);
-    if (process.env.NODE_ENV == 'production') {
-      expect(console.warn).not.toHaveBeenCalled();
-    } else {
-      expect(console.warn).toHaveBeenCalled();
-      console.warn.calls.reset();
-    }
+    expect(console.warn).not.toHaveBeenCalled();
+
+    window.NODE_ENV = 'development';
+    getAttrs(node);
+    expect(console.warn).toHaveBeenCalled();
+    console.warn.calls.reset();
+
+    delete window.NODE_ENV;
 
     getAttrs('tt', node);
     expect(console.warn).not.toHaveBeenCalled();
