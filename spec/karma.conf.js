@@ -1,4 +1,4 @@
-var path = require("path");
+var path = require('path');
 var webpack = require('webpack');
 
 module.exports = function(config) {
@@ -7,14 +7,12 @@ module.exports = function(config) {
 
     frameworks: ['jasmine', 'phantomjs-shim'],
 
-    files: [
-      '**/*Spec.js'
-    ],
+    files: ['**/*Spec.js'],
 
     exclude: [],
 
     preprocessors: {
-      '**/*Spec.js': ['webpack']
+      '**/*Spec.js': ['webpack'],
     },
 
     reporters: ['progress'],
@@ -34,7 +32,7 @@ module.exports = function(config) {
       'karma-webpack',
       'karma-jasmine',
       'karma-phantomjs-launcher',
-      'karma-phantomjs-shim'
+      'karma-phantomjs-shim',
     ],
 
     webpack: {
@@ -42,19 +40,19 @@ module.exports = function(config) {
         alias: {
           bazooka: path.join(__dirname, '..', 'src', 'main.js'),
         },
-        modulesDirectories: ["node_modules", "src"],
+        modulesDirectories: ['node_modules', 'src'],
       },
       plugins: [
         new webpack.DefinePlugin({
-          'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
+          'process.env.NODE_ENV': 'window.NODE_ENV',
         }),
       ],
     },
 
     webpackMiddleware: {
-      noInfo: true
+      noInfo: true,
     },
 
-    singleRun: false
+    singleRun: false,
   });
 };

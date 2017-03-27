@@ -48,6 +48,14 @@ $ npm install
 $ npm test
 ```
 
+## Lint
+
+Bazooka uses [prettier](https://github.com/prettier/prettier) linter. To conform with it, just run before creating a commit:
+
+```bash
+$ npm run fmt
+```
+
 
 ## License
 
