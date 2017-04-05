@@ -41,7 +41,7 @@ describe('Baz', function() {
     node.setAttribute('data-bazooka', 'goodBazFunc');
     Baz.refresh();
 
-    expect(componentsRegistry.goodBazFunc).toHaveBeenCalledWith(node);
+    expect(componentsRegistry.goodBazFunc).toHaveBeenCalledWith(node, void 0);
   });
 
   it('should catch error from errorousBazFunc', function() {
@@ -54,7 +54,10 @@ describe('Baz', function() {
       Baz.refresh();
     }).toThrow();
 
-    expect(componentsRegistry.errorousBazFunc).toHaveBeenCalledWith(node);
+    expect(componentsRegistry.errorousBazFunc).toHaveBeenCalledWith(
+      node,
+      void 0
+    );
   });
 
   it('error from errorousBazFunc should not stop goodBazFunc', function() {
@@ -71,13 +74,22 @@ describe('Baz', function() {
       Baz.refresh();
     }).toThrow();
 
-    expect(componentsRegistry.errorousBazFunc).toHaveBeenCalledWith(node);
-    expect(componentsRegistry.errorousBazFunc).toHaveBeenCalledWith(node2);
-    expect(componentsRegistry.errorousBazFunc).not.toHaveBeenCalledWith(node3);
+    expect(componentsRegistry.errorousBazFunc).toHaveBeenCalledWith(
+      node,
+      void 0
+    );
+    expect(componentsRegistry.errorousBazFunc).toHaveBeenCalledWith(
+      node2,
+      void 0
+    );
+    expect(componentsRegistry.errorousBazFunc).not.toHaveBeenCalledWith(
+      node3,
+      void 0
+    );
 
-    expect(componentsRegistry.goodBazFunc).toHaveBeenCalledWith(node);
-    expect(componentsRegistry.goodBazFunc).toHaveBeenCalledWith(node2);
-    expect(componentsRegistry.goodBazFunc).toHaveBeenCalledWith(node3);
+    expect(componentsRegistry.goodBazFunc).toHaveBeenCalledWith(node, void 0);
+    expect(componentsRegistry.goodBazFunc).toHaveBeenCalledWith(node2, void 0);
+    expect(componentsRegistry.goodBazFunc).toHaveBeenCalledWith(node3, void 0);
 
     expect(node.getAttribute('data-called')).toBe('yes');
     expect(node2.getAttribute('data-called')).toBe('yes');
@@ -93,7 +105,10 @@ describe('Baz', function() {
     expect(function() {
       Baz.refresh();
     }).toThrow();
-    expect(componentsRegistry.errorousBazFunc).toHaveBeenCalledWith(node);
+    expect(componentsRegistry.errorousBazFunc).toHaveBeenCalledWith(
+      node,
+      void 0
+    );
 
     Baz.refresh();
   });

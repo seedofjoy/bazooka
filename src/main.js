@@ -35,31 +35,17 @@ function _bindComponentToNode(wrappedNode, componentName) {
   }
 }
 
-function _applyComponentsToNode(wrappedNode) {
+function _applyComponentToNode(componentName, wrappedNode, state) {
   var bazId = wrappedNode.id;
-  var caughtException;
+  var component = _getComponent(componentName);
+  var dispose;
 
-  for (var i = 0; i < nodesComponentsRegistry[bazId].length; i++) {
-    var componentName = nodesComponentsRegistry[bazId][i];
-    var component = _getComponent(componentName);
+  if (component.bazFunc) {
+    dispose = component.bazFunc(wrappedNode.__wrapped__, state);
 
-    if (component.bazFunc) {
-      try {
-        component.bazFunc(wrappedNode.__wrapped__);
-      } catch (e) {
-        console.error(
-          componentName + ' component throws during initialization.',
-          e
-        );
-        if (!caughtException) {
-          caughtException = e;
-        }
-      }
+    if (typeof dispose === 'function') {
+      wrappedNode.__disposesMap__[componentName] = dispose;
     }
-  }
-
-  if (caughtException) {
-    throw caughtException;
   }
 }
 
@@ -74,9 +60,11 @@ function BazookaWrapper(node) {
     bazId = (_bazId++).toString();
     node.setAttribute('data-bazid', bazId);
     wrappersRegistry[bazId] = this;
+    this.__disposesMap__ = {};
+  } else {
+    this.__disposesMap__ = wrappersRegistry[bazId].__disposesMap__;
   }
 
-  this.__wrapped__ = node;
   /**
    * Internal id
    * @name Bazooka.id
@@ -85,6 +73,7 @@ function BazookaWrapper(node) {
    * @instance
    */
   this.id = bazId;
+  this.__wrapped__ = node;
 }
 
 /**
@@ -109,10 +98,27 @@ BazookaWrapper.prototype.getComponents = function() {
   return components;
 };
 
+/**
+ * @returns {Object.<string, BazComponent>} object of the bound to the wrapped node [BazComponents]{@link module:BazComponent}
+ */
+BazookaWrapper.prototype.dispose = function() {
+  for (var disposableComponentName in this.__disposesMap__) {
+    if (typeof this.__disposesMap__[disposableComponentName] === 'function') {
+      this.__disposesMap__[disposableComponentName]();
+      this.__disposesMap__[disposableComponentName] = null;
+    }
+  }
+
+  wrappersRegistry[this.id] = null;
+  nodesComponentsRegistry[this.id] = [];
+};
+
 function _wrapAndBindNode(node) {
   var dataBazooka = (node.getAttribute('data-bazooka') || '').trim();
   var wrappedNode;
   var componentNames;
+  var componentName;
+  var caughtException;
 
   if (dataBazooka) {
     componentNames = dataBazooka.split(' ');
@@ -122,7 +128,25 @@ function _wrapAndBindNode(node) {
       _bindComponentToNode(wrappedNode, componentNames[i].trim());
     }
 
-    _applyComponentsToNode(wrappedNode);
+    for (var i = 0; i < nodesComponentsRegistry[wrappedNode.id].length; i++) {
+      componentName = nodesComponentsRegistry[wrappedNode.id][i];
+
+      try {
+        _applyComponentToNode(componentName, wrappedNode);
+      } catch (e) {
+        console.error(
+          componentName + ' component throws during initialization.',
+          e
+        );
+        if (!caughtException) {
+          caughtException = e;
+        }
+      }
+    }
+
+    if (caughtException) {
+      throw caughtException;
+    }
   }
 }
 
@@ -227,8 +251,7 @@ Bazooka.refresh = function(rootNode) {
     if (
       wrappersRegistry[bazId] && !wrappersRegistry[bazId].__wrapped__.parentNode
     ) {
-      wrappersRegistry[bazId] = null;
-      nodesComponentsRegistry[bazId] = [];
+      wrappersRegistry[bazId].dispose();
     }
   }
 
@@ -249,6 +272,29 @@ Bazooka.refresh = function(rootNode) {
 
   if (caughtException) {
     throw caughtException;
+  }
+};
+
+Bazooka.rebind = function rebind(componentsObj) {
+  var wrappedNode;
+  var state;
+
+  Bazooka.register(componentsObj);
+
+  for (var componentName in componentsObj) {
+    for (var bazId in wrappersRegistry) {
+      wrappedNode = wrappersRegistry[bazId];
+      state = void 0;
+
+      if (
+        wrappedNode &&
+        typeof wrappedNode.__disposesMap__[componentName] === 'function'
+      ) {
+        state = wrappedNode.__disposesMap__[componentName]();
+      }
+
+      _applyComponentToNode(componentName, wrappedNode, state);
+    }
   }
 };
 

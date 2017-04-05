@@ -44,7 +44,10 @@ describe('Baz', function() {
     node.setAttribute('data-bazooka', 'exampleBazFunc');
     Baz.refresh();
 
-    expect(componentsRegistry.exampleBazFunc).toHaveBeenCalledWith(node);
+    expect(componentsRegistry.exampleBazFunc).toHaveBeenCalledWith(
+      node,
+      void 0
+    );
   });
 
   it('should not bind incorrect component to node', function() {
@@ -62,7 +65,7 @@ describe('Baz', function() {
 
     expect(
       componentsRegistry.exampleComplexBazComponent.bazFunc
-    ).toHaveBeenCalledWith(node);
+    ).toHaveBeenCalledWith(node, void 0);
   });
 
   it('should bind multiple components to node', function() {
@@ -73,10 +76,13 @@ describe('Baz', function() {
     );
     Baz.refresh();
 
-    expect(componentsRegistry.exampleBazFunc).toHaveBeenCalledWith(node);
+    expect(componentsRegistry.exampleBazFunc).toHaveBeenCalledWith(
+      node,
+      void 0
+    );
     expect(
       componentsRegistry.exampleComplexBazComponent.bazFunc
-    ).toHaveBeenCalledWith(node);
+    ).toHaveBeenCalledWith(node, void 0);
     expect(componentsRegistry.exampleBazFunc2).not.toHaveBeenCalled();
   });
 
@@ -91,11 +97,23 @@ describe('Baz', function() {
     );
     Baz.refresh();
 
-    expect(componentsRegistry.exampleBazFunc).toHaveBeenCalledWith(node);
-    expect(componentsRegistry.exampleBazFunc2).toHaveBeenCalledWith(node);
+    expect(componentsRegistry.exampleBazFunc).toHaveBeenCalledWith(
+      node,
+      void 0
+    );
+    expect(componentsRegistry.exampleBazFunc2).toHaveBeenCalledWith(
+      node,
+      void 0
+    );
 
-    expect(componentsRegistry.exampleBazFunc).toHaveBeenCalledWith(node2);
-    expect(componentsRegistry.exampleBazFunc2).toHaveBeenCalledWith(node2);
+    expect(componentsRegistry.exampleBazFunc).toHaveBeenCalledWith(
+      node2,
+      void 0
+    );
+    expect(componentsRegistry.exampleBazFunc2).toHaveBeenCalledWith(
+      node2,
+      void 0
+    );
   });
 
   it('should bind bazFuncless component to node', function() {
