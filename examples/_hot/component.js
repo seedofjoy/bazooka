@@ -16,7 +16,9 @@ function clickHandler(node, state) {
 }
 
 export default function hotComponent(node) {
-  const state = module.hot ? Baz(node).HMRState(module.hot, model()) : model();
+  const state = module.hot
+    ? Baz(node).HMRState(module.hot, prev => prev || model())
+    : model();
 
   if (module.hot) {
     // reload page if `./model.js` is changed
