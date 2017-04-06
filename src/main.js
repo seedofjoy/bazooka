@@ -188,7 +188,7 @@ function _wrapAndBindNode(node) {
  * @interface
  * @param {node} - bound DOM node
  * @description CommonJS module written only with Bazooka interface to be used with `data-bazooka`
- * @returns {function} `dispose` callback to cleanup components `eventListeners`, timers, etc. after [Bazooka.rebind]{@link module:Bazooka.rebind} or removal of the node from DOM
+ * @returns {function} `dispose` callback to cleanup component's `eventListeners`, timers, etc. after [Bazooka.rebind]{@link module:Bazooka.rebind} or removal of the node from DOM
  * @example
  * ```javascript
  *   module.exports = function bazFunc(node) {}
@@ -217,7 +217,7 @@ function _wrapAndBindNode(node) {
  * @func
  * @param {node} - bound DOM node
  * @description Component's binding function
- * @returns {function} `dispose` callback to cleanup components `eventListeners`, timers, etc. after [Bazooka.rebind]{@link module:Bazooka.rebind} or removal of the node from DOM
+ * @returns {function} `dispose` callback to cleanup component's `eventListeners`, timers, etc. after [Bazooka.rebind]{@link module:Bazooka.rebind} or removal of the node from DOM
  */
 
 /**
