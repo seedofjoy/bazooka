@@ -100,18 +100,26 @@ BazookaWrapper.prototype.getComponents = function() {
   return components;
 };
 
-BazookaWrapper.prototype.dispose = function() {
-  for (var disposableComponentName in this.__disposesMap__) {
-    if (typeof this.__disposesMap__[disposableComponentName] === 'function') {
-      this.__disposesMap__[disposableComponentName]();
-      this.__disposesMap__[disposableComponentName] = null;
-    }
-  }
+/**
+ * Callback to get state between Webpack's hot module reloads (HMR)
+ *
+ * @callback HMRStateCallback
+ * @param {Object?} previous state. `undefined` on first call
+ * @returns {Object} whatever state should be after HMR
+ */
 
-  wrappersRegistry[this.id] = null;
-  nodesComponentsRegistry[this.id] = [];
-};
-
+/**
+ * Helper method to preserve component's state between Webpack's hot module reloads (HMR)
+ * @param {webpackHotModule} moduleHot — [module.hot](https://github.com/webpack/webpack/blob/e7c13d75e4337cf166d421c153804892c49511bd/lib/HotModuleReplacement.runtime.js#L80) of the component
+ * @param {HMRStateCallback} stateCallback — callback to create state. Called with undefined `prev` on initial binding and with `prev` equal latest component state after every HMR
+ * @example
+ * ```javascript
+ *   const state = module.hot
+ *     ? Baz(node).HMRState(module.hot, prev => prev || model())
+ *     : model();
+ * ```
+ * @returns {Object} value from `stateCallback`
+ */
 BazookaWrapper.prototype.HMRState = function(moduleHot, stateCallback) {
   // moduleHot is bazFunc's `module.hot` (with method related to *that* bazFunc)
   var state;
@@ -266,11 +274,21 @@ Bazooka.refresh = function(rootNode) {
   var caughtException;
 
   for (var bazId in wrappersRegistry) {
-    if (
-      wrappersRegistry[bazId] && !wrappersRegistry[bazId].__wrapped__.parentNode
-    ) {
-      wrappersRegistry[bazId].dispose();
+    var wrapper = wrappersRegistry[bazId];
+    if (wrapper && !wrapper.__wrapped__.parentNode) {
+      for (var disposableComponentName in wrapper.__disposesMap__) {
+        if (
+          typeof wrapper.__disposesMap__[disposableComponentName] === 'function'
+        ) {
+          wrapper.__disposesMap__[disposableComponentName]();
+          wrapper.__disposesMap__[disposableComponentName] = null;
+        }
+      }
+
+      wrappersRegistry[bazId] = null;
+      nodesComponentsRegistry[bazId] = [];
     }
+    wrapper = null;
   }
 
   nodes = Array.prototype.map.call(
@@ -293,6 +311,28 @@ Bazooka.refresh = function(rootNode) {
   }
 };
 
+/**
+ * Rebind existing components. Nodes with already bound component will be [disposed]{@link BazFunc.dispose} and bound again to a new `bazFunc`
+ * @func rebind
+ * @param {Object} componentsObj - object with new components
+ * @example
+ * ```javascript
+ *   import bazFunc from './bazFunc.js'
+ *
+ *   Baz.register({
+ *     bazFunc: bazFunc,
+ *   });
+ *
+ *   Baz.watch();
+ *
+ *   if (module.hot) {
+ *     module.hot.accept('./bazFunc.js', () => Baz.rebind({ bazFunc: bazFunc }));
+ *     // or, if you prefer `require()`
+ *     // module.hot.accept('./bazFunc.js', () => Baz.rebind({ bazFunc: require('./bazFunc.js') }));
+ *   }
+ * ```
+ * @static
+ */
 Bazooka.rebind = function rebind(componentsObj) {
   var wrappedNode;
 

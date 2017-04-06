@@ -34,7 +34,9 @@ $ cd examples
 * **gifflix** — bazooka + frp (via [kefir.js](https://rpominov.github.io/kefir/))
 
 
-## [Docs](docs/README.md)
+## [Docs](docs)
+- [API](docs/README.md)
+- [Hot Reloadable `bazFunc`s](docs/hot-reloadable-bazfuncs.md)
 
 ## [Changelog](CHANGELOG.md)
 

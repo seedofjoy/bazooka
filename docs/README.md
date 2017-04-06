@@ -9,6 +9,14 @@
 </dd>
 </dl>
 
+## Typedefs
+
+<dl>
+<dt><a href="#HMRStateCallback">HMRStateCallback</a> ⇒ <code>Object</code></dt>
+<dd><p>Callback to get state between Webpack&#39;s hot module reloads (HMR)</p>
+</dd>
+</dl>
+
 <a name="module_BazComponent"></a>
 
 ## BazComponent
@@ -69,6 +77,7 @@ Bazooka
     * _static_
         * [.register(componentsObj)](#module_Bazooka.register)
         * [.refresh([rootNode])](#module_Bazooka.refresh)
+        * [.rebind(componentsObj)](#module_Bazooka.rebind)
         * [.watch([rootNode])](#module_Bazooka.watch) ⇒ <code>function</code>
     * _inner_
         * [~BazookaWrapper](#module_Bazooka..BazookaWrapper)
@@ -95,6 +104,33 @@ Parse and bind bazooka components to nodes without bound components
 | --- | --- | --- | --- |
 | [rootNode] | <code>node</code> | <code>document.body</code> | DOM node, children of which will be checked for `data-bazooka` |
 
+<a name="module_Bazooka.rebind"></a>
+
+### Bazooka.rebind(componentsObj)
+Rebind existing components. Nodes with already bound component will be [disposed](BazFunc.dispose) and bound again to a new `bazFunc`
+
+**Kind**: static method of <code>[Bazooka](#module_Bazooka)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| componentsObj | <code>Object</code> | object with new components |
+
+**Example**  
+```javascript
+  import bazFunc from './bazFunc.js'
+
+  Baz.register({
+    bazFunc: bazFunc,
+  });
+
+  Baz.watch();
+
+  if (module.hot) {
+    module.hot.accept('./bazFunc.js', () => Baz.rebind({ bazFunc: bazFunc }));
+    // or, if you prefer `require()`
+    // module.hot.accept('./bazFunc.js', () => Baz.rebind({ bazFunc: require('./bazFunc.js') }));
+  }
+```
 <a name="module_Bazooka.watch"></a>
 
 ### Bazooka.watch([rootNode]) ⇒ <code>function</code>
@@ -113,12 +149,48 @@ Watch for new nodes with `data-bazooka`. No need to run [Bazooka.refresh](#modul
 Reference to [BazookaWrapper](#BazookaWrapper) class
 
 **Kind**: inner property of <code>[Bazooka](#module_Bazooka)</code>  
+<a name="HMRStateCallback"></a>
+
+## HMRStateCallback ⇒ <code>Object</code>
+Callback to get state between Webpack's hot module reloads (HMR)
+
+**Kind**: global typedef  
+**Returns**: <code>Object</code> - whatever state should be after HMR  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| previous | <code>Object</code> | state. `undefined` on first call |
+
 <a name="BazookaWrapper"></a>
 
 ## ~BazookaWrapper
 **Kind**: inner class  
+
+* [~BazookaWrapper](#BazookaWrapper)
+    * [.getComponents()](#BazookaWrapper+getComponents) ⇒ <code>Object.&lt;string, BazComponent&gt;</code>
+    * [.HMRState(moduleHot, stateCallback)](#BazookaWrapper+HMRState) ⇒ <code>Object</code>
+
 <a name="BazookaWrapper+getComponents"></a>
 
 ### bazookaWrapper.getComponents() ⇒ <code>Object.&lt;string, BazComponent&gt;</code>
 **Kind**: instance method of <code>[BazookaWrapper](#BazookaWrapper)</code>  
 **Returns**: <code>Object.&lt;string, BazComponent&gt;</code> - object of the bound to the wrapped node [BazComponents](#module_BazComponent)  
+<a name="BazookaWrapper+HMRState"></a>
+
+### bazookaWrapper.HMRState(moduleHot, stateCallback) ⇒ <code>Object</code>
+Helper method to preserve component's state between Webpack's hot module reloads (HMR)
+
+**Kind**: instance method of <code>[BazookaWrapper](#BazookaWrapper)</code>  
+**Returns**: <code>Object</code> - value from `stateCallback`  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| moduleHot | <code>webpackHotModule</code> | — [module.hot](https://github.com/webpack/webpack/blob/e7c13d75e4337cf166d421c153804892c49511bd/lib/HotModuleReplacement.runtime.js#L80) of the component |
+| stateCallback | <code>[HMRStateCallback](#HMRStateCallback)</code> | — callback to create state. Called with undefined `prev` on initial binding and with `prev` equal latest component state after every HMR |
+
+**Example**  
+```javascript
+  const state = module.hot
+    ? Baz(node).HMRState(module.hot, prev => prev || model())
+    : model();
+```
