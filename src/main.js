@@ -45,6 +45,8 @@ function _applyComponentToNode(componentName, wrappedNode) {
 
     if (typeof dispose === 'function') {
       wrappedNode.__disposesMap__[componentName] = dispose;
+    } else if (wrappedNode.__disposesMap__[componentName]) {
+      wrappedNode.__disposesMap__[componentName] = null;
     }
   }
 }
@@ -113,9 +115,11 @@ BazookaWrapper.prototype.dispose = function() {
 BazookaWrapper.prototype.HMRState = function(moduleHot, stateCallback) {
   // moduleHot is bazFunc's `module.hot` (with method related to *that* bazFunc)
   var state;
-  moduleHot.dispose(function(data) {
-    data[this.id] = state;
-  });
+  moduleHot.dispose(
+    function(data) {
+      data[this.id] = state;
+    }.bind(this)
+  );
 
   if (moduleHot.data && moduleHot.data[this.id]) {
     state = stateCallback(moduleHot.data[this.id]);
@@ -297,6 +301,10 @@ Bazooka.rebind = function rebind(componentsObj) {
   for (var componentName in componentsObj) {
     for (var bazId in wrappersRegistry) {
       wrappedNode = wrappersRegistry[bazId];
+
+      if (!wrappedNode) {
+        continue;
+      }
 
       if (
         wrappedNode &&
