@@ -24,15 +24,16 @@ Interface of component, required by [Bazooka.refresh](#module_Bazooka.refresh)
 
 
 * [BazComponent](#module_BazComponent)
-    * [~simple](#module_BazComponent..simple)
+    * [~simple](#module_BazComponent..simple) ⇒ <code>function</code>
     * [~universal](#module_BazComponent..universal)
 
 <a name="module_BazComponent..simple"></a>
 
-### BazComponent~simple
+### BazComponent~simple ⇒ <code>function</code>
 CommonJS module written only with Bazooka interface to be used with `data-bazooka`
 
 **Kind**: inner interface of <code>[BazComponent](#module_BazComponent)</code>  
+**Returns**: <code>function</code> - `dispose` callback to cleanup components `eventListeners`, timers, etc. after [Bazooka.rebind](#module_Bazooka.rebind) or removal of the node from DOM  
 
 | Type | Description |
 | --- | --- |
@@ -185,8 +186,8 @@ Helper method to preserve component's state between Webpack's hot module reloads
 
 | Param | Type | Description |
 | --- | --- | --- |
-| moduleHot | <code>webpackHotModule</code> | — [module.hot](https://github.com/webpack/webpack/blob/e7c13d75e4337cf166d421c153804892c49511bd/lib/HotModuleReplacement.runtime.js#L80) of the component |
-| stateCallback | <code>[HMRStateCallback](#HMRStateCallback)</code> | — callback to create state. Called with undefined `prev` on initial binding and with `prev` equal latest component state after every HMR |
+| moduleHot | <code>webpackHotModule</code> | [module.hot](https://github.com/webpack/webpack/blob/e7c13d75e4337cf166d421c153804892c49511bd/lib/HotModuleReplacement.runtime.js#L80) of the component |
+| stateCallback | <code>[HMRStateCallback](#HMRStateCallback)</code> | callback to create state. Called with undefined `prev` on initial binding and with `prev` equal latest component state after every HMR |
 
 **Example**  
 ```javascript

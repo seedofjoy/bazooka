@@ -110,8 +110,8 @@ BazookaWrapper.prototype.getComponents = function() {
 
 /**
  * Helper method to preserve component's state between Webpack's hot module reloads (HMR)
- * @param {webpackHotModule} moduleHot — [module.hot](https://github.com/webpack/webpack/blob/e7c13d75e4337cf166d421c153804892c49511bd/lib/HotModuleReplacement.runtime.js#L80) of the component
- * @param {HMRStateCallback} stateCallback — callback to create state. Called with undefined `prev` on initial binding and with `prev` equal latest component state after every HMR
+ * @param {webpackHotModule} moduleHot - [module.hot](https://github.com/webpack/webpack/blob/e7c13d75e4337cf166d421c153804892c49511bd/lib/HotModuleReplacement.runtime.js#L80) of the component
+ * @param {HMRStateCallback} stateCallback - callback to create state. Called with undefined `prev` on initial binding and with `prev` equal latest component state after every HMR
  * @example
  * ```javascript
  *   const state = module.hot
@@ -188,6 +188,7 @@ function _wrapAndBindNode(node) {
  * @interface
  * @param {node} - bound DOM node
  * @description CommonJS module written only with Bazooka interface to be used with `data-bazooka`
+ * @returns {function} `dispose` callback to cleanup components `eventListeners`, timers, etc. after [Bazooka.rebind]{@link module:Bazooka.rebind} or removal of the node from DOM
  * @example
  * ```javascript
  *   module.exports = function bazFunc(node) {}
@@ -216,6 +217,7 @@ function _wrapAndBindNode(node) {
  * @func
  * @param {node} - bound DOM node
  * @description Component's binding function
+ * @returns {function} `dispose` callback to cleanup components `eventListeners`, timers, etc. after [Bazooka.rebind]{@link module:Bazooka.rebind} or removal of the node from DOM
  */
 
 /**
