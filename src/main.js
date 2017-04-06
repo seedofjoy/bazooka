@@ -110,7 +110,7 @@ BazookaWrapper.prototype.dispose = function() {
   nodesComponentsRegistry[this.id] = [];
 };
 
-BazookaWrapper.prototype.HMRState = function(moduleHot, state, cb) {
+BazookaWrapper.prototype.HMRState = function(moduleHot, state) {
   // moduleHot is bazFunc's `module.hot` (with method related to *that* bazFunc)
   moduleHot.dispose(function(data) {
     data[this.id] = state;
@@ -119,10 +119,6 @@ BazookaWrapper.prototype.HMRState = function(moduleHot, state, cb) {
   if (moduleHot.data && moduleHot.data[this.id]) {
     state = moduleHot.data[this.id];
     moduleHot.data[this.id] = null;
-  }
-
-  if (cb) {
-    cb();
   }
 
   return state;
