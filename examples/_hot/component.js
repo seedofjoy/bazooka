@@ -1,4 +1,7 @@
+import Baz from 'bazooka';
+
 import view from './view.js';
+import model from './model.js';
 
 function mockRerender(node, state) {
   node.textContent = view(state);
@@ -12,10 +15,11 @@ function clickHandler(node, state) {
   };
 }
 
-let hotComponent = function hotComponent(node, prevState) {
-  const state = prevState || {
-    count: 1,
-  };
+export default function hotComponent(node) {
+  const state = module.hot
+    ? Baz(node).HMRState(module.hot, model(), () =>
+        module.hot.decline('./model.js'))
+    : model();
 
   mockRerender(node, state);
 
@@ -24,9 +28,5 @@ let hotComponent = function hotComponent(node, prevState) {
 
   return () => {
     node.removeEventListener('click', boundHandler);
-
-    return state;
   };
-};
-
-export default hotComponent;
+}

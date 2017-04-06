@@ -35,13 +35,13 @@ function _bindComponentToNode(wrappedNode, componentName) {
   }
 }
 
-function _applyComponentToNode(componentName, wrappedNode, state) {
+function _applyComponentToNode(componentName, wrappedNode) {
   var bazId = wrappedNode.id;
   var component = _getComponent(componentName);
   var dispose;
 
   if (component.bazFunc) {
-    dispose = component.bazFunc(wrappedNode.__wrapped__, state);
+    dispose = component.bazFunc(wrappedNode.__wrapped__);
 
     if (typeof dispose === 'function') {
       wrappedNode.__disposesMap__[componentName] = dispose;
@@ -98,9 +98,6 @@ BazookaWrapper.prototype.getComponents = function() {
   return components;
 };
 
-/**
- * @returns {Object.<string, BazComponent>} object of the bound to the wrapped node [BazComponents]{@link module:BazComponent}
- */
 BazookaWrapper.prototype.dispose = function() {
   for (var disposableComponentName in this.__disposesMap__) {
     if (typeof this.__disposesMap__[disposableComponentName] === 'function') {
@@ -111,6 +108,24 @@ BazookaWrapper.prototype.dispose = function() {
 
   wrappersRegistry[this.id] = null;
   nodesComponentsRegistry[this.id] = [];
+};
+
+BazookaWrapper.prototype.HMRState = function(moduleHot, state, cb) {
+  // moduleHot is bazFunc's `module.hot` (with method related to *that* bazFunc)
+  moduleHot.dispose(function(data) {
+    data[this.id] = state;
+  });
+
+  if (moduleHot.data && moduleHot.data[this.id]) {
+    state = moduleHot.data[this.id];
+    moduleHot.data[this.id] = null;
+  }
+
+  if (cb) {
+    cb();
+  }
+
+  return state;
 };
 
 function _wrapAndBindNode(node) {
@@ -277,23 +292,22 @@ Bazooka.refresh = function(rootNode) {
 
 Bazooka.rebind = function rebind(componentsObj) {
   var wrappedNode;
-  var state;
 
   Bazooka.register(componentsObj);
 
   for (var componentName in componentsObj) {
     for (var bazId in wrappersRegistry) {
       wrappedNode = wrappersRegistry[bazId];
-      state = void 0;
 
       if (
         wrappedNode &&
         typeof wrappedNode.__disposesMap__[componentName] === 'function'
       ) {
-        state = wrappedNode.__disposesMap__[componentName]();
+        wrappedNode.__disposesMap__[componentName]();
+        wrappedNode.__disposesMap__[componentName] = null;
       }
 
-      _applyComponentToNode(componentName, wrappedNode, state);
+      _applyComponentToNode(componentName, wrappedNode);
     }
   }
 };
