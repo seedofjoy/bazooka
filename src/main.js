@@ -26,12 +26,12 @@ function _bindComponentToNode(wrappedNode, componentName) {
     return;
   }
 
-  if (nodesComponentsRegistry[bazId] === void 0) {
-    nodesComponentsRegistry[bazId] = [];
+  if (!nodesComponentsRegistry[bazId]) {
+    nodesComponentsRegistry[bazId] = {};
   }
 
-  if (nodesComponentsRegistry[bazId].indexOf(componentName) === -1) {
-    nodesComponentsRegistry[bazId].push(componentName);
+  if (!nodesComponentsRegistry[bazId][componentName]) {
+    nodesComponentsRegistry[bazId][componentName] = true;
   }
 }
 
@@ -91,10 +91,8 @@ BazookaWrapper.prototype.constructor = BazookaWrapper;
 BazookaWrapper.prototype.getComponents = function() {
   var components = {};
 
-  for (var i = 0; i < nodesComponentsRegistry[this.id].length; i++) {
-    components[nodesComponentsRegistry[this.id][i]] = _getComponent(
-      nodesComponentsRegistry[this.id][i]
-    );
+  for (var componentName in nodesComponentsRegistry[this.id]) {
+    components[componentName] = _getComponent(componentName);
   }
 
   return components;
@@ -154,9 +152,7 @@ function _wrapAndBindNode(node) {
       _bindComponentToNode(wrappedNode, componentNames[i].trim());
     }
 
-    for (var i = 0; i < nodesComponentsRegistry[wrappedNode.id].length; i++) {
-      componentName = nodesComponentsRegistry[wrappedNode.id][i];
-
+    for (var componentName in nodesComponentsRegistry[wrappedNode.id]) {
       try {
         _applyComponentToNode(componentName, wrappedNode);
       } catch (e) {
@@ -288,7 +284,7 @@ Bazooka.refresh = function(rootNode) {
       }
 
       wrappersRegistry[bazId] = null;
-      nodesComponentsRegistry[bazId] = [];
+      nodesComponentsRegistry[bazId] = {};
     }
     wrapper = null;
   }
@@ -345,6 +341,10 @@ Bazooka.rebind = function rebind(componentsObj) {
       wrappedNode = wrappersRegistry[bazId];
 
       if (!wrappedNode) {
+        continue;
+      }
+
+      if (!nodesComponentsRegistry[bazId][componentName]) {
         continue;
       }
 

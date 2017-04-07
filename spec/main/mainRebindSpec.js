@@ -93,4 +93,35 @@ describe('Baz.rebind', function() {
     expect(disposeSpy).toHaveBeenCalledWith(node);
     expect(disposeSpy).toHaveBeenCalledWith(node2);
   });
+
+  it('should call bazFuncs a correct number of times', function() {
+    var node = appendDiv();
+    var node2 = appendDiv();
+    var node3 = appendDiv();
+    node.setAttribute('data-bazooka', 'exampleBazFunc');
+    node2.setAttribute('data-bazooka', 'exampleBazFunc2');
+    node3.setAttribute('data-bazooka', 'exampleBazFunc exampleBazFunc2');
+    Baz.refresh();
+
+    componentsRegistry.exampleBazFunc.calls.reset();
+    componentsRegistry.exampleBazFunc2.calls.reset();
+
+    var disposeSpy = jasmine.createSpy('dispose');
+    var newRegisterObj = {
+      exampleBazFunc: function(node) {
+        return function() {
+          disposeSpy(node);
+        };
+      },
+    };
+    spyOn(newRegisterObj, 'exampleBazFunc').and.callThrough();
+
+    Baz.rebind(newRegisterObj);
+    expect(disposeSpy.calls.count()).toEqual(0);
+    expect(newRegisterObj.exampleBazFunc.calls.count()).toEqual(2);
+    expect(componentsRegistry.exampleBazFunc.calls.count()).toEqual(0);
+    expect(componentsRegistry.exampleBazFunc2.calls.count()).toEqual(0);
+    expect(newRegisterObj.exampleBazFunc).toHaveBeenCalledWith(node);
+    expect(newRegisterObj.exampleBazFunc).toHaveBeenCalledWith(node3);
+  });
 });
