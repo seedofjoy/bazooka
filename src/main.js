@@ -26,40 +26,28 @@ function _bindComponentToNode(wrappedNode, componentName) {
     return;
   }
 
-  if (nodesComponentsRegistry[bazId] === void 0) {
-    nodesComponentsRegistry[bazId] = [];
+  if (!nodesComponentsRegistry[bazId]) {
+    nodesComponentsRegistry[bazId] = {};
   }
 
-  if (nodesComponentsRegistry[bazId].indexOf(componentName) === -1) {
-    nodesComponentsRegistry[bazId].push(componentName);
+  if (!nodesComponentsRegistry[bazId][componentName]) {
+    nodesComponentsRegistry[bazId][componentName] = true;
   }
 }
 
-function _applyComponentsToNode(wrappedNode) {
+function _applyComponentToNode(componentName, wrappedNode) {
   var bazId = wrappedNode.id;
-  var caughtException;
+  var component = _getComponent(componentName);
+  var dispose;
 
-  for (var i = 0; i < nodesComponentsRegistry[bazId].length; i++) {
-    var componentName = nodesComponentsRegistry[bazId][i];
-    var component = _getComponent(componentName);
+  if (component.bazFunc) {
+    dispose = component.bazFunc(wrappedNode.__wrapped__);
 
-    if (component.bazFunc) {
-      try {
-        component.bazFunc(wrappedNode.__wrapped__);
-      } catch (e) {
-        console.error(
-          componentName + ' component throws during initialization.',
-          e
-        );
-        if (!caughtException) {
-          caughtException = e;
-        }
-      }
+    if (typeof dispose === 'function') {
+      wrappedNode.__disposesMap__[componentName] = dispose;
+    } else if (wrappedNode.__disposesMap__[componentName]) {
+      wrappedNode.__disposesMap__[componentName] = null;
     }
-  }
-
-  if (caughtException) {
-    throw caughtException;
   }
 }
 
@@ -74,9 +62,11 @@ function BazookaWrapper(node) {
     bazId = (_bazId++).toString();
     node.setAttribute('data-bazid', bazId);
     wrappersRegistry[bazId] = this;
+    this.__disposesMap__ = {};
+  } else {
+    this.__disposesMap__ = wrappersRegistry[bazId].__disposesMap__;
   }
 
-  this.__wrapped__ = node;
   /**
    * Internal id
    * @name Bazooka.id
@@ -85,6 +75,7 @@ function BazookaWrapper(node) {
    * @instance
    */
   this.id = bazId;
+  this.__wrapped__ = node;
 }
 
 /**
@@ -100,19 +91,58 @@ BazookaWrapper.prototype.constructor = BazookaWrapper;
 BazookaWrapper.prototype.getComponents = function() {
   var components = {};
 
-  for (var i = 0; i < nodesComponentsRegistry[this.id].length; i++) {
-    components[nodesComponentsRegistry[this.id][i]] = _getComponent(
-      nodesComponentsRegistry[this.id][i]
-    );
+  for (var componentName in nodesComponentsRegistry[this.id]) {
+    components[componentName] = _getComponent(componentName);
   }
 
   return components;
+};
+
+/**
+ * Callback to get state between Webpack's hot module reloads (HMR)
+ *
+ * @callback HMRStateCallback
+ * @param {Object?} previous state. `undefined` on first call
+ * @returns {Object} whatever state should be after HMR
+ */
+
+/**
+ * Helper method to preserve component's state between Webpack's hot module reloads (HMR)
+ * @param {webpackHotModule} moduleHot - [module.hot](https://github.com/webpack/webpack/blob/e7c13d75e4337cf166d421c153804892c49511bd/lib/HotModuleReplacement.runtime.js#L80) of the component
+ * @param {HMRStateCallback} stateCallback - callback to create state. Called with undefined `prev` on initial binding and with `prev` equal latest component state after every HMR
+ * @example
+ * ```javascript
+ *   const state = module.hot
+ *     ? Baz(node).HMRState(module.hot, prev => prev || model())
+ *     : model();
+ * ```
+ * @returns {Object} value from `stateCallback`
+ */
+BazookaWrapper.prototype.HMRState = function(moduleHot, stateCallback) {
+  // moduleHot is bazFunc's `module.hot` (with method related to *that* bazFunc)
+  var state;
+  moduleHot.dispose(
+    function(data) {
+      data[this.id] = state;
+    }.bind(this)
+  );
+
+  if (moduleHot.data && moduleHot.data[this.id]) {
+    state = stateCallback(moduleHot.data[this.id]);
+    moduleHot.data[this.id] = null;
+  } else {
+    state = stateCallback();
+  }
+
+  return state;
 };
 
 function _wrapAndBindNode(node) {
   var dataBazooka = (node.getAttribute('data-bazooka') || '').trim();
   var wrappedNode;
   var componentNames;
+  var componentName;
+  var caughtException;
 
   if (dataBazooka) {
     componentNames = dataBazooka.split(' ');
@@ -122,7 +152,23 @@ function _wrapAndBindNode(node) {
       _bindComponentToNode(wrappedNode, componentNames[i].trim());
     }
 
-    _applyComponentsToNode(wrappedNode);
+    for (var componentName in nodesComponentsRegistry[wrappedNode.id]) {
+      try {
+        _applyComponentToNode(componentName, wrappedNode);
+      } catch (e) {
+        console.error(
+          componentName + ' component throws during initialization.',
+          e
+        );
+        if (!caughtException) {
+          caughtException = e;
+        }
+      }
+    }
+
+    if (caughtException) {
+      throw caughtException;
+    }
   }
 }
 
@@ -138,6 +184,7 @@ function _wrapAndBindNode(node) {
  * @interface
  * @param {node} - bound DOM node
  * @description CommonJS module written only with Bazooka interface to be used with `data-bazooka`
+ * @returns {function} `dispose` callback to cleanup component's `eventListeners`, timers, etc. after [Bazooka.rebind]{@link module:Bazooka.rebind} or removal of the node from DOM
  * @example
  * ```javascript
  *   module.exports = function bazFunc(node) {}
@@ -166,6 +213,7 @@ function _wrapAndBindNode(node) {
  * @func
  * @param {node} - bound DOM node
  * @description Component's binding function
+ * @returns {function} `dispose` callback to cleanup component's `eventListeners`, timers, etc. after [Bazooka.rebind]{@link module:Bazooka.rebind} or removal of the node from DOM
  */
 
 /**
@@ -224,12 +272,21 @@ Bazooka.refresh = function(rootNode) {
   var caughtException;
 
   for (var bazId in wrappersRegistry) {
-    if (
-      wrappersRegistry[bazId] && !wrappersRegistry[bazId].__wrapped__.parentNode
-    ) {
+    var wrapper = wrappersRegistry[bazId];
+    if (wrapper && !wrapper.__wrapped__.parentNode) {
+      for (var disposableComponentName in wrapper.__disposesMap__) {
+        if (
+          typeof wrapper.__disposesMap__[disposableComponentName] === 'function'
+        ) {
+          wrapper.__disposesMap__[disposableComponentName]();
+          wrapper.__disposesMap__[disposableComponentName] = null;
+        }
+      }
+
       wrappersRegistry[bazId] = null;
-      nodesComponentsRegistry[bazId] = [];
+      nodesComponentsRegistry[bazId] = {};
     }
+    wrapper = null;
   }
 
   nodes = Array.prototype.map.call(
@@ -249,6 +306,58 @@ Bazooka.refresh = function(rootNode) {
 
   if (caughtException) {
     throw caughtException;
+  }
+};
+
+/**
+ * Rebind existing components. Nodes with already bound component will be [disposed]{@link BazFunc.dispose} and bound again to a new `bazFunc`
+ * @func rebind
+ * @param {Object} componentsObj - object with new components
+ * @example
+ * ```javascript
+ *   import bazFunc from './bazFunc.js'
+ *
+ *   Baz.register({
+ *     bazFunc: bazFunc,
+ *   });
+ *
+ *   Baz.watch();
+ *
+ *   if (module.hot) {
+ *     module.hot.accept('./bazFunc.js', () => Baz.rebind({ bazFunc: bazFunc }));
+ *     // or, if you prefer `require()`
+ *     // module.hot.accept('./bazFunc.js', () => Baz.rebind({ bazFunc: require('./bazFunc.js') }));
+ *   }
+ * ```
+ * @static
+ */
+Bazooka.rebind = function rebind(componentsObj) {
+  var wrappedNode;
+
+  Bazooka.register(componentsObj);
+
+  for (var componentName in componentsObj) {
+    for (var bazId in wrappersRegistry) {
+      wrappedNode = wrappersRegistry[bazId];
+
+      if (!wrappedNode) {
+        continue;
+      }
+
+      if (!nodesComponentsRegistry[bazId][componentName]) {
+        continue;
+      }
+
+      if (
+        wrappedNode &&
+        typeof wrappedNode.__disposesMap__[componentName] === 'function'
+      ) {
+        wrappedNode.__disposesMap__[componentName]();
+        wrappedNode.__disposesMap__[componentName] = null;
+      }
+
+      _applyComponentToNode(componentName, wrappedNode);
+    }
   }
 };
 

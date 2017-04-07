@@ -8,7 +8,8 @@ var EXAMPLES_BASE_DIR = path.join(__dirname, 'examples');
 
 var getDirectories = function(srcPath) {
   return fs.readdirSync(srcPath).filter(function(file) {
-    return fs.statSync(path.join(srcPath, file)).isDirectory();
+    return fs.statSync(path.join(srcPath, file)).isDirectory() &&
+      file.indexOf('_') !== 0;
   });
 };
 

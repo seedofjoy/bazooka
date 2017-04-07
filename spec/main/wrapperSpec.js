@@ -1,6 +1,4 @@
 'use strict';
-/* global describe, beforeEach, afterEach, it, expect, spyOn */
-/* eslint max-nested-callbacks:0 */
 
 function appendDiv() {
   var node = document.createElement('div');
