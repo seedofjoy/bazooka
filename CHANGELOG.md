@@ -1,3 +1,11 @@
+## 0.7.0
+
+[Hot Reload](https://github.com/seedofjoy/bazooka/blob/v0.7.0/docs/hot-reloadable-bazfuncs.md)
+
+* :heavy_plus_sign: [added] return `dispose` functions from `bazFunc`
+* :heavy_plus_sign: [added] `Bazooka.rebind` to update already bound `bazFunc`s
+* :heavy_plus_sign: [added] `BazookaWrapper.prototype.HMRState` to preserve state between hot reloads
+
 ## 0.6.1
 
 * :wrench: [changed] rethrow first exception from `Bazooka.refresh`
