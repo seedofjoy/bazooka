@@ -12,7 +12,7 @@ export default function hotBaz(node) {
   node.addEventListener('click', clickHandler);
 
 +  return () => {
-+    node.removeEventListener('click', boundHandler);
++    node.removeEventListener('click', clickHandler);
 +  };
 };
 ```
@@ -30,10 +30,10 @@ export default function hotBaz(node) {
   mockRerender(node, state);
 
   const boundHandler = clickHandler(node, state);
-  node.addEventListener('click', boundHandler);
+  node.addEventListener('click', clickHandler);
 
   return () => {
-    node.removeEventListener('click', boundHandler);
+    node.removeEventListener('click', clickHandler);
   };
 }
 ```
