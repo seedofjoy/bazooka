@@ -23,11 +23,11 @@ Get all prefixed `data-` attributes as an object
 ```javascript
   // <div id="n" data-x-a="lol" data-x-b="1" data-y-c='{"key": 1}' data-y-composed-attr="true"></div>
   
-  Baz.h.getAttrs('x', document.n) // => {a: "lol", b: 1}
-  Baz.h.getAttrs('y', document.n) // => {y: {key: 1}, composedAttr: true}
+  Baz.h.getAttrs('x', window.n) // => {a: "lol", b: 1}
+  Baz.h.getAttrs('y', window.n) // => {y: {key: 1}, composedAttr: true}
 
   const xAttrs = Baz.h.getAttrs('x')
-  xAttrs(document.n) // => {x: "lol", b: 1}
+  xAttrs(window.n) // => {x: "lol", b: 1}
 ```
 <a name="Bazooka.module_h.getChildrenWithData"></a>
 
@@ -49,7 +49,7 @@ Query children with specific `data-`attribute
   //   <div data-user-id="2">nope</div>
   // </div>
   
-  Baz.h.getChildrenWithData(document.parent, 'data-user-id', 1)[0].textContent === 'yep'
-  Baz.h.getChildrenWithData(document.parent, 'user-id', 1)[0].textContent === 'yep'
-  Baz.h.getChildrenWithData(document.parent, 'userId', 2)[0].textContent === 'nope'
+  Baz.h.getChildrenWithData(window.parent, 'data-user-id', 1)[0].textContent === 'yep'
+  Baz.h.getChildrenWithData(window.parent, 'user-id', 1)[0].textContent === 'yep'
+  Baz.h.getChildrenWithData(window.parent, 'userId', 2)[0].textContent === 'nope'
 ```
