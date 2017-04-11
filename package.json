@@ -48,7 +48,7 @@
     "karma-webpack": "^1.7.0",
     "kefir": "^3.1.0",
     "lodash": "^3.10.1",
-    "phantomjs": "^1.9.18",
+    "phantomjs-prebuilt": "^2.1.7",
     "prettier": "^0.22.0",
     "react": "^0.14.2",
     "react-dom": "^0.14.2",
