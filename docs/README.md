@@ -33,7 +33,7 @@ Interface of component, required by [Bazooka.refresh](#module_Bazooka.refresh)
 CommonJS module written only with Bazooka interface to be used with `data-bazooka`
 
 **Kind**: inner interface of <code>[BazComponent](#module_BazComponent)</code>  
-**Returns**: <code>function</code> - `dispose` callback to cleanup components `eventListeners`, timers, etc. after [Bazooka.rebind](#module_Bazooka.rebind) or removal of the node from DOM  
+**Returns**: <code>function</code> - `dispose` callback to cleanup component's `eventListeners`, timers, etc. after [Bazooka.rebind](#module_Bazooka.rebind) or removal of the node from DOM  
 
 | Type | Description |
 | --- | --- |

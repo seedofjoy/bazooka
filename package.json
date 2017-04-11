@@ -14,7 +14,7 @@
     "prettier": "prettier \"{src,spec,examples}/**/*.js\" \"webpack.config.examples.js\" --single-quote --trailing-comma=es5",
     "preversion": "npm test && npm run docs",
     "postversion": "git push && git push --tags",
-    "docs": "mkdir -p ./docs && jsdoc2md src/main.js > ./docs/README.md",
+    "docs": "mkdir -p ./docs && jsdoc2md src/main.js > ./docs/README.md && jsdoc2md src/helpers.js > ./docs/helpers.md",
     "examples": "webpack --config=webpack.config.examples.js"
   },
   "repository": {

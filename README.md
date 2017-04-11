@@ -36,6 +36,7 @@ $ cd examples
 
 ## [Docs](docs)
 - [API](docs/README.md)
+- [Helpers (`Baz.h`)](docs/helpers.md)
 - [Hot Reloadable `bazFunc`s](docs/hot-reloadable-bazfuncs.md)
 
 ## [Changelog](CHANGELOG.md)

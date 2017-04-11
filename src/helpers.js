@@ -70,9 +70,20 @@ function _getPrefixedAttrs(prefix, node) {
 }
 
 /**
- * @param {string} [prefix] - data-attribute prefix
- * @param {HTMLNode} node - target node
+ * Get all prefixed `data-` attributes as an object
+ * @param {string} prefix - `data-`attribute prefix
+ * @param {HTMLNode} [node] - target node
  * @returns {function|object} - curried function for parsing node with passed prefix or parsed attrs
+ * @example
+ * ```javascript
+ *   // <div id="n" data-x-a="lol" data-x-b="1" data-y-c='{"key": 1}' data-y-composed-attr="true"></div>
+ *   
+ *   Baz.h.getAttrs('x', document.n) // => {a: "lol", b: 1}
+ *   Baz.h.getAttrs('y', document.n) // => {y: {key: 1}, composedAttr: true}
+ *
+ *   const xAttrs = Baz.h.getAttrs('x')
+ *   xAttrs(document.n) // => {x: "lol", b: 1}
+ * ```
  */
 var getAttrs = function(prefix, node) {
   if (typeof prefix === 'string' && node === void 0) {
@@ -107,10 +118,22 @@ function _prefixDataKey(dataKey) {
 }
 
 /**
+ * Query children with specific `data-`attribute
  * @param {HTMLNode} parentNode
- * @param {string} dataKey – data-key. data-baz-key, baz-key and bazKey are equivalent
- * @param {string} [dataValue]
+ * @param {string} dataKey – data-key. `data-baz-key`, `baz-key` and `bazKey` are equivalent
+ * @param {string} [dataValue] - value of a `data-`attribute
  * @returns {NodeList}
+ * @example
+ * ```javascript
+ *   // <div id="parent">
+ *   //   <div data-user-id="1">yep</div>
+ *   //   <div data-user-id="2">nope</div>
+ *   // </div>
+ *   
+ *   Baz.h.getChildrenWithData(document.parent, 'data-user-id', 1)[0].textContent === 'yep'
+ *   Baz.h.getChildrenWithData(document.parent, 'user-id', 1)[0].textContent === 'yep'
+ *   Baz.h.getChildrenWithData(document.parent, 'userId', 2)[0].textContent === 'nope'
+ * ```
  */
 var getChildrenWithData = function(parentNode, dataKey, dataValue) {
   var prefixedDataKey = _prefixDataKey(dataKey);
