@@ -1,20 +1,17 @@
-## Functions
+<a name="Bazooka.module_h"></a>
 
-<dl>
-<dt><a href="#getAttrs">getAttrs(prefix, [node])</a> ⇒ <code>function</code> | <code>object</code></dt>
-<dd><p>Get all prefixed <code>data-</code> attributes as an object</p>
-</dd>
-<dt><a href="#getChildrenWithData">getChildrenWithData(parentNode, dataKey, [dataValue])</a> ⇒ <code>NodeList</code></dt>
-<dd><p>Query children with specific <code>data-</code>attribute</p>
-</dd>
-</dl>
+## h
 
-<a name="getAttrs"></a>
+* [h](#Bazooka.module_h)
+    * [.getAttrs(prefix, [node])](#Bazooka.module_h.getAttrs) ⇒ <code>function</code> &#124; <code>object</code>
+    * [.getChildrenWithData(parentNode, dataKey, [dataValue])](#Bazooka.module_h.getChildrenWithData) ⇒ <code>NodeList</code>
 
-## getAttrs(prefix, [node]) ⇒ <code>function</code> &#124; <code>object</code>
+<a name="Bazooka.module_h.getAttrs"></a>
+
+### h.getAttrs(prefix, [node]) ⇒ <code>function</code> &#124; <code>object</code>
 Get all prefixed `data-` attributes as an object
 
-**Kind**: global function  
+**Kind**: static method of <code>[h](#Bazooka.module_h)</code>  
 **Returns**: <code>function</code> &#124; <code>object</code> - - curried function for parsing node with passed prefix or parsed attrs  
 
 | Param | Type | Description |
@@ -32,12 +29,12 @@ Get all prefixed `data-` attributes as an object
   const xAttrs = Baz.h.getAttrs('x')
   xAttrs(document.n) // => {x: "lol", b: 1}
 ```
-<a name="getChildrenWithData"></a>
+<a name="Bazooka.module_h.getChildrenWithData"></a>
 
-## getChildrenWithData(parentNode, dataKey, [dataValue]) ⇒ <code>NodeList</code>
+### h.getChildrenWithData(parentNode, dataKey, [dataValue]) ⇒ <code>NodeList</code>
 Query children with specific `data-`attribute
 
-**Kind**: global function  
+**Kind**: static method of <code>[h](#Bazooka.module_h)</code>  
 
 | Param | Type | Description |
 | --- | --- | --- |

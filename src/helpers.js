@@ -70,7 +70,15 @@ function _getPrefixedAttrs(prefix, node) {
 }
 
 /**
+ * @module h
+ * @memberof Bazooka
+ */
+var h = {}
+
+/**
  * Get all prefixed `data-` attributes as an object
+ * @func getAttrs
+ * @static
  * @param {string} prefix - `data-`attribute prefix
  * @param {HTMLNode} [node] - target node
  * @returns {function|object} - curried function for parsing node with passed prefix or parsed attrs
@@ -85,7 +93,7 @@ function _getPrefixedAttrs(prefix, node) {
  *   xAttrs(document.n) // => {x: "lol", b: 1}
  * ```
  */
-var getAttrs = function(prefix, node) {
+h.getAttrs = function(prefix, node) {
   if (typeof prefix === 'string' && node === void 0) {
     return _getPrefixedAttrs.bind(null, prefix);
   }
@@ -119,6 +127,8 @@ function _prefixDataKey(dataKey) {
 
 /**
  * Query children with specific `data-`attribute
+ * @func getChildrenWithData
+ * @static
  * @param {HTMLNode} parentNode
  * @param {string} dataKey – data-key. `data-baz-key`, `baz-key` and `bazKey` are equivalent
  * @param {string} [dataValue] - value of a `data-`attribute
@@ -135,7 +145,7 @@ function _prefixDataKey(dataKey) {
  *   Baz.h.getChildrenWithData(document.parent, 'userId', 2)[0].textContent === 'nope'
  * ```
  */
-var getChildrenWithData = function(parentNode, dataKey, dataValue) {
+h.getChildrenWithData = function(parentNode, dataKey, dataValue) {
   var prefixedDataKey = _prefixDataKey(dataKey);
   var query;
 
@@ -148,7 +158,4 @@ var getChildrenWithData = function(parentNode, dataKey, dataValue) {
   return parentNode.querySelectorAll(query);
 };
 
-module.exports = {
-  getAttrs: getAttrs,
-  getChildrenWithData: getChildrenWithData,
-};
+module.exports = h;
