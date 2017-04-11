@@ -1,8 +1,11 @@
 'use strict';
 
-function appendDiv() {
+function appendDiv(dataBazooka) {
   var node = document.createElement('div');
   node.setAttribute('test-node', '');
+  if (dataBazooka) {
+    node.setAttribute('data-bazooka', dataBazooka);
+  }
   document.body.appendChild(node);
   return node;
 }
@@ -31,10 +34,8 @@ describe('Baz.rebind', function() {
   });
 
   it('should rebind only new components', function() {
-    var node = appendDiv();
-    var node2 = appendDiv();
-    node.setAttribute('data-bazooka', 'exampleBazFunc');
-    node2.setAttribute('data-bazooka', 'exampleBazFunc exampleBazFunc2');
+    var node = appendDiv('exampleBazFunc');
+    var node2 = appendDiv('exampleBazFunc exampleBazFunc2');
     Baz.refresh();
 
     expect(componentsRegistry.exampleBazFunc).toHaveBeenCalledWith(node);
@@ -67,10 +68,8 @@ describe('Baz.rebind', function() {
   });
 
   it('should call dispose', function() {
-    var node = appendDiv();
-    var node2 = appendDiv();
-    node.setAttribute('data-bazooka', 'exampleBazFunc');
-    node2.setAttribute('data-bazooka', 'exampleBazFunc exampleBazFunc2');
+    var node = appendDiv('exampleBazFunc');
+    var node2 = appendDiv('exampleBazFunc exampleBazFunc2');
     Baz.refresh();
 
     componentsRegistry.exampleBazFunc.calls.reset();
@@ -95,12 +94,9 @@ describe('Baz.rebind', function() {
   });
 
   it('should call bazFuncs a correct number of times', function() {
-    var node = appendDiv();
-    var node2 = appendDiv();
-    var node3 = appendDiv();
-    node.setAttribute('data-bazooka', 'exampleBazFunc');
-    node2.setAttribute('data-bazooka', 'exampleBazFunc2');
-    node3.setAttribute('data-bazooka', 'exampleBazFunc exampleBazFunc2');
+    var node = appendDiv('exampleBazFunc');
+    var node2 = appendDiv('exampleBazFunc2');
+    var node3 = appendDiv('exampleBazFunc exampleBazFunc2');
     Baz.refresh();
 
     componentsRegistry.exampleBazFunc.calls.reset();

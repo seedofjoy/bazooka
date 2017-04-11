@@ -1,8 +1,11 @@
 'use strict';
 
-function appendDiv() {
+function appendDiv(dataBazooka) {
   var node = document.createElement('div');
   node.setAttribute('test-node', '');
+  if (dataBazooka) {
+    node.setAttribute('data-bazooka', dataBazooka);
+  }
   document.body.appendChild(node);
   return node;
 }
@@ -35,8 +38,7 @@ describe('Baz', function() {
   });
 
   it('should bind goodBazFunc', function() {
-    var node = appendDiv();
-    node.setAttribute('data-bazooka', 'goodBazFunc');
+    var node = appendDiv('goodBazFunc');
     Baz.refresh();
 
     expect(componentsRegistry.goodBazFunc).toHaveBeenCalledWith(node);
@@ -45,8 +47,7 @@ describe('Baz', function() {
   it('should catch error from errorousBazFunc', function() {
     console.error = spyOn(console, 'error');
 
-    var node = appendDiv();
-    node.setAttribute('data-bazooka', 'errorousBazFunc');
+    var node = appendDiv('errorousBazFunc');
 
     expect(function() {
       Baz.refresh();
@@ -58,12 +59,9 @@ describe('Baz', function() {
   it('error from errorousBazFunc should not stop goodBazFunc', function() {
     console.error = spyOn(console, 'error');
 
-    var node = appendDiv();
-    var node2 = appendDiv();
-    var node3 = appendDiv();
-    node.setAttribute('data-bazooka', 'goodBazFunc errorousBazFunc');
-    node2.setAttribute('data-bazooka', 'errorousBazFunc goodBazFunc');
-    node3.setAttribute('data-bazooka', 'goodBazFunc');
+    var node = appendDiv('goodBazFunc errorousBazFunc');
+    var node2 = appendDiv('errorousBazFunc goodBazFunc');
+    var node3 = appendDiv('goodBazFunc');
 
     expect(function() {
       Baz.refresh();
@@ -85,8 +83,7 @@ describe('Baz', function() {
   it('should not try to rebind errorous component', function() {
     console.error = spyOn(console, 'error');
 
-    var node = appendDiv();
-    node.setAttribute('data-bazooka', 'errorousBazFunc');
+    var node = appendDiv('errorousBazFunc');
 
     expect(function() {
       Baz.refresh();

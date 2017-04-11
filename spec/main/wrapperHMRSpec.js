@@ -1,8 +1,11 @@
 'use strict';
 
-function appendDiv() {
+function appendDiv(dataBazooka) {
   var node = document.createElement('div');
   node.setAttribute('test-node', '');
+  if (dataBazooka) {
+    node.setAttribute('data-bazooka', dataBazooka);
+  }
   document.body.appendChild(node);
   return node;
 }
@@ -20,8 +23,7 @@ describe('BazookaWrapper.prototype.HMRState', function() {
   });
 
   it('should return initial state', function() {
-    var node = appendDiv();
-    node.setAttribute('data-bazooka', 'bazFunc');
+    var node = appendDiv('bazFunc');
 
     var checker = jasmine.createSpy('checker');
     var mockModuleHot = {
@@ -46,8 +48,7 @@ describe('BazookaWrapper.prototype.HMRState', function() {
   });
 
   it('should save and load data between HMRs', function() {
-    var node = appendDiv();
-    node.setAttribute('data-bazooka', 'bazFunc');
+    var node = appendDiv('bazFunc');
 
     var checker = jasmine.createSpy('checker');
     var mockModuleHot = {

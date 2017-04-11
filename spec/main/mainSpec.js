@@ -1,10 +1,11 @@
 'use strict';
-/* global describe, beforeEach, afterEach, it, expect, spyOn */
-/* eslint max-nested-callbacks:0 */
 
-function appendDiv() {
+function appendDiv(dataBazooka) {
   var node = document.createElement('div');
   node.setAttribute('test-node', '');
+  if (dataBazooka) {
+    node.setAttribute('data-bazooka', dataBazooka);
+  }
   document.body.appendChild(node);
   return node;
 }
@@ -40,24 +41,21 @@ describe('Baz', function() {
   });
 
   it('should bind simple component to node', function() {
-    var node = appendDiv();
-    node.setAttribute('data-bazooka', 'exampleBazFunc');
+    var node = appendDiv('exampleBazFunc');
     Baz.refresh();
 
     expect(componentsRegistry.exampleBazFunc).toHaveBeenCalledWith(node);
   });
 
   it('should not bind incorrect component to node', function() {
-    var node = appendDiv();
-    node.setAttribute('data-bazooka', 'exampleBazFunc');
+    var node = appendDiv('exampleBazFunc');
     Baz.refresh();
 
     expect(componentsRegistry.exampleBazFunc2).not.toHaveBeenCalled();
   });
 
   it('should bind complex component to node', function() {
-    var node = appendDiv();
-    node.setAttribute('data-bazooka', 'exampleComplexBazComponent');
+    var node = appendDiv('exampleComplexBazComponent');
     Baz.refresh();
 
     expect(
@@ -66,11 +64,7 @@ describe('Baz', function() {
   });
 
   it('should bind multiple components to node', function() {
-    var node = appendDiv();
-    node.setAttribute(
-      'data-bazooka',
-      'exampleBazFunc exampleComplexBazComponent'
-    );
+    var node = appendDiv('exampleBazFunc exampleComplexBazComponent');
     Baz.refresh();
 
     expect(componentsRegistry.exampleBazFunc).toHaveBeenCalledWith(node);
@@ -81,11 +75,8 @@ describe('Baz', function() {
   });
 
   it('should strip extra whitespaces', function() {
-    var node = appendDiv();
-    var node2 = appendDiv();
-    node.setAttribute('data-bazooka', 'exampleBazFunc  exampleBazFunc2   ');
-    node2.setAttribute(
-      'data-bazooka',
+    var node = appendDiv('exampleBazFunc  exampleBazFunc2   ');
+    var node2 = appendDiv(
       'exampleBazFunc  \
                       exampleBazFunc2'
     );
@@ -99,8 +90,7 @@ describe('Baz', function() {
   });
 
   it('should bind bazFuncless component to node', function() {
-    var node = appendDiv();
-    node.setAttribute('data-bazooka', 'exampleComplexBazFunclessComponent');
+    var node = appendDiv('exampleComplexBazFunclessComponent');
     Baz.refresh();
   });
 });

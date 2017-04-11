@@ -1,8 +1,11 @@
 'use strict';
 
-function appendDiv() {
+function appendDiv(dataBazooka) {
   var node = document.createElement('div');
   node.setAttribute('test-node', '');
+  if (dataBazooka) {
+    node.setAttribute('data-bazooka', dataBazooka);
+  }
   document.body.appendChild(node);
   return node;
 }
@@ -59,9 +62,7 @@ describe('BazookaWrapper', function() {
   });
 
   it('should return bound components', function() {
-    var node = appendDiv();
-    node.setAttribute(
-      'data-bazooka',
+    var node = appendDiv(
       'exampleBazFunc exampleComplexBazComponent exampleComplexBazFunclessComponent'
     );
     Baz.refresh();
