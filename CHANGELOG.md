@@ -1,3 +1,19 @@
+## 0.8.0
+
+* :x: [removed] `Baz.h.getAttrs(node)`. Use `Baz.h.getAttrs(prefix, node)` or `Baz.h.getAttrs(prefix)(node)` instead _(deprecated since 0.4.1)_
+* :wrench: [fixed] parsing pretty/multiline JSON (like `{\n"a": 1\n}`) by `Baz.h.getAttrs`:
+
+```javascript
+// node = <div data-baz-json='{\n"a": 1\n}' />
+
+Baz.h.getAttrs('baz', node).json
+// prior 0.8.0
+//    => '{\n"a": 1\n}'
+
+// after 0.8.0
+//    => { "a": 1 }
+```
+
 ## 0.7.0
 
 [Hot Reload](https://github.com/seedofjoy/bazooka/blob/v0.7.0/docs/hot-reloadable-bazfuncs.md)
@@ -20,8 +36,7 @@
 
 ## 0.4.1
 
-* :warning: [deprecated] `Baz.h.getAttrs(node)`. Use `Baz.h.getAttrs(prefix, node)` or `Baz.h.getAttrs(prefix)(node)`
-instead
+* :warning: [deprecated] `Baz.h.getAttrs(node)`. Use `Baz.h.getAttrs(prefix, node)` or `Baz.h.getAttrs(prefix)(node)` instead
 
 ## 0.4.0
 
