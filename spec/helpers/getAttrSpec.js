@@ -86,6 +86,28 @@ describe('Baz.h.getAttrs', function() {
     }
   });
 
+  it('should parse objects', function() {
+    var objects = ['{}', '{"a": 1}', '{"b": []}', '{\n}'];
+    for (var i = 0; i < objects.length; i++) {
+      node.setAttribute('data-obj', objects[i]);
+
+      expect(getAttrs('', node)).toEqual({
+        obj: JSON.parse(objects[i]),
+      });
+    }
+  });
+
+  it('should parse arrays', function() {
+    var arrays = ['[]', '[1,2]', '[{}]', '[\n]'];
+    for (var i = 0; i < arrays.length; i++) {
+      node.setAttribute('data-arr', arrays[i]);
+
+      expect(getAttrs('', node)).toEqual({
+        arr: JSON.parse(arrays[i]),
+      });
+    }
+  });
+
   it('should parse strings', function() {
     var strings = ['a', 'sdbsdh', 'слово', ''];
     for (var i = 0; i < strings.length; i++) {
@@ -94,6 +116,24 @@ describe('Baz.h.getAttrs', function() {
       expect(getAttrs('', node)).toEqual({
         str: strings[i],
       });
+    }
+  });
+
+  it('should bail on invalid json', function() {
+    var cases = [
+      ['{', { invalid: '{' }],
+      ['[][', { invalid: '[][' }],
+      ['{b: 1}', {}],
+      ['[]]', {}],
+      ['{\n]', { invalid: '{\n]' }],
+    ];
+    var attr, result;
+    for (var i = 0; i < cases.length; i++) {
+      attr = cases[i][0];
+      result = cases[i][1];
+      node.setAttribute('data-invalid', attr);
+
+      expect(getAttrs('', node)).toEqual(result);
     }
   });
 

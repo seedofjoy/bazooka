@@ -2,7 +2,9 @@
 
 var IGNORED_ATTRS = ['data-bazid', 'data-bazooka'];
 
-var rbrace = /^(?:\{.*\}|\[.*\])$/;
+// `[\s\S]` instead of `.` to allow multiline/pretty JSON
+// in other words, because `/./.test('\n') == false`
+var rbrace = /^(?:\{[\s\S]*\}|\[[\s\S]*\])$/;
 var rdataAttr = /^data-([a-z\d\-]+)$/;
 var rdashAlpha = /-([a-z])/gi;
 var fcamelCase = function(all, letter) {
