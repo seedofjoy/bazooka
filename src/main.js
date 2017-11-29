@@ -5,6 +5,45 @@ var nodesComponentsRegistry = {};
 var componentsRegistry = {};
 var wrappersRegistry = {};
 
+var _interObs = null;
+
+function _onIntersection(entries, observer) {
+  var entry;
+  var caughtException;
+
+  for (var i = 0; i < entries.length; i++) {
+    entry = entries[i];
+    if (entry.intersectionRatio > 0) {
+      observer.unobserve(entry.target);
+      try {
+        _wrapAndBindNode(entry.target);
+      } catch (e) {
+        if (!caughtException) {
+          caughtException = e;
+        }
+      }
+    }
+  }
+
+  if (caughtException) {
+    throw caughtException;
+  }
+}
+
+var _getIntersectionObserver = 'IntersectionObserver' in window
+  ? function() {
+      if (_interObs) {
+        return _interObs;
+      }
+
+      return (_interObs = new IntersectionObserver(_onIntersection, {
+        rootMargin: '20px 0px',
+      }));
+    }
+  : function() {
+      return null;
+    };
+
 function _id(value) {
   return value;
 }
@@ -172,6 +211,26 @@ function _wrapAndBindNode(node) {
   }
 }
 
+function _observeNodeForWrap(node) {
+  var dataBazooka = (node.getAttribute('data-bazooka') || '').trim();
+
+  if (dataBazooka) {
+    if (node.getAttribute('data-baz-async') === 'viewport') {
+      var intersectionObserver = _getIntersectionObserver();
+
+      new BazookaWrapper(node); // to avoid double call of _wrapAndBindNode
+
+      if (intersectionObserver) {
+        intersectionObserver.observe(node);
+      } else {
+        setTimeout(_wrapAndBindNode, 1, node);
+      }
+    } else {
+      _wrapAndBindNode(node);
+    }
+  }
+}
+
 /**
  * @interface BazComponent
  * @exports BazComponent
@@ -296,7 +355,7 @@ Bazooka.refresh = function(rootNode) {
 
   for (var i = 0; i < nodes.length; i++) {
     try {
-      _wrapAndBindNode(nodes[i]);
+      _observeNodeForWrap(nodes[i]);
     } catch (e) {
       if (!caughtException) {
         caughtException = e;
