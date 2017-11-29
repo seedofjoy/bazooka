@@ -40,6 +40,6 @@ module.exports = {
     alias: {
       bazooka: path.join(__dirname, 'src', 'main.js'),
     },
-    modulesDirectories: modulesDirectories,
+    modules: modulesDirectories,
   },
 };

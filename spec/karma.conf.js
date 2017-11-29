@@ -35,7 +35,7 @@ module.exports = function(config) {
         alias: {
           bazooka: path.join(__dirname, '..', 'src', 'main.js'),
         },
-        modulesDirectories: ['node_modules', 'src'],
+        modules: ['node_modules', 'src'],
       },
       plugins: [
         new webpack.DefinePlugin({
