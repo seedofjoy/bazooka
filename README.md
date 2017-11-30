@@ -10,7 +10,9 @@ $ npm install bazooka
 
 ### Browser Support
 
-Bazooka uses [MutationObserver](https://developer.mozilla.org/en/docs/Web/API/MutationObserver) to watch for DOM updates. If you want to use `Baz.watch()` and need to support [browsers without MutationObserver](http://caniuse.com/#feat=mutationobserver), you'll need any MutationObserver polyfill (we recommend [this one](https://www.npmjs.com/package/mutation-observer))
+Bazooka uses [`MutationObserver`](https://developer.mozilla.org/en/docs/Web/API/MutationObserver) to watch for DOM updates. If you want to use `Baz.watch()` and need to support [browsers without `MutationObserver`](http://caniuse.com/#feat=mutationobserver), you'll need any `MutationObserver` polyfill (we recommend [this one](https://www.npmjs.com/package/mutation-observer))
+
+Also, Bazooka can initiate components asynchriously (when component's node comes into viewport, via `data-baz-async="viewport"` HTML attribute). For that, Bazooka uses [`IntersectionObserver`](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API). In [browsers without `IntersectionObserver` support](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API#Browser_compatibility), falls back to the equivalent of `setTimeout(bazFunc, 1, node)`
 
 
 ## Examples
