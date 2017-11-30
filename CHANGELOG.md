@@ -1,3 +1,19 @@
+## 0.9.0
+
+* :heavy_plus_sign: [added] support for async bazFunc calls via [Intersection Observer](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API). In [browsers without Intersection Observer support](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API#Browser_compatibility), falls back to the equivalent of `setTimeout(bazFunc, 1, node)`. Check out [\_async example](/examples/_async)
+
+```html
+/* (old) sync call */
+<div data-bazooka="init-time">
+    will be called on `Bazooka.refresh()` / `Bazooka.watch()`
+</div>
+
+/* (new) async call */
+<div data-bazooka="init-time" data-baz-async="viewport">
+    will be called when in viewport
+</div>
+```
+
 ## 0.8.0
 
 * :x: [removed] `Baz.h.getAttrs(node)`. Use `Baz.h.getAttrs(prefix, node)` or `Baz.h.getAttrs(prefix)(node)` instead _(deprecated since 0.4.1)_

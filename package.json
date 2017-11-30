@@ -1,6 +1,6 @@
 {
   "name": "bazooka",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "description": "Simple tool for declarative binding applications to HTML nodes.",
   "main": "src/main.js",
   "directories": {
@@ -15,7 +15,8 @@
     "preversion": "npm test && npm run docs",
     "postversion": "git push && git push --tags",
     "docs": "mkdir -p ./docs && jsdoc2md src/main.js > ./docs/README.md && jsdoc2md src/helpers.js > ./docs/helpers.md",
-    "examples": "webpack --config=webpack.config.examples.js"
+    "examples": "webpack --config=webpack.config.examples.js",
+    "start": "webpack-dev-server"
   },
   "repository": {
     "type": "git",
@@ -44,13 +45,14 @@
     "karma": "1.0.0",
     "karma-jasmine": "^0.3.6",
     "karma-phantomjs-launcher": "1.0.4",
-    "karma-webpack": "^1.7.0",
+    "karma-webpack": "^2.0.6",
     "kefir": "^3.1.0",
     "lodash": "^3.10.1",
     "phantomjs-prebuilt": "2.1.7",
     "prettier": "^0.22.0",
     "react": "^0.14.2",
     "react-dom": "^0.14.2",
-    "webpack": "^1.12.3"
+    "webpack": "^2.7.0",
+    "webpack-dev-server": "^2.9.5"
   }
 }
