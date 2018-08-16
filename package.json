@@ -8,6 +8,7 @@
   },
   "scripts": {
     "test": "npm run lint && npm run test-karma",
+    "karma": "karma",
     "test-karma": "karma start spec/karma.conf.js --single-run",
     "lint": "npm run prettier -- -l",
     "fmt": "npm run prettier -- --write",
