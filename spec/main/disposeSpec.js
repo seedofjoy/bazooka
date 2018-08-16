@@ -12,7 +12,9 @@ describe('dispose', function() {
       component: function(node) {
         node.innerText = 'ok';
 
-        return done;
+        return function() {
+          done();
+        };
       },
     });
 
@@ -34,7 +36,9 @@ describe('dispose', function() {
       component: function(node) {
         node.innerText = 'ok';
 
-        return done;
+        return function() {
+          done();
+        };
       },
     });
 
@@ -53,7 +57,9 @@ describe('dispose', function() {
       component: function(node) {
         node.innerText = 'ok';
 
-        return done;
+        return function() {
+          done();
+        };
       },
     });
 
