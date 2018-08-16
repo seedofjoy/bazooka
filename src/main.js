@@ -329,10 +329,15 @@ Bazooka.refresh = function(rootNode) {
   rootNode = rootNode || document.body;
   var nodes;
   var caughtException;
+  var wrapper;
 
   for (var bazId in wrappersRegistry) {
-    var wrapper = wrappersRegistry[bazId];
-    if (wrapper && !wrapper.__wrapped__.parentNode) {
+    wrapper = wrappersRegistry[bazId];
+    if (
+      wrapper &&
+      (!wrapper.__wrapped__.parentNode ||
+        !rootNode.contains(wrapper.__wrapped__))
+    ) {
       for (var disposableComponentName in wrapper.__disposesMap__) {
         if (
           typeof wrapper.__disposesMap__[disposableComponentName] === 'function'
@@ -345,8 +350,9 @@ Bazooka.refresh = function(rootNode) {
       wrappersRegistry[bazId] = null;
       nodesComponentsRegistry[bazId] = {};
     }
-    wrapper = null;
   }
+
+  wrapper = null;
 
   nodes = Array.prototype.map.call(
     rootNode.querySelectorAll('[data-bazooka]:not([data-bazid])'),
