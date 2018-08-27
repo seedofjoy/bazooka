@@ -1,3 +1,7 @@
+## 0.9.1
+
+* :wrench: [fixed] component was not disposed when parent node is removed from a page (#46)
+
 ## 0.9.0
 
 * :heavy_plus_sign: [added] support for async bazFunc calls via [`IntersectionObserver`](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API). In [browsers without `IntersectionObserver` support](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API#Browser_compatibility), falls back to the equivalent of `setTimeout(bazFunc, 1, node)`. Check out [\_async example](/examples/_async)
