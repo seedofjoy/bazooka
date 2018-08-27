@@ -319,20 +319,28 @@ Bazooka.register = function(componentsObj) {
   }
 };
 
+function _nodeMovedOutOfRoot(wrappedNode, rootNode) {
+  return !wrappedNode.parentNode || !rootNode.contains(wrappedNode);
+}
+
 /**
  * Parse and bind bazooka components to nodes without bound components
  * @func refresh
  * @param {node} [rootNode=document.body] - DOM node, children of which will be checked for `data-bazooka`
  * @static
  */
-Bazooka.refresh = function(rootNode) {
+Bazooka.refresh = function(rootNode, _watchRoot) {
   rootNode = rootNode || document.body;
   var nodes;
   var caughtException;
+  var wrapper;
 
   for (var bazId in wrappersRegistry) {
-    var wrapper = wrappersRegistry[bazId];
-    if (wrapper && !wrapper.__wrapped__.parentNode) {
+    wrapper = wrappersRegistry[bazId];
+    if (
+      wrapper &&
+      _nodeMovedOutOfRoot(wrapper.__wrapped__, _watchRoot || rootNode)
+    ) {
       for (var disposableComponentName in wrapper.__disposesMap__) {
         if (
           typeof wrapper.__disposesMap__[disposableComponentName] === 'function'
@@ -345,8 +353,9 @@ Bazooka.refresh = function(rootNode) {
       wrappersRegistry[bazId] = null;
       nodesComponentsRegistry[bazId] = {};
     }
-    wrapper = null;
   }
+
+  wrapper = null;
 
   nodes = Array.prototype.map.call(
     rootNode.querySelectorAll('[data-bazooka]:not([data-bazid])'),
@@ -420,12 +429,10 @@ Bazooka.rebind = function rebind(componentsObj) {
   }
 };
 
-function _observedMutationCallback(mutation) {
-  Bazooka.refresh(mutation.target);
-}
-
-function _MutationObserverCallback(mutations) {
-  mutations.forEach(_observedMutationCallback);
+function _MutationObserverCallback(mutations, rootNode) {
+  for (var i = 0; i < mutations.length; i++) {
+    Bazooka.refresh(mutations[i].target, rootNode);
+  }
 }
 
 /**
@@ -436,7 +443,9 @@ function _MutationObserverCallback(mutations) {
  * @returns {function} Unwatch function
  */
 Bazooka.watch = function(rootNode) {
-  var observer = new MutationObserver(_MutationObserverCallback);
+  var observer = new MutationObserver(function(mutations) {
+    return _MutationObserverCallback(mutations, rootNode);
+  });
   rootNode = rootNode || document.body;
 
   Bazooka.refresh(rootNode);

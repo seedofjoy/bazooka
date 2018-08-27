@@ -42,7 +42,7 @@ describe('Baz.watch', function() {
   it('should bind existing nodes', function() {
     var node = appendDiv('bf');
     var node2 = appendDiv('bf2');
-    Baz.watch();
+    observer = Baz.watch();
 
     expect(componentsRegistry.bf.calls.allArgs()).toEqual([[node]]);
     expect(componentsRegistry.bf2.calls.allArgs()).toEqual([[node2]]);
@@ -50,7 +50,7 @@ describe('Baz.watch', function() {
 
   it('should bind added nodes', function(done) {
     var node = appendDiv('bf');
-    Baz.watch();
+    observer = Baz.watch();
 
     componentsRegistry.bf.and.callFake(function() {
       expect(componentsRegistry.bf.calls.allArgs()).toEqual([[node], [node2]]);
@@ -69,8 +69,51 @@ describe('Baz.watch', function() {
     });
 
     var node = appendDiv('bf');
-    Baz.watch();
+    observer = Baz.watch();
 
     document.body.removeChild(node);
+  });
+
+  it('should dispose children of removed nodes', function(done) {
+    componentsRegistry.bf.and.callFake(function() {
+      return function() {
+        done();
+      };
+    });
+
+    var node = appendDiv();
+    node.innerHTML = '<div data-bazooka="bf"></div>';
+    observer = Baz.watch();
+
+    document.body.removeChild(node);
+  });
+
+  it("shouldn't dispose children on new heighbours", function(done) {
+    var disposeSpy = jasmine.createSpy('disposeSpy');
+
+    componentsRegistry.bf.and.callFake(function(node) {
+      return disposeSpy;
+    });
+
+    var node = appendDiv();
+    node.innerHTML = '<div data-bazooka="bf"></div>';
+    observer = Baz.watch();
+
+    var newNode = document.createElement();
+    newNode.innerHTML = '<div data-bazooka="bf"></div>';
+    node.appendChild(newNode);
+
+    setTimeout(
+      function() {
+        expect(componentsRegistry.bf.calls.count()).toBe(2);
+        expect(componentsRegistry.bf.calls.allArgs()).toEqual([
+          [node.childNodes[0]],
+          [newNode.childNodes[0]],
+        ]);
+        expect(disposeSpy).not.toHaveBeenCalled();
+        done();
+      },
+      0
+    );
   });
 });

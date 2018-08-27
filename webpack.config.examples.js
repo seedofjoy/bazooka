@@ -2,7 +2,7 @@
 
 var fs = require('fs');
 var path = require('path');
-var _ = require('lodash');
+var zipObject = require('lodash.zipobject');
 
 var EXAMPLES_BASE_DIR = path.join(__dirname, 'examples');
 
@@ -22,10 +22,10 @@ var makeAppPath = function(dir) {
 };
 
 var examplesNames = getDirectories(EXAMPLES_BASE_DIR);
-var examplesPaths = _.map(examplesNames, makeFullPath);
-var examplesAppPaths = _.map(examplesPaths, makeAppPath);
+var examplesPaths = examplesNames.map(makeFullPath);
+var examplesAppPaths = examplesPaths.map(makeAppPath);
 
-var entry = _.zipObject(examplesNames, examplesAppPaths);
+var entry = zipObject(examplesNames, examplesAppPaths);
 
 var modulesDirectories = ['node_modules', 'src'];
 modulesDirectories = modulesDirectories.concat(examplesPaths);
