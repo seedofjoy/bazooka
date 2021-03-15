@@ -1,4 +1,4 @@
-# bazooka [![Build Status](https://travis-ci.org/seedofjoy/bazooka.svg)](https://travis-ci.org/seedofjoy/bazooka)
+# bazooka [![build status](https://github.com/seedofjoy/bazooka/actions/workflows/node.js.yml/badge.svg)](https://github.com/seedofjoy/bazooka/actions/node.js.yml)
 Simple tool for declarative binding applications to HTML nodes.
 
 
