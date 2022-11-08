@@ -53,7 +53,7 @@
     "prettier": "^0.22.0",
     "react": "^0.14.2",
     "react-dom": "^0.14.2",
-    "webpack": "^2.7.0",
+    "webpack": "^5.74.0",
     "webpack-dev-server": "^2.9.5"
   }
 }
